@@ -1,0 +1,60 @@
+{
+  "name": "@siren/react-native-inbox",
+  "version": "1.0.0",
+  "description": "React Native SDK for in-app notification inbox",
+  "main": "dist/module/index",
+  "types": "dist/typescript/index.d.ts",
+  "react-native": "dist/module/index",
+  "module": "dist/module/index",
+  "source": "dist/module/index",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KeyValueSoftwareSystems/siren-react-native-inbox.git"
+  },
+  "keywords": [
+    "react-native",
+    "siren",
+    "in-app",
+    "react",
+    "notifications"
+  ],
+  "author": "KeyValue Software Systems",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KeyValueSoftwareSystems/siren-react-native-inbox/issues"
+  },
+  "homepage": "https://github.com/KeyValueSoftwareSystems/siren-react-native-inbox#readme",
+  "scripts": {
+    "prepare": "husky",
+    "lint": "eslint src",
+    "build": "bob build"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.57",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "husky": "^9.0.11",
+    "react": "^18.2.0",
+    "react-native": "^0.73.4",
+    "react-native-builder-bob": "^0.23.2",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-native": "^0.73.4"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "dist",
+    "targets": [
+      "module",
+      "typescript"
+    ]
+  },
+  "files": [
+    "./dist",
+    "license",
+    "readme"
+  ]
+}
