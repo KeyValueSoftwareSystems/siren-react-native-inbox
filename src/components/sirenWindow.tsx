@@ -1,20 +1,20 @@
-import type { ReactElement} from 'react';
+import type { ReactElement } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SirenWeb } from 'bilta-sdk';
 import type { NotificationDataType, SirenErrorType } from 'bilta-sdk/dist/types';
 
-import type { SirenProps } from '../utils';
-import { Constants, useSiren } from '../utils';
+import { Constants, useSiren, CommonUtils } from '../utils';
 import { useSirenContext } from './sirenProvider';
-import { applyTheme, logger } from '../utils/commonUtils';
+import type { SirenInboxProps } from '../types';
+import LoadingWindow from './loadingWindow';
 import EmptyWindow from './emptyWindow';
 import ErrorWindow from './errorWindow';
-import LoadingWindow from './loadingWindow';
 import Header from './header';
 import Card from './card';
 
 const { DEFAULT_WINDOW_TITLE, ThemeMode } = Constants;
+const { logger, applyTheme } = CommonUtils;
 
 /**
  * `SirenWindow` is a React component that displays a list of notifications fetched from the Siren SDK.
@@ -50,9 +50,9 @@ const { DEFAULT_WINDOW_TITLE, ThemeMode } = Constants;
  * @param {boolean} [props.realTimeNotificationEnabled=false] - Flag to enable real-time notification updates.
  * @param {Function} [props.onError] - Callback for handling errors.
  */
-const SirenWindow = (props: SirenProps.SirenInboxProps): ReactElement => {
+const SirenWindow = (props: SirenInboxProps): ReactElement => {
   const {
-    theme = {},
+    theme = { dark: {}, light: {} },
     title = DEFAULT_WINDOW_TITLE,
     hideHeader = false,
     darkMode = false,
@@ -70,7 +70,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps): ReactElement => {
   const { sirenCore, sirenError, clearError, newNotifications, clearNewNotifications } =
     useSirenContext();
 
-  const { deleteNotification } = useSiren();
+  const { deleteNotification, clearAllNotification } = useSiren();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
@@ -114,9 +114,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps): ReactElement => {
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
-    (async () => {
-      await initialize();
-    })();
+    initialize();
 
     // Clean up - stop polling when component unmounts
     return () => {
@@ -214,7 +212,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps): ReactElement => {
   // Render empty window, error window, or custom empty component
   const renderListEmpty = (): JSX.Element | undefined => {
     if (!isLoading) {
-      if (isError) return <ErrorWindow onRefresh={onRefresh} styles={styles} />;
+      if (isError) return <ErrorWindow onRetry={onRefresh} styles={styles} />;
 
       return listEmptyComponent || <EmptyWindow styles={styles} />;
     }
@@ -227,7 +225,8 @@ const SirenWindow = (props: SirenProps.SirenInboxProps): ReactElement => {
     setNotifications(updatedNotifications);
   };
 
-  const onClearAllNotifications = (): void => {
+  const onPressClearAll = async (): Promise<void> => {
+    await clearAllNotification();
     setIsLoading(false);
     setIsError(false);
     setNotifications([]);
@@ -265,13 +264,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps): ReactElement => {
     <View style={styles.container}>
       {customHeader
         ? customHeader
-        : !hideHeader && (
-          <Header
-            title={title}
-            styles={styles}
-            onClearAllNotifications={onClearAllNotifications}
-          />
-        )}
+        : !hideHeader && <Header title={title} styles={styles} onPressClearAll={onPressClearAll} />}
       <FlatList
         data={notifications}
         renderItem={renderCard}

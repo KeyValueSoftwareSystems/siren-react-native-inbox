@@ -3,11 +3,12 @@ import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { SirenWeb } from 'bilta-sdk';
 import type { SirenErrorType } from 'bilta-sdk/dist/types';
 
-import type { SirenProps } from '../utils';
-import { BadgeType, ThemeMode } from '../utils/constants';
+import type { SirenNotificationIconProps, UnviewedType } from '../types';
+import { Constants, CommonUtils } from '../utils';
 import { useSirenContext } from './sirenProvider';
-import { logger } from '../utils/commonUtils';
 
+const { BadgeType, ThemeMode } = Constants;
+const { logger } = CommonUtils;
 
 /**
  * `SirenNotificationIcon` displays an icon representing the entry point to view notifications.
@@ -33,9 +34,9 @@ import { logger } from '../utils/commonUtils';
  * @param {boolean} [props.realTimeUnviewedCountEnabled=true] - Enables real-time fetching of the unviewed notifications count.
  * @param {Function} [props.onError] - Callback function to handle errors.
  */
-const SirenNotificationIcon = (props: SirenProps.SirenNotificationIconProps) => {
+const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   const {
-    theme = {},
+    theme = { dark: {}, light: {} },
     notificationIcon,
     darkMode = false,
     badgeType = BadgeType.DEFAULT,
@@ -53,12 +54,10 @@ const SirenNotificationIcon = (props: SirenProps.SirenNotificationIconProps) => 
     textColor: '#FFFFFF',
     textSize: 10
   };
-  const badge = {...defaultBadgeStyle,...badgeStyle };
+  const badge = { ...defaultBadgeStyle, ...badgeStyle };
 
   useEffect(() => {
-    (async () => {
-      await initialize();
-    })();
+    initialize();
 
     // Clean up - stop polling when component unmounts
     return () => {
@@ -86,7 +85,7 @@ const SirenNotificationIcon = (props: SirenProps.SirenNotificationIconProps) => 
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
     if (SirenWeb && sirenCore) {
-      const unViewed: SirenProps.UnviewedType = await sirenCore.fetchUnviewedNotificationsCount();
+      const unViewed: UnviewedType = await sirenCore.fetchUnviewedNotificationsCount();
 
       if (realTimeUnviewedCountEnabled) sirenCore?.startRealTimeUnviewedCountFetch();
       if (unViewed) setUnviewedCount(unViewed.unviewedCount);

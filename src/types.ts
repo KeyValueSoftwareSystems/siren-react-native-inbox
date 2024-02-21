@@ -17,7 +17,7 @@ import type { NotificationDataType, SirenErrorType } from 'bilta-sdk/dist/types'
  * @property {(notification: NotificationResponseDataItem) => void} [onNotificationCardClick] - Handler for notification card clicks.
  * @property {(error: SirenErrorType) => void} [onError] - Callback for handling errors.
  */
-type SirenInboxProps = {
+export type SirenInboxProps = {
   theme?: Theme;
   title?: string;
   hideHeader?: boolean;
@@ -43,7 +43,7 @@ type SirenInboxProps = {
  * @property {(error: SirenErrorType) => void} [onError] - Callback function for handling errors.
  * @property {boolean} [darkMode] - Enables dark theme for the component.
  */
-type SirenNotificationIconProps = {
+export type SirenNotificationIconProps = {
   theme?: Theme;
   badgeType?: BadgeType;
   realTimeUnviewedCountEnabled?: boolean;
@@ -59,7 +59,7 @@ type SirenNotificationIconProps = {
  * @property {string} userToken - The authentication token for the user.
  * @property {string} recipientId - The unique identifier of the recipient. 
  */
-type SirenProviderConfigProps = {
+export type SirenProviderConfigProps = {
   userToken: string;
   recipientId: string;
 };
@@ -87,9 +87,9 @@ type BadgeType = 'none' | 'dot' | 'default';
  * @property {ThemeProps} [dark] - Theme settings for dark mode.
  * @property {ThemeProps} [light] - Theme settings for light mode.
  */
-type Theme = {
-  dark?: ThemeProps;
-  light?: ThemeProps;
+export type Theme = {
+  dark: ThemeProps;
+  light: ThemeProps;
 };
 
 /**
@@ -103,7 +103,7 @@ type Theme = {
  * @property {WindowContainerProps} [windowContainer] - Configuration for the window container.
  * @property {NotificationCardThemeProps} [notificationCard] - Styling options for notification cards.
  */
-type ThemeProps = {
+export type ThemeProps = {
   colors?: {
     primaryColor?: string;
     secondaryColor?: string;
@@ -242,7 +242,7 @@ type NotificationCardThemeProps = {
  * @property {any} styles - Styling options for the card
  * @property {Function} onDelete - Callback function invoked to delete a notification.
  */
-type NotificationCardProps = {
+export type NotificationCardProps = {
   onCardClick: (notification: NotificationDataType) => void;
   notification: NotificationDataType;
   cardProps: CardProps;
@@ -255,11 +255,11 @@ type NotificationCardProps = {
  * @typedef {Object} UnviewedType
  * @property {number} unviewedCount - The total number of unviewed notifications.
  */
-type UnviewedType = {
+export type UnviewedType = {
   unviewedCount: number;
 };
 
-type SirenStyleProps = {
+export type SirenStyleProps = {
   container: ViewStyle | object;
   contentContainer: ViewStyle;
   headerContainer: ViewStyle;
@@ -282,15 +282,5 @@ type SirenStyleProps = {
   errorText: TextStyle;
   errorButton: ViewStyle;
   errorButtonText: TextStyle;
-};
-
-export {
-  SirenInboxProps,
-  SirenNotificationIconProps,
-  SirenProviderConfigProps,
-  SirenStyleProps,
-  Theme,
-  ThemeProps,
-  UnviewedType,
-  NotificationCardProps
+  transparent: ViewStyle; 
 };

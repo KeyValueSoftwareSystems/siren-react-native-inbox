@@ -2,8 +2,8 @@ import type { ReactElement } from 'react';
 import React from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 
-import { generateElapsedTimeText } from '../utils/commonUtils';
-import type { SirenProps } from '../utils';
+import type { NotificationCardProps } from '../types';
+import { CommonUtils } from '../utils';
 
 /**
  * `Card` component represents an individual notification card in the notification list.
@@ -38,14 +38,14 @@ import type { SirenProps } from '../utils';
  * @param {Object} props.styles - Custom styles applied to the card and its elements.
  * @param {Function} props.onDelete - Callback function executed when the delete action is triggered.
  */
-const Card = (props: SirenProps.NotificationCardProps): ReactElement => {
+const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps, styles, onDelete } = props;
 
   return (
     <TouchableOpacity
       onPress={() => onCardClick(notification)}
       activeOpacity={0.6}
-      style={[styles.cardContainer, notification?.isRead && { backgroundColor: 'transparent' }]}
+      style={[styles.cardContainer, notification?.isRead && styles.transparent]}
     >
       {!cardProps?.hideAvatar && (
         <View style={styles.cardIconContainer}>
@@ -76,7 +76,7 @@ const Card = (props: SirenProps.NotificationCardProps): ReactElement => {
           />
         )} */}
         <View style={styles.cardFooterRow}>
-          <Text style={styles.dateStyle}>{generateElapsedTimeText(notification.createdAt)}</Text>
+          <Text style={styles.dateStyle}>{CommonUtils.generateElapsedTimeText(notification.createdAt)}</Text>
           <TouchableOpacity onPress={() => onDelete(notification.id)} style={styles.deleteButton}>
             <Text style={styles.deleteButtonText}>Delete</Text>
           </TouchableOpacity>

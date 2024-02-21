@@ -2,11 +2,11 @@ import type { ReactElement } from 'react';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import useSiren from '../utils/sirenHook';
-import type { SirenProps } from '../utils';
+import type { SirenStyleProps } from '../types';
+import { Constants } from '../utils';
 
 /**
- * Renders a header component with a title and a "Clear All" action.
+ * Renders a header component with a title and a "Clear All" (deletes all the notifications till date) action.
  *
  *
  * @component
@@ -24,22 +24,16 @@ import type { SirenProps } from '../utils';
  */
 const Header = (props: {
   title: string;
-  styles: SirenProps.SirenStyleProps;
-  onClearAllNotifications: () => void;
+  styles: SirenStyleProps;
+  onPressClearAll: () => void;
 }): ReactElement => {
-  const { title = '', styles, onClearAllNotifications } = props;
-  const { clearAllNotification } = useSiren();
-
-  const onPressClearAll = () => {
-    clearAllNotification();
-    onClearAllNotifications();
-  };
+  const { title = '', styles, onPressClearAll } = props;
 
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.headerTitle}>{title}</Text>
       <TouchableOpacity onPress={onPressClearAll}>
-        <Text style={styles.headerAction}>Clear All</Text>
+        <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -1,6 +1,6 @@
 import { DefaultTheme } from './index';
 import { LogLevel, ThemeMode, levelLogFns } from './constants';
-import type { SirenStyleProps, ThemeProps } from './types';
+import type { SirenStyleProps, ThemeProps } from '../types';
 
 export const generateElapsedTimeText = (timeString: string) => {
   const currentTime = new Date().getTime();
@@ -216,5 +216,8 @@ export const applyTheme = (
     color: theme.colors?.primaryTextColor || DefaultTheme[mode].colors.primaryTextColor,
     fontSize: 16,
     fontWeight: '500'
+  },
+  transparent: { 
+    backgroundColor: 'transparent' 
   }
 });

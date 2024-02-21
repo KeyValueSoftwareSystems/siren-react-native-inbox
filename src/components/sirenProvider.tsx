@@ -8,8 +8,10 @@ import type {
   NotificationDataType
 } from 'bilta-sdk/dist/types';
 
-import type { SirenProps } from '../utils';
-import { logger } from '../utils/commonUtils';
+import type { SirenProviderConfigProps } from '../types';
+import { CommonUtils } from '../utils';
+
+const { logger } = CommonUtils;
 
 type SirenContextProp = {
   sirenCore?: SirenWeb | null;
@@ -22,7 +24,7 @@ type SirenContextProp = {
 };
 
 interface SirenProvider {
-  config: SirenProps.SirenProviderConfigProps;
+  config: SirenProviderConfigProps;
   children: React.ReactNode;
 }
 

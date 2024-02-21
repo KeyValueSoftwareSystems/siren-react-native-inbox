@@ -44,3 +44,4 @@ export const LIST_EMPTY_TEXT = "You don't have any notifications!";
 export const ERROR_TEXT = 'Something went wrong!';
 export const DEFAULT_WINDOW_TITLE = 'Notifications';
 export const RETRY_BUTTON_LABEL = 'Retry';
+export const CLEAR_ALL_LABEL = 'Clear All';

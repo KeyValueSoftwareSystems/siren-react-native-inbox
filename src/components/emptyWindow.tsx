@@ -2,8 +2,8 @@ import type { ReactElement } from 'react';
 import React from 'react';
 import { Text, View } from 'react-native';
 
+import type { SirenStyleProps } from '../types';
 import { Constants } from '../utils';
-import type { SirenProps } from '../utils';
 
 const { LIST_EMPTY_TEXT } = Constants;
 
@@ -18,7 +18,7 @@ const { LIST_EMPTY_TEXT } = Constants;
  *
  * @param {Object} props.styles - Custom styles applied to the empty window.
  */
-const EmptyWindow = (props: { styles: SirenProps.SirenStyleProps }): ReactElement => {
+const EmptyWindow = (props: { styles: SirenStyleProps }): ReactElement => {
   const { styles } = props;
 
   return (
