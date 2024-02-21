@@ -15,7 +15,7 @@ import type { NotificationDataType, SirenErrorType } from 'bilta-sdk/dist/types'
  * @property {JSX.Element} [customHeader] - Custom UI for the notification panel's header.
  * @property {(notification: NotificationResponseDataItem) => JSX.Element} [customNotificationCard] - Function to render custom notification cards.
  * @property {(notification: NotificationResponseDataItem) => void} [onNotificationCardClick] - Handler for notification card clicks.
- * @property {(error: Error) => void} [onError] - Callback for handling errors.
+ * @property {(error: SirenErrorType) => void} [onError] - Callback for handling errors.
  */
 type SirenInboxProps = {
   theme?: Theme;
@@ -40,7 +40,7 @@ type SirenInboxProps = {
  * @property {BadgeType} [badgeType] - The type of badge to display on the notification icon.
  * @property {boolean} [realTimeUnviewedCountEnabled] - Toggles real-time fetching of the unviewed notification count.
  * @property {JSX.Element} [notificationIcon] - Custom icon for the notification bell.
- * @property {(error: Error) => void} [onError] - Callback function for handling errors.
+ * @property {(error: SirenErrorType) => void} [onError] - Callback function for handling errors.
  * @property {boolean} [darkMode] - Enables dark theme for the component.
  */
 type SirenNotificationIconProps = {
