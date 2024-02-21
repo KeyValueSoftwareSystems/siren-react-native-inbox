@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SirenWeb } from 'bilta-sdk';
-import type { SirenErrorType } from 'bilta-sdk/dist/types';
+import type { NotificationDataType, SirenErrorType } from 'bilta-sdk/dist/types';
 
 import type { SirenProps } from '../utils';
 import { Constants, useSiren } from '../utils';
-import type { NotificationResponseDataItem } from '../utils/types';
 import { useSirenContext } from './sirenProvider';
 import { applyTheme, logger } from '../utils/commonUtils';
 import EmptyWindow from './emptyWindow';
@@ -41,7 +40,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [notifications, setNotifications] = useState<SirenProps.NotificationResponseDataItem[]>([]);
+  const [notifications, setNotifications] = useState<NotificationDataType[]>([]);
 
   useEffect(() => {
     if (newNotifications.length > 0) {
@@ -198,7 +197,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
   };
 
   // Render notification card
-  const renderCard = ({ item }: { item: NotificationResponseDataItem }) => {
+  const renderCard = ({ item }: { item: NotificationDataType }) => {
     if (customNotificationCard) return customNotificationCard(item);
 
     return (

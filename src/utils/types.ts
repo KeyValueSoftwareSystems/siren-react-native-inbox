@@ -1,5 +1,5 @@
 import type { DimensionValue, ImageStyle, TextStyle, ViewStyle } from 'react-native';
-import type { SirenErrorType } from 'bilta-sdk/dist/types';
+import type { NotificationDataType, SirenErrorType } from 'bilta-sdk/dist/types';
 
 /**
  * Siren Notification Window Props
@@ -16,8 +16,8 @@ type SirenInboxProps = {
   listEmptyComponent?: JSX.Element; // Custom UI for empty notifications scenario
   customFooter?: JSX.Element; // Custom Notification panel footer UI
   customHeader?: JSX.Element; // Custom Notification panel header UI
-  customNotificationCard?: (notification: NotificationResponseDataItem) => JSX.Element; // UI for notification card
-  onNotificationCardClick?: (notification: NotificationResponseDataItem) => void; // Function for notification click
+  customNotificationCard?: (notification: NotificationDataType) => JSX.Element; // UI for notification card
+  onNotificationCardClick?: (notification: NotificationDataType) => void; // Function for notification click
   onError?: (error: SirenErrorType) => void; // Function provides appropriate feedback for unexpected errors.
 };
 
@@ -162,73 +162,11 @@ type NotificationCardThemeProps = {
  * Object defining the structure of the prop passing to notification card.
  */
 type NotificationCardProps = {
-  onCardClick: (notification: NotificationResponseDataItem) => void;
-  notification: NotificationResponseDataItem;
+  onCardClick: (notification: NotificationDataType) => void;
+  notification: NotificationDataType;
   cardProps: CardProps;
   styles: SirenStyleProps;
   onDelete: (id: string) => void;
-};
-
-/**
- * Notification Response
- * Object defining the structure of the notification response.
- */
-type NotificationResponse = {
-  data: NotificationResponseDataItem[];
-  error: SirenErrorType;
-  errors: SirenErrorType[];
-  meta: {
-    currentPage: string;
-    first: string;
-    last: string;
-    pageSize: string;
-    totalElements: string;
-    totalPages: string;
-  };
-};
-
-/**
- * Notification Response Data Item
- * Object defining the structure of an individual notification.
- */
-type NotificationResponseDataItem = {
-  createdAt: string;
-  id: string;
-  isRead: boolean;
-  message: MessageContent;
-  requestId: string;
-};
-
-/**
- * Message Content
- * Object defining the structure of the message content within a notification.
- */
-type MessageContent = {
-  actionUrl?: string;
-  additionalData?: object;
-  avatar?: AvatarContent;
-  media?: MediaContent;
-  body: string;
-  channel: string;
-  header: string;
-  subHeader: string;
-};
-
-/**
- * Avatar Content
- * Object defining the structure of the avatar content within a notification.
- */
-type AvatarContent = {
-  actionUrl?: string;
-  imageUrl?: string;
-};
-
-/**
- * Media Content
- * Object defining the structure of the media content within a notification.
- */
-type MediaContent = {
-  thumbnail?: string;
 };
 
 /**
@@ -272,7 +210,5 @@ export {
   Theme,
   ThemeProps,
   UnviewedType,
-  NotificationResponse,
-  NotificationResponseDataItem,
   NotificationCardProps
 };

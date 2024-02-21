@@ -1,6 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { SirenWeb } from 'bilta-sdk';
-import type { ApiResponse, InitConfigType, SirenErrorType } from 'bilta-sdk/dist/types';
+import type {
+  NotificationsApiResponse,
+  UnviewdCountApiResponse,
+  InitConfigType,
+  SirenErrorType,
+  NotificationDataType
+} from 'bilta-sdk/dist/types';
 
 import type { SirenProps } from '../utils';
 import { logger } from '../utils/commonUtils';
@@ -9,7 +15,7 @@ type SirenContextProp = {
   sirenCore?: SirenWeb | null;
   sirenError?: SirenErrorType | null;
   clearError: () => void;
-  newNotifications: SirenProps.NotificationResponseDataItem[];
+  newNotifications: NotificationDataType[];
   clearNewNotifications: () => void;
   unviewedCount: number;
   setUnviewedCount: React.Dispatch<React.SetStateAction<number>>;
@@ -31,9 +37,7 @@ export const SirenContext = createContext<SirenContextProp>({
 export const useSirenContext = () => useContext(SirenContext);
 
 const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
-  const [newNotifications, setNewNotifications] = useState<
-    SirenProps.NotificationResponseDataItem[]
-  >([]);
+  const [newNotifications, setNewNotifications] = useState<NotificationDataType[]>([]);
   const [sirenCore, setSirenCore] = useState<SirenWeb | null>(null);
   const [unviewedCount, setUnviewedCount] = useState<number>(0);
   const [sirenError, setSirenError] = useState<SirenErrorType | null>(null);
@@ -49,15 +53,15 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   }, [unviewedCount]);
 
   const realTimeNotificationCallback = {
-    onUnViewedCountReceived: (response: ApiResponse) => {
+    onUnViewedCountReceived: (response: UnviewdCountApiResponse) => {
       const totalUnviewed = response?.data?.totalUnviewed || 0;
 
       setUnviewedCount(totalUnviewed);
     },
-    onNotificationReceived: (response: ApiResponse) => {
-      if (response?.data?.length > 0) {
+    onNotificationReceived: (response: NotificationsApiResponse) => {
+      if (response?.data?.length) {
         logger.info(`new notifications : ${JSON.stringify(response?.data)}`);
-        setNewNotifications(response.data);
+        setNewNotifications(response.data || []);
       }
     }
   };
@@ -77,6 +81,10 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
       recipientId: config.recipientId,
       onError: (error: SirenErrorType) => setSirenError(error),
       actionCallbacks: realTimeNotificationCallback,
+      dataFetchIntervalsInMilliSeconds: {
+        notificationFetch: 200,
+        unViewedCountFetch: 200
+      }
     };
     const sirenObject = new SirenWeb(dataParams);
 

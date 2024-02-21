@@ -34,13 +34,13 @@ const Card = (props: SirenProps.NotificationCardProps) => {
           <Text style={styles.cardDescription}>{notification.message?.subHeader}</Text>
         )}
         <Text style={styles.cardDescription}>{notification.message?.body}</Text>
-        {cardProps?.showMedia && Boolean(notification.message?.media?.thumbnail) && (
+        {/* {cardProps?.showMedia && Boolean(notification.message?.media?.thumbnail) && (
           <Image
             source={{ uri: notification.message?.media?.thumbnail }}
             resizeMode='cover'
             style={styles.cardImageStyle}
           />
-        )}
+        )} */}
         <View style={styles.cardFooterRow}>
           <Text style={styles.dateStyle}>{generateElapsedTimeText(notification.createdAt)}</Text>
           <TouchableOpacity onPress={() => onDelete(notification.id)} style={styles.deleteButton}>
