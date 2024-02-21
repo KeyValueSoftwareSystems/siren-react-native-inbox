@@ -1,10 +1,44 @@
+import type { ReactElement } from 'react';
 import React from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 
 import { generateElapsedTimeText } from '../utils/commonUtils';
 import type { SirenProps } from '../utils';
 
-const Card = (props: SirenProps.NotificationCardProps) => {
+/**
+ * `Card` component represents an individual notification card in the notification list.
+ * It displays the notification's content, including the avatar, title, description, and media if available.
+ *
+ * @component
+ * @example
+ * const notification = {
+ *   id: "1",
+ *   message: {
+ *     header: "New Message",
+ *     body: "You have a new message.",
+ *     avatar: { imageUrl: "https://example.com/avatar.png" },
+ *     media: { thumbnail: "https://example.com/media.png" }
+ *   },
+ *   isRead: false,
+ *   createdAt: "2020-01-01T00:00:00Z"
+ * };
+ *
+ * <Card
+ *   onCardClick={() => console.log('Notification clicked')}
+ *   onDelete={() => console.log('Notification deleted')}
+ *   notification={notification}
+ *   cardProps={{ hideAvatar: false, showMedia: true }}
+ *   styles={customStyles}
+ * />
+ *
+ * @param {NotificationCardProps} props - The properties passed to the Card component.
+ * @param {Function} props.onCardClick - Callback function executed when the card is clicked.
+ * @param {Object} props.notification - The notification data to display in the card.
+ * @param {Object} props.cardProps - Optional properties to customize the appearance of the card.
+ * @param {Object} props.styles - Custom styles applied to the card and its elements.
+ * @param {Function} props.onDelete - Callback function executed when the delete action is triggered.
+ */
+const Card = (props: SirenProps.NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps, styles, onDelete } = props;
 
   return (

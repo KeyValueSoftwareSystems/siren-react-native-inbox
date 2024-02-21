@@ -8,6 +8,31 @@ import { BadgeType, ThemeMode } from '../utils/constants';
 import { useSirenContext } from './sirenProvider';
 import { logger } from '../utils/commonUtils';
 
+
+/**
+ * `SirenNotificationIcon` displays an icon representing the entry point to view notifications.
+ * It can show a badge indicating the count of unviewed notifications and supports custom themes,
+ * icons, and real-time updates of the unviewed notifications count.
+ *
+ * @component
+ * @example
+ * <SirenNotificationIcon
+ *   theme={customTheme}
+ *   notificationIcon={<CustomIcon />}
+ *   darkMode={true}
+ *   badgeType="dot"
+ *   realTimeUnviewedCountEnabled={true}
+ *   onError={(error) => console.error(error)}
+ * />
+ *
+ * @param {Object} props - Props for configuring the SirenNotificationIcon component.
+ * @param {Object} [props.theme={}] - Theme object for custom styling of the badge.
+ * @param {JSX.Element} [props.notificationIcon] - Custom icon to be used as the notification indicator.
+ * @param {boolean} [props.darkMode=false] - Enables dark mode for the badge.
+ * @param {string} [props.badgeType=BadgeType.DEFAULT] - Determines the type of badge to display ('default', 'none', 'dot').
+ * @param {boolean} [props.realTimeUnviewedCountEnabled=true] - Enables real-time fetching of the unviewed notifications count.
+ * @param {Function} [props.onError] - Callback function to handle errors.
+ */
 const SirenNotificationIcon = (props: SirenProps.SirenNotificationIconProps) => {
   const {
     theme = {},
@@ -59,7 +84,7 @@ const SirenNotificationIcon = (props: SirenProps.SirenNotificationIconProps) => 
   };
 
   // Function to initialize the Siren SDK and fetch unviewed notifications count
-  const initialize = async () => {
+  const initialize = async (): Promise<void> => {
     if (SirenWeb && sirenCore) {
       const unViewed: SirenProps.UnviewedType = await sirenCore.fetchUnviewedNotificationsCount();
 
@@ -68,7 +93,7 @@ const SirenNotificationIcon = (props: SirenProps.SirenNotificationIconProps) => 
     }
   };
 
-  const renderBadge = () => {
+  const renderBadge = (): JSX.Element | null => {
     const defaultBadge = (
       <View
         style={[

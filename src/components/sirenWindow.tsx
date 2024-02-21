@@ -1,3 +1,4 @@
+import type { ReactElement} from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SirenWeb } from 'bilta-sdk';
@@ -15,7 +16,41 @@ import Card from './card';
 
 const { DEFAULT_WINDOW_TITLE, ThemeMode } = Constants;
 
-const SirenWindow = (props: SirenProps.SirenInboxProps) => {
+/**
+ * `SirenWindow` is a React component that displays a list of notifications fetched from the Siren SDK.
+ *
+ * @component
+ * @example
+ * const theme = {
+ *   dark: { /* dark theme styles *\/ },
+ *   light: { /* light theme styles *\/ }
+ * };
+ * <SirenWindow
+ *   theme={theme}
+ *   title="Notifications"
+ *   hideHeader={false}
+ *   darkMode={true}
+ *   notificationsPerPage={10}
+ *   realTimeNotificationEnabled={true}
+ *   onError={(error) => console.log(error)}
+ * />
+ *
+ * @param {Object} props - The props for the SirenWindow component.
+ * @param {Object} [props.theme={}] - Theme object for custom styling.
+ * @param {string} [props.title=DEFAULT_WINDOW_TITLE] - Title of the notification window.
+ * @param {boolean} [props.hideHeader=false] - Flag to hide or show the header.
+ * @param {boolean} [props.darkMode=false] - Flag to enable dark mode.
+ * @param {number} [props.notificationsPerPage=10] - Number of notifications to fetch per page.
+ * @param {Object} [props.cardProps={ hideAvatar: false, showMedia: true }] - Props for customizing the notification cards.
+ * @param {JSX.Element} [props.listEmptyComponent=null] - Custom component to display when the notification list is empty.
+ * @param {JSX.Element} [props.customHeader=null] - Custom header component.
+ * @param {JSX.Element} [props.customFooter=null] - Custom footer component.
+ * @param {Function} [props.customNotificationCard=null] - Custom function for rendering notification cards.
+ * @param {Function} [props.onNotificationCardClick=() => null] - Callback for handling notification card clicks.
+ * @param {boolean} [props.realTimeNotificationEnabled=false] - Flag to enable real-time notification updates.
+ * @param {Function} [props.onError] - Callback for handling errors.
+ */
+const SirenWindow = (props: SirenProps.SirenInboxProps): ReactElement => {
   const {
     theme = {},
     title = DEFAULT_WINDOW_TITLE,
@@ -72,7 +107,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
     }
   }, [realTimeNotificationEnabled]);
 
-  const defaultError = (error: SirenErrorType) => {
+  const defaultError = (error: SirenErrorType): void => {
     logger.error(JSON.stringify({ error }));
     realTimeNotificationEnabled && sirenCore?.stopRealTimeNotificationFetch();
   };
@@ -90,7 +125,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
   }, [sirenCore]);
 
   // Initialize Siren SDK and fetch notifications
-  const initialize = async () => {
+  const initialize = async (): Promise<void> => {
     setIsError(false);
 
     if (SirenWeb && sirenCore && !isError) {
@@ -108,7 +143,10 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
   };
 
   // Fetch notifications
-  const fetchNotifications = async (sirenObject: SirenWeb, isResetList = false) => {
+  const fetchNotifications = async (
+    sirenObject: SirenWeb,
+    isResetList = false
+  ): Promise<NotificationDataType[]> => {
     setIsError(false);
     setIsLoading(true);
     let updatedNotifications = isResetList ? [] : [...notifications];
@@ -149,7 +187,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
   );
 
   // Refresh notifications
-  const onRefresh = async () => {
+  const onRefresh = async (): Promise<void> => {
     if (sirenCore) {
       setEndReached(false);
       setIsError(false);
@@ -168,13 +206,13 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
   };
 
   // Load more notifications when reaching end of list
-  const onEndReached = () => {
+  const onEndReached = (): void => {
     if (sirenCore && !isLoading && !endReached && notifications?.length > 0)
       fetchNotifications(sirenCore, false);
   };
 
   // Render empty window, error window, or custom empty component
-  const renderListEmpty = () => {
+  const renderListEmpty = (): JSX.Element | undefined => {
     if (!isLoading) {
       if (isError) return <ErrorWindow onRefresh={onRefresh} styles={styles} />;
 
@@ -182,14 +220,14 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
     }
   };
 
-  const onDelete = async (id: string) => {
+  const onDelete = async (id: string): Promise<void> => {
     await deleteNotification(id);
     const updatedNotifications = [...notifications].filter((item) => item.id !== id);
 
     setNotifications(updatedNotifications);
   };
 
-  const onClearAllNotifications = () => {
+  const onClearAllNotifications = (): void => {
     setIsLoading(false);
     setIsError(false);
     setNotifications([]);
@@ -197,7 +235,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
   };
 
   // Render notification card
-  const renderCard = ({ item }: { item: NotificationDataType }) => {
+  const renderCard = ({ item }: { item: NotificationDataType }): JSX.Element => {
     if (customNotificationCard) return customNotificationCard(item);
 
     return (

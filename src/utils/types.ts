@@ -1,44 +1,74 @@
 import type { DimensionValue, ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { NotificationDataType, SirenErrorType } from 'bilta-sdk/dist/types';
-
 /**
- * Siren Notification Window Props
- * These props define the configuration options for the Siren Notification Window component.
+ * Defines the configuration options for the Siren Notification Window component.
+ * @typedef {Object} SirenInboxProps
+ * @property {Theme} [theme] - Object with properties to customize the notification feed's appearance.
+ * @property {string} [title] - Title of the notification panel.
+ * @property {boolean} [hideHeader] - Whether to hide the window header.
+ * @property {boolean} [darkMode] - Enables dark theme for the notification feed.
+ * @property {CardProps} [cardProps] - Customization options for the notification card.
+ * @property {boolean} [realTimeNotificationEnabled] - Enables real-time polling for new notifications.
+ * @property {number} [notificationsPerPage=10] - Number of notifications to fetch per API call for pagination.
+ * @property {JSX.Element} [listEmptyComponent] - Custom UI to display when the notification list is empty.
+ * @property {JSX.Element} [customFooter] - Custom UI for the notification panel's footer.
+ * @property {JSX.Element} [customHeader] - Custom UI for the notification panel's header.
+ * @property {(notification: NotificationResponseDataItem) => JSX.Element} [customNotificationCard] - Function to render custom notification cards.
+ * @property {(notification: NotificationResponseDataItem) => void} [onNotificationCardClick] - Handler for notification card clicks.
+ * @property {(error: Error) => void} [onError] - Callback for handling errors.
  */
 type SirenInboxProps = {
-  theme?: Theme; // Object with multiple properties to customize the look and feel of notification feed.
-  title?: string; // title of the notification panel
-  hideHeader?: boolean; // Hide window header
-  darkMode?: boolean; // Theme selection prop
-  cardProps?: CardProps; // To customize the notification card
-  realTimeNotificationEnabled?: boolean; // Poll settings for notification API for getting new notifications
-  notificationsPerPage?: number; // Pagination prop for fetching notifications in single API call
-  listEmptyComponent?: JSX.Element; // Custom UI for empty notifications scenario
-  customFooter?: JSX.Element; // Custom Notification panel footer UI
-  customHeader?: JSX.Element; // Custom Notification panel header UI
-  customNotificationCard?: (notification: NotificationDataType) => JSX.Element; // UI for notification card
-  onNotificationCardClick?: (notification: NotificationDataType) => void; // Function for notification click
-  onError?: (error: SirenErrorType) => void; // Function provides appropriate feedback for unexpected errors.
+  theme?: Theme;
+  title?: string;
+  hideHeader?: boolean;
+  darkMode?: boolean; 
+  cardProps?: CardProps;
+  realTimeNotificationEnabled?: boolean;
+  notificationsPerPage?: number;
+  listEmptyComponent?: JSX.Element;
+  customFooter?: JSX.Element;
+  customHeader?: JSX.Element;
+  customNotificationCard?: (notification: NotificationDataType) => JSX.Element;
+  onNotificationCardClick?: (notification: NotificationDataType) => void;
+  onError?: (error: SirenErrorType) => void;
 };
 
+/**
+ * Describes the props for the SirenNotificationIcon component.
+ * @typedef {Object} SirenNotificationIconProps
+ * @property {Theme} [theme] - Customization options for the component's theme.
+ * @property {BadgeType} [badgeType] - The type of badge to display on the notification icon.
+ * @property {boolean} [realTimeUnviewedCountEnabled] - Toggles real-time fetching of the unviewed notification count.
+ * @property {JSX.Element} [notificationIcon] - Custom icon for the notification bell.
+ * @property {(error: Error) => void} [onError] - Callback function for handling errors.
+ * @property {boolean} [darkMode] - Enables dark theme for the component.
+ */
 type SirenNotificationIconProps = {
-  theme?: Theme; // Object with multiple properties to customize the look and feel of notification feed.
-  badgeType?: BadgeType; // badge type on top of notification icon (none | default | dot)
-  realTimeUnviewedCountEnabled?: boolean; // Poll settings for new notification count for getting new notification count
-  notificationIcon?: JSX.Element; // Custom notification bell icon
-  onError?: (error: SirenErrorType) => void; // Function provides appropriate feedback for unexpected errors.
-  darkMode?: boolean; // Theme selection prop
+  theme?: Theme;
+  badgeType?: BadgeType;
+  realTimeUnviewedCountEnabled?: boolean;
+  notificationIcon?: JSX.Element;
+  onError?: (error: SirenErrorType) => void;
+  darkMode?: boolean; 
 };
 
-// Object with multiple properties to customize the look and feel of notification feed.
+/**
+ * Defines the configuration properties required by the SirenProvider.
+ * 
+ * @typedef {Object} SirenProviderConfigProps
+ * @property {string} userToken - The authentication token for the user.
+ * @property {string} recipientId - The unique identifier of the recipient. 
+ */
 type SirenProviderConfigProps = {
   userToken: string;
   recipientId: string;
 };
 
 /**
- * Card Props
- * These props define the configuration options for individual notification cards.
+ * Defines the style and layout for individual notification cards.
+ * @typedef {Object} CardProps
+ * @property {boolean} [hideAvatar] - Determines if the avatar should be hidden.
+ * @property {boolean} [showMedia] - Indicates if media content should be displayed.
  */
 type CardProps = {
   hideAvatar?: boolean;
@@ -46,13 +76,16 @@ type CardProps = {
 };
 
 /**
- * Badge Type
+ * Enum for badge types displayed on the notification icon.
+ * @typedef {('none' | 'dot' | 'default')} BadgeType
  */
 type BadgeType = 'none' | 'dot' | 'default';
 
 /**
- * Theme
- * Object defining the theme configuration options.
+ * Represents the theme configuration options.
+ * @typedef {Object} Theme
+ * @property {ThemeProps} [dark] - Theme settings for dark mode.
+ * @property {ThemeProps} [light] - Theme settings for light mode.
  */
 type Theme = {
   dark?: ThemeProps;
@@ -60,8 +93,15 @@ type Theme = {
 };
 
 /**
- * Theme Props
- * These props define the configuration options for different theme elements.
+ * Defines the configuration options for theme elements.
+ * @typedef {Object} ThemeProps
+ * @property {Object} [colors] - Color configuration for theme elements.
+ * @property {Object} [unreadBadgeCount] - Styling options for the unread badge count indicator.
+ * @property {Object} [badgeStyle] - Styling options for badges.
+ * @property {WindowProps} [window] - Configuration for the notification window appearance.
+ * @property {WindowHeaderProps} [windowHeader] - Configuration for the window header.
+ * @property {WindowContainerProps} [windowContainer] - Configuration for the window container.
+ * @property {NotificationCardThemeProps} [notificationCard] - Styling options for notification cards.
  */
 type ThemeProps = {
   colors?: {
@@ -94,8 +134,14 @@ type ThemeProps = {
 };
 
 /**
- * Window Props
- * These props define the configuration options for the notification window.
+ * Defines the styling and layout options for the notification window.
+ * @typedef {Object} WindowProps
+ * @property {DimensionValue} [width] - Width of the window.
+ * @property {DimensionValue} [height] - Height of the window.
+ * @property {string} [borderColor] - Color of the window's border.
+ * @property {number} [borderRadius] - Radius of the window's corners.
+ * @property {number} [shadowDepth] - Depth of the shadow cast by the window, affecting its blur radius.
+ * @property {string} [shadowColor] - Color of the shadow cast by the window.
  */
 type WindowProps = {
   width?: DimensionValue;
@@ -107,8 +153,15 @@ type WindowProps = {
 };
 
 /**
- * Window Header Props
- * These props define the configuration options for the window header.
+ * Specifies the configuration options for the window header.
+ * @typedef {Object} WindowHeaderProps
+ * @property {string} [background] - Background color of the header.
+ * @property {DimensionValue} [height] - Height of the header.
+ * @property {string} [titleColor] - Color of the header title text.
+ * @property {TextStyle['fontWeight']} [titleFontWeight] - Font weight of the header title.
+ * @property {number} [titleSize] - Font size of the header title.
+ * @property {string} [closeIconColor] - Color of the close icon in the header.
+ * @property {number} [closeIconSize] - Size of the close icon in the header.
  */
 type WindowHeaderProps = {
   background?: string;
@@ -121,8 +174,10 @@ type WindowHeaderProps = {
 };
 
 /**
- * Window Container Props
- * These props define the configuration options for the window container.
+ * Contains styling options for the container that wraps the window content.
+ * @typedef {Object} WindowContainerProps
+ * @property {string} [background] - Background color of the container.
+ * @property {number} [padding] - Padding inside the container.
  */
 type WindowContainerProps = {
   background?: string;
@@ -130,8 +185,29 @@ type WindowContainerProps = {
 };
 
 /**
- * Notification Card Props
- * These props define the configuration options for the notification card theme.
+ * Describes theme-related properties for styling individual notification cards.
+ * @typedef {Object} NotificationCardThemeProps
+ * @property {DimensionValue} [height] - Height of the card.
+ * @property {number} [padding] - Padding inside the card.
+ * @property {number} [borderWidth] - Width of the card's border.
+ * @property {string} [borderColor] - Color of the card's border.
+ * @property {string} [background] - Background color of the card.
+ * @property {string} [hoverBackground] - Background color of the card on hover.
+ * @property {number} [avatarSize] - Size of the avatar displayed on the card.
+ * @property {string} [titleColor] - Color of the card's title text.
+ * @property {TextStyle['fontWeight']} [titleFontWeight] - Font weight of the card's title.
+ * @property {number} [titleSize] - Font size of the card's title.
+ * @property {number} [titlePadding] - Padding around the card's title.
+ * @property {string} [descriptionColor] - Color of the card's description text.
+ * @property {number} [descriptionSize] - Font size of the card's description.
+ * @property {number} [descriptionPadding] - Padding around the card's description.
+ * @property {DimensionValue} [mediaWidth] - Width of the media content in the card.
+ * @property {DimensionValue} [mediaHeight] - Height of the media content in the card.
+ * @property {string} [mediaObjectFit] - CSS object-fit value applied to the media content.
+ * @property {number} [mediaRadius] - Border radius of the media content.
+ * @property {string} [mediaPlaceholder] - Placeholder image URL for the media content.
+ * @property {string} [dateColor] - Color of the date text on the card.
+ * @property {number} [dateSize] - Font size of the date text on the card.
  */
 type NotificationCardThemeProps = {
   height?: DimensionValue;
@@ -158,8 +234,13 @@ type NotificationCardThemeProps = {
 };
 
 /**
- * Notification Card
- * Object defining the structure of the prop passing to notification card.
+ * Defines properties passed to a notification card component.
+ * @typedef {Object} NotificationCardProps
+ * @property {Function} onCardClick - Callback function invoked upon clicking the card.
+ * @property {NotificationResponseDataItem} notification - The notification data for the card.
+ * @property {CardProps} cardProps - Additional card properties.
+ * @property {any} styles - Styling options for the card
+ * @property {Function} onDelete - Callback function invoked to delete a notification.
  */
 type NotificationCardProps = {
   onCardClick: (notification: NotificationDataType) => void;
@@ -170,8 +251,9 @@ type NotificationCardProps = {
 };
 
 /**
- * Unviewed Type
- * Object defining the structure of unviewed notifications.
+ * Represents the count of notifications that have not yet been viewed by the user.
+ * @typedef {Object} UnviewedType
+ * @property {number} unviewedCount - The total number of unviewed notifications.
  */
 type UnviewedType = {
   unviewedCount: number;
