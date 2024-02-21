@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { SirenWeb } from 'bilta-sdk';
+import type { ApiResponse, InitConfigType, SirenErrorType } from 'bilta-sdk/dist/types';
 
 import type { SirenProps } from '../utils';
 import { logger } from '../utils/commonUtils';
 
 type SirenContextProp = {
   sirenCore?: SirenWeb | null;
-  sirenError?: Error | null;
+  sirenError?: SirenErrorType | null;
   clearError: () => void;
   newNotifications: SirenProps.NotificationResponseDataItem[];
   clearNewNotifications: () => void;
@@ -35,7 +36,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   >([]);
   const [sirenCore, setSirenCore] = useState<SirenWeb | null>(null);
   const [unviewedCount, setUnviewedCount] = useState<number>(0);
-  const [sirenError, setSirenError] = useState<Error | null>(null);
+  const [sirenError, setSirenError] = useState<SirenErrorType | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -48,12 +49,12 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   }, [unviewedCount]);
 
   const realTimeNotificationCallback = {
-    onUnViewedCountReceived: (response: { data?: { totalUnviewed?: number } }) => {
+    onUnViewedCountReceived: (response: ApiResponse) => {
       const totalUnviewed = response?.data?.totalUnviewed || 0;
 
       setUnviewedCount(totalUnviewed);
     },
-    onNotificationReceived: (response: SirenProps.NotificationResponse) => {
+    onNotificationReceived: (response: ApiResponse) => {
       if (response?.data?.length > 0) {
         logger.info(`new notifications : ${JSON.stringify(response?.data)}`);
         setNewNotifications(response.data);
@@ -71,10 +72,10 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
   // Function to initialize the Siren SDK and fetch notifications
   const initialize = async () => {
-    const dataParams = {
+    const dataParams: InitConfigType = {
       token: config.userToken,
       recipientId: config.recipientId,
-      onError: (error: Error) => setSirenError(error),
+      onError: (error: SirenErrorType) => setSirenError(error),
       actionCallbacks: realTimeNotificationCallback,
     };
     const sirenObject = new SirenWeb(dataParams);

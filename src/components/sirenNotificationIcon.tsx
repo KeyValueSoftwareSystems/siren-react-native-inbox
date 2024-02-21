@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { SirenWeb } from 'bilta-sdk';
+import type { SirenErrorType } from 'bilta-sdk/dist/types';
 
 import type { SirenProps } from '../utils';
 import { BadgeType, ThemeMode } from '../utils/constants';
@@ -53,7 +54,7 @@ const SirenNotificationIcon = (props: SirenProps.SirenNotificationIconProps) => 
     else sirenCore?.stopRealTimeUnviewedCountFetch();
   }, [realTimeUnviewedCountEnabled]);
 
-  const defaultError = (error: Error) => {
+  const defaultError = (error: SirenErrorType) => {
     logger.error(JSON.stringify({ error }));
   };
 
@@ -115,9 +116,7 @@ const SirenNotificationIcon = (props: SirenProps.SirenNotificationIconProps) => 
       {/* Render provided notification icon or default icon */}
       {notificationIcon || (
         <Image
-          source={{
-            uri: 'https://cdn-icons-png.freepik.com/512/6645/6645163.png'
-          }}
+          source={require('../assets/icon.png')}
           resizeMode='contain'
           style={styles.iconStyle}
         />

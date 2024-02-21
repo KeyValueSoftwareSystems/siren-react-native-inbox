@@ -13,6 +13,5 @@
       "strictNullChecks": true,
       "esModuleInterop": true,
       "rootDir": "src",
-    },
-    "files": ["./global.d.ts"]
+    }
 }

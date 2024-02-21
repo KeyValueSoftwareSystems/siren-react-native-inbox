@@ -1,4 +1,5 @@
 import type { DimensionValue, ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import type { SirenErrorType } from 'bilta-sdk/dist/types';
 
 /**
  * Siren Notification Window Props
@@ -17,7 +18,7 @@ type SirenInboxProps = {
   customHeader?: JSX.Element; // Custom Notification panel header UI
   customNotificationCard?: (notification: NotificationResponseDataItem) => JSX.Element; // UI for notification card
   onNotificationCardClick?: (notification: NotificationResponseDataItem) => void; // Function for notification click
-  onError?: (error: Error) => void; // Function provides appropriate feedback for unexpected errors.
+  onError?: (error: SirenErrorType) => void; // Function provides appropriate feedback for unexpected errors.
 };
 
 type SirenNotificationIconProps = {
@@ -25,7 +26,7 @@ type SirenNotificationIconProps = {
   badgeType?: BadgeType; // badge type on top of notification icon (none | default | dot)
   realTimeUnviewedCountEnabled?: boolean; // Poll settings for new notification count for getting new notification count
   notificationIcon?: JSX.Element; // Custom notification bell icon
-  onError?: (error: Error) => void; // Function provides appropriate feedback for unexpected errors.
+  onError?: (error: SirenErrorType) => void; // Function provides appropriate feedback for unexpected errors.
   darkMode?: boolean; // Theme selection prop
 };
 
@@ -174,8 +175,8 @@ type NotificationCardProps = {
  */
 type NotificationResponse = {
   data: NotificationResponseDataItem[];
-  error: Error;
-  errors: Error[];
+  error: SirenErrorType;
+  errors: SirenErrorType[];
   meta: {
     currentPage: string;
     first: string;

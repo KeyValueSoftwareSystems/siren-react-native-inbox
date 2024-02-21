@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SirenWeb } from 'bilta-sdk';
+import type { SirenErrorType } from 'bilta-sdk/dist/types';
 
 import type { SirenProps } from '../utils';
 import { Constants, useSiren } from '../utils';
@@ -72,7 +73,7 @@ const SirenWindow = (props: SirenProps.SirenInboxProps) => {
     }
   }, [realTimeNotificationEnabled]);
 
-  const defaultError = (error: Error) => {
+  const defaultError = (error: SirenErrorType) => {
     logger.error(JSON.stringify({ error }));
     realTimeNotificationEnabled && sirenCore?.stopRealTimeNotificationFetch();
   };
