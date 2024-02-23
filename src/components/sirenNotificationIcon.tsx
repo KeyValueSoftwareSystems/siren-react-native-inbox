@@ -6,8 +6,9 @@ import type { UnviewedCountReturnResponse } from 'test_notification/dist/types';
 import type { SirenNotificationIconProps } from '../types';
 import { Constants } from '../utils';
 import { useSirenContext } from './sirenProvider';
+import { defaultBadgeStyle } from '../utils/constants';
 
-const { ThemeMode, defaultBadgeStyle, sirenReducerTypes } = Constants;
+const { ThemeMode, sirenReducerTypes } = Constants;
 
 /**
  * `SirenNotificationIcon` displays an icon representing the entry point to view notifications.

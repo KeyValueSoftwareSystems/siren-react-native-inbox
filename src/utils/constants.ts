@@ -34,7 +34,6 @@ export enum BadgeType {
   DOT = 'dot',
   DEFAULT = 'default'
 }
-
 export const defaultBadgeStyle = {
   size: 20,
   color: '#FF0000',
@@ -67,3 +66,16 @@ export const ERROR_TEXT = 'Something went wrong!';
 export const DEFAULT_WINDOW_TITLE = 'Notifications';
 export const RETRY_BUTTON_LABEL = 'Retry';
 export const CLEAR_ALL_LABEL = 'Clear All';
+
+export const errorMap = {
+  SIREN_OBJECT_NOT_FOUND: {
+    Type: "ERROR",
+    Code: "SIREN_OBJECT_NOT_FOUND",
+    Message: "Siren Object Not found",
+  },
+  MISSING_PARAMETER: {
+    Type: "ERROR",
+    Code: "MISSING_PARAMETER",
+    Message: "Missing Parameter",
+  },
+}

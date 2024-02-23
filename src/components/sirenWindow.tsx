@@ -144,16 +144,20 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     setIsError(false);
     setIsLoading(true);
     if (sirenObject)
-      try {
-        const notificationParams: { size: number; end?: string } = {
-          size: notificationsPerPage
-        };
+    {
+      const notificationParams: { size: number; end?: string } = {
+        size: notificationsPerPage
+      };
 
-        if (!isResetList)
-          notificationParams.end = notifications[notifications.length - 1].createdAt;
+      if (!isResetList)
+        notificationParams.end = notifications[notifications.length - 1].createdAt;
 
-        const res = await sirenObject.fetchAllNotifications(notificationParams);
+      const res = await sirenObject.fetchAllNotifications(notificationParams);
 
+      if (res.error) {
+        setIsError(true);
+        onError(res.error)
+      } else {
         if (res && res.data && res.data.length > 0) {
           const updatedNotifications = isResetList ? res.data : [...notifications, ...res.data];
 
@@ -162,11 +166,9 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
         } else {
           setEndReached(true);
         }
-      } catch (error) {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
+      }  
+      setIsLoading(false);
+    }
 
     return notifications;
   };
@@ -217,13 +219,7 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
   const onDelete = async (id: string): Promise<void> => {
     const response = await deleteNotification(id);
 
-    if (response?.error && onError) {
-      onError(response.error);
-    } else {
-      const updatedNotifications = [...notifications].filter((item) => item.id !== id);
-
-      setNotifications(updatedNotifications);
-    }
+    if (response?.error && onError) onError(response.error);
   };
 
   const onPressClearAll = async (): Promise<void> => {

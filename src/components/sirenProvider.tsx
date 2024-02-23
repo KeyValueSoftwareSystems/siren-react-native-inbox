@@ -115,7 +115,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     const dataParams: InitConfigType = {
       token: config.userToken,
       recipientId: config.recipientId,
-      onError: (error: SirenErrorType): void => logger.info(`Eroor : ${JSON.stringify(error)}`),
+      onError: (error: SirenErrorType): void => logger.info(`Error : ${JSON.stringify(error)}`),
       actionCallbacks: actionCallbacks
     };
     const sirenObject = new Siren(dataParams);
