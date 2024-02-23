@@ -7,7 +7,6 @@ import { CommonUtils } from '../utils';
 
 /**
  * `Card` component represents an individual notification card in the notification list.
- * It displays the notification's content, including the avatar, title, description, and media if available.
  *
  * @component
  * @example
@@ -65,9 +64,9 @@ const Card = (props: NotificationCardProps): ReactElement => {
           {notification.message?.header}
         </Text>
         {Boolean(notification.message?.subHeader) && (
-          <Text style={styles.cardDescription}>{notification.message?.subHeader}</Text>
+          <Text numberOfLines={1} style={styles.cardDescription}>{notification.message?.subHeader}</Text>
         )}
-        <Text style={styles.cardDescription}>{notification.message?.body}</Text>
+        <Text numberOfLines={3} style={styles.cardDescription}>{notification.message?.body}</Text>
         {/* {cardProps?.showMedia && Boolean(notification.message?.media?.thumbnail) && (
           <Image
             source={{ uri: notification.message?.media?.thumbnail }}

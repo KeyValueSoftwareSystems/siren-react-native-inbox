@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { SirenWeb } from 'bilta-sdk';
+import { Siren } from 'bilta-sdk';
 import type { SirenErrorType } from 'bilta-sdk/dist/types';
 
 import type { SirenNotificationIconProps, UnviewedType } from '../types';
 import { Constants, CommonUtils } from '../utils';
 import { useSirenContext } from './sirenProvider';
+import { defaultBadgeStyle } from '../utils/constants';
 
-const { BadgeType, ThemeMode } = Constants;
+const { ThemeMode } = Constants;
 const { logger } = CommonUtils;
 
 /**
  * `SirenNotificationIcon` displays an icon representing the entry point to view notifications.
- * It can show a badge indicating the count of unviewed notifications and supports custom themes,
- * icons, and real-time updates of the unviewed notifications count.
  *
  * @component
  * @example
@@ -21,7 +20,6 @@ const { logger } = CommonUtils;
  *   theme={customTheme}
  *   notificationIcon={<CustomIcon />}
  *   darkMode={true}
- *   badgeType="dot"
  *   realTimeUnviewedCountEnabled={true}
  *   onError={(error) => console.error(error)}
  * />
@@ -30,7 +28,6 @@ const { logger } = CommonUtils;
  * @param {Object} [props.theme={}] - Theme object for custom styling of the badge.
  * @param {JSX.Element} [props.notificationIcon] - Custom icon to be used as the notification indicator.
  * @param {boolean} [props.darkMode=false] - Enables dark mode for the badge.
- * @param {string} [props.badgeType=BadgeType.DEFAULT] - Determines the type of badge to display ('default', 'none', 'dot').
  * @param {boolean} [props.realTimeUnviewedCountEnabled=true] - Enables real-time fetching of the unviewed notifications count.
  * @param {Function} [props.onError] - Callback function to handle errors.
  */
@@ -39,21 +36,15 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
     theme = { dark: {}, light: {} },
     notificationIcon,
     darkMode = false,
-    badgeType = BadgeType.DEFAULT,
     realTimeUnviewedCountEnabled = true,
     onError
   } = props;
 
-  const { sirenCore, sirenError, clearError, unviewedCount, setUnviewedCount } = useSirenContext();
+  const { sirenCore, error, clearError, unviewedCount, setUnviewedCount } = useSirenContext();
 
   const mode = darkMode ? ThemeMode.DARK : ThemeMode.LIGHT;
   const badgeStyle = theme[mode]?.badgeStyle || {};
-  const defaultBadgeStyle = {
-    size: 20,
-    color: '#FF0000',
-    textColor: '#FFFFFF',
-    textSize: 10
-  };
+
   const badge = { ...defaultBadgeStyle, ...badgeStyle };
 
   useEffect(() => {
@@ -66,12 +57,12 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   }, [sirenCore]);
 
   useEffect(() => {
-    if (sirenError) {
-      if (onError) onError(sirenError);
-      else defaultError(sirenError);
+    if (error) {
+      if (onError) onError(error);
+      else defaultError(error);
       clearError();
     }
-  }, [sirenError]);
+  }, [error]);
 
   useEffect(() => {
     if (realTimeUnviewedCountEnabled) sirenCore?.startRealTimeUnviewedCountFetch();
@@ -84,7 +75,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
 
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
-    if (SirenWeb && sirenCore) {
+    if (Siren && sirenCore) {
       const unViewed: UnviewedType = await sirenCore.fetchUnviewedNotificationsCount();
 
       if (realTimeUnviewedCountEnabled) sirenCore?.startRealTimeUnviewedCountFetch();
@@ -119,18 +110,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
       </View>
     );
 
-    const dot = <View style={[styles.dot, { backgroundColor: badge.color }]} />;
-
-    switch (badgeType) {
-      case BadgeType.DEFAULT:
-        return defaultBadge;
-      case BadgeType.NONE:
-        return null;
-      case BadgeType.DOT:
-        return dot;
-      default:
-        return defaultBadge;
-    }
+    return defaultBadge;
   };
 
   return (

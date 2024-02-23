@@ -78,7 +78,8 @@ export const applyTheme = (
       DefaultTheme[mode].windowHeader.titleColor,
     fontSize: theme.windowHeader?.titleSize || DefaultTheme[mode].windowHeader.titleSize,
     fontWeight:
-      theme.windowHeader?.titleFontWeight || DefaultTheme[mode].windowHeader.titleFontWeight
+      theme.windowHeader?.titleFontWeight || DefaultTheme[mode].windowHeader.titleFontWeight,
+    width: '70%',
   },
   headerAction: {
     color:

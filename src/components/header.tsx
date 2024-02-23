@@ -8,7 +8,6 @@ import { Constants } from '../utils';
 /**
  * Renders a header component with a title and a "Clear All" (deletes all the notifications till date) action.
  *
- *
  * @component
  * @example
  * <Header
@@ -31,7 +30,7 @@ const Header = (props: {
 
   return (
     <View style={styles.headerContainer}>
-      <Text style={styles.headerTitle}>{title}</Text>
+      <Text numberOfLines={1} style={styles.headerTitle}>{title}</Text>
       <TouchableOpacity onPress={onPressClearAll}>
         <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
       </TouchableOpacity>

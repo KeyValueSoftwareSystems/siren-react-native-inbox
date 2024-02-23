@@ -12,7 +12,6 @@ type LoadingWindowProps = {
 };
 /**
  * Displays a loading indicator within a window,
- * This component can be themed according to the provided `theme` and `mode` props.
  *
  * @component
  * @example

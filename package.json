@@ -59,6 +59,6 @@
     "readme"
   ],
   "dependencies": {
-    "bilta-sdk": "^1.0.6"
+    "bilta-sdk": "^1.0.13"
   }
 }

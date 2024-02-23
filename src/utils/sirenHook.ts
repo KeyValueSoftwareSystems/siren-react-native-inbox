@@ -4,7 +4,7 @@ const useSiren = () => {
   const { sirenCore } = useSirenContext();
 
   const markAsRead = (id: string) => {
-    if (sirenCore && id?.length > 0) sirenCore?.markAsReadById(id);
+    if (sirenCore && id?.length > 0) sirenCore?.markNotificationAsReadById(id);
   };
 
   const markNotificationsAllAsRead = () => {
@@ -15,8 +15,15 @@ const useSiren = () => {
     if (sirenCore && id?.length > 0) sirenCore?.deleteNotificationById(id);
   };
 
-  const clearAllNotification = () => {
-    if (sirenCore) sirenCore?.clearAllNotifications();
+  const clearAllNotification = async () => {
+    // TODO: to refactor
+    if (sirenCore) {
+      const error = await sirenCore.clearAllNotifications();
+
+      return { error };
+    }
+
+    return { error: new Error('SirenCore is not initialized') };
   };
 
   const markNotificationsAsViewed = () => {

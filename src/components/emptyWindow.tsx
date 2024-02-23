@@ -23,7 +23,7 @@ const EmptyWindow = (props: { styles: SirenStyleProps }): ReactElement => {
 
   return (
     <View style={styles.emptyContainer}>
-      <Text style={styles.emptyText}>{LIST_EMPTY_TEXT}</Text>
+      <Text numberOfLines={1} style={styles.emptyText}>{LIST_EMPTY_TEXT}</Text>
     </View>
   );
 };

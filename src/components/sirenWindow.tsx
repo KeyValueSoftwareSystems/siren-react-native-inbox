@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
-import { SirenWeb } from 'bilta-sdk';
+import { Siren } from 'bilta-sdk';
 import type { NotificationDataType, SirenErrorType } from 'bilta-sdk/dist/types';
 
 import { Constants, useSiren, CommonUtils } from '../utils';
@@ -67,7 +67,7 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     onError
   } = props;
 
-  const { sirenCore, sirenError, clearError, newNotifications, clearNewNotifications } =
+  const { sirenCore, error, clearError, newNotifications, clearNewNotifications } =
     useSirenContext();
 
   const { deleteNotification, clearAllNotification } = useSiren();
@@ -81,17 +81,16 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     if (newNotifications.length > 0) {
       setNotifications([...newNotifications, ...notifications]);
       clearNewNotifications();
-      setIsLoading(false);
     }
   }, [newNotifications.length]);
 
   useEffect(() => {
-    if (sirenError) {
-      if (onError) onError(sirenError);
-      else defaultError(sirenError);
+    if (error) {
+      if (onError) onError(error);
+      else defaultError(error);
       clearError();
     }
-  }, [sirenError]);
+  }, [error]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -126,8 +125,8 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
   const initialize = async (): Promise<void> => {
     setIsError(false);
 
-    if (SirenWeb && sirenCore && !isError) {
-      const allNotifications = await fetchNotifications(sirenCore, false);
+    if (Siren && sirenCore && !isError) {
+      const allNotifications = await fetchNotifications(sirenCore, true);
 
       if (realTimeNotificationEnabled) {
         const notificationParams: { size: number; start?: string } = {
@@ -142,36 +141,36 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
 
   // Fetch notifications
   const fetchNotifications = async (
-    sirenObject: SirenWeb,
+    sirenObject: Siren,
     isResetList = false
   ): Promise<NotificationDataType[]> => {
     setIsError(false);
     setIsLoading(true);
-    let updatedNotifications = isResetList ? [] : [...notifications];
-
     if (sirenObject)
       try {
-        const isNonEmptyList = updatedNotifications?.length > 0;
         const notificationParams: { size: number; end?: string } = {
           size: notificationsPerPage
         };
 
-        if (isNonEmptyList)
-          notificationParams.end = updatedNotifications[updatedNotifications.length - 1].createdAt;
+        if (!isResetList)
+          notificationParams.end = notifications[notifications.length - 1].createdAt;
 
         const res = await sirenObject.fetchAllNotifications(notificationParams);
 
-        setIsLoading(false);
-        if (res?.data?.length > 0)
-          updatedNotifications = !isNonEmptyList ? res.data : [...notifications, ...res.data];
-        else setEndReached(true);
-        setNotifications(updatedNotifications);
+        if (res && res.data && res.data.length > 0) {
+          const updatedNotifications = isResetList ? res.data : [...notifications, ...res.data];
+
+          setNotifications(updatedNotifications);
+        } else {
+          setEndReached(true);
+        }
       } catch (error) {
-        setIsLoading(false);
         setIsError(true);
+      } finally {
+        setIsLoading(false);
       }
 
-    return updatedNotifications;
+    return notifications;
   };
 
   // Apply theme styles
@@ -189,7 +188,6 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     if (sirenCore) {
       setEndReached(false);
       setIsError(false);
-      setIsLoading(true);
       setNotifications([]);
       realTimeNotificationEnabled && sirenCore?.stopRealTimeNotificationFetch();
       const allNotifications = (await fetchNotifications(sirenCore, true)) || [];
@@ -226,11 +224,17 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
   };
 
   const onPressClearAll = async (): Promise<void> => {
-    await clearAllNotification();
-    setIsLoading(false);
-    setIsError(false);
-    setNotifications([]);
-    setEndReached(false);
+    const { error } = await clearAllNotification();
+
+    // TODO: to refactor
+    if (!error) {
+      setIsLoading(false);
+      setIsError(false);
+      setNotifications([]);
+      setEndReached(false);
+    } else {
+      setIsError(true);
+    }
   };
 
   // Render notification card

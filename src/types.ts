@@ -21,7 +21,7 @@ export type SirenInboxProps = {
   theme?: Theme;
   title?: string;
   hideHeader?: boolean;
-  darkMode?: boolean; 
+  darkMode?: boolean;
   cardProps?: CardProps;
   realTimeNotificationEnabled?: boolean;
   notificationsPerPage?: number;
@@ -37,7 +37,6 @@ export type SirenInboxProps = {
  * Describes the props for the SirenNotificationIcon component.
  * @typedef {Object} SirenNotificationIconProps
  * @property {Theme} [theme] - Customization options for the component's theme.
- * @property {BadgeType} [badgeType] - The type of badge to display on the notification icon.
  * @property {boolean} [realTimeUnviewedCountEnabled] - Toggles real-time fetching of the unviewed notification count.
  * @property {JSX.Element} [notificationIcon] - Custom icon for the notification bell.
  * @property {(error: SirenErrorType) => void} [onError] - Callback function for handling errors.
@@ -45,19 +44,18 @@ export type SirenInboxProps = {
  */
 export type SirenNotificationIconProps = {
   theme?: Theme;
-  badgeType?: BadgeType;
   realTimeUnviewedCountEnabled?: boolean;
   notificationIcon?: JSX.Element;
   onError?: (error: SirenErrorType) => void;
-  darkMode?: boolean; 
+  darkMode?: boolean;
 };
 
 /**
  * Defines the configuration properties required by the SirenProvider.
- * 
+ *
  * @typedef {Object} SirenProviderConfigProps
  * @property {string} userToken - The authentication token for the user.
- * @property {string} recipientId - The unique identifier of the recipient. 
+ * @property {string} recipientId - The unique identifier of the recipient.
  */
 export type SirenProviderConfigProps = {
   userToken: string;
@@ -74,12 +72,6 @@ type CardProps = {
   hideAvatar?: boolean;
   showMedia?: boolean;
 };
-
-/**
- * Enum for badge types displayed on the notification icon.
- * @typedef {('none' | 'dot' | 'default')} BadgeType
- */
-type BadgeType = 'none' | 'dot' | 'default';
 
 /**
  * Represents the theme configuration options.
@@ -257,7 +249,7 @@ export type NotificationCardProps = {
  */
 export type UnviewedType = {
   unviewedCount: number;
-};
+} | null;
 
 export type SirenStyleProps = {
   container: ViewStyle | object;
@@ -282,5 +274,5 @@ export type SirenStyleProps = {
   errorText: TextStyle;
   errorButton: ViewStyle;
   errorButtonText: TextStyle;
-  transparent: ViewStyle; 
+  transparent: ViewStyle;
 };
