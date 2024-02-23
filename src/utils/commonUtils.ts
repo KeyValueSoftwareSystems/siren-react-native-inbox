@@ -79,7 +79,7 @@ export const applyTheme = (
     fontSize: theme.windowHeader?.titleSize || DefaultTheme[mode].windowHeader.titleSize,
     fontWeight:
       theme.windowHeader?.titleFontWeight || DefaultTheme[mode].windowHeader.titleFontWeight,
-    width: '70%',
+    width: '70%'
   },
   headerAction: {
     color:
@@ -218,7 +218,7 @@ export const applyTheme = (
     fontSize: 16,
     fontWeight: '500'
   },
-  transparent: { 
-    backgroundColor: 'transparent' 
+  transparent: {
+    backgroundColor: 'transparent'
   }
 });

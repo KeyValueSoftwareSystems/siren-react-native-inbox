@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { Siren } from 'bilta-sdk';
-import type { NotificationDataType, SirenErrorType } from 'bilta-sdk/dist/types';
+import type { NotificationDataType } from 'bilta-sdk/dist/types';
 
 import { Constants, useSiren, CommonUtils } from '../utils';
 import { useSirenContext } from './sirenProvider';
@@ -13,8 +13,8 @@ import ErrorWindow from './errorWindow';
 import Header from './header';
 import Card from './card';
 
-const { DEFAULT_WINDOW_TITLE, ThemeMode } = Constants;
-const { logger, applyTheme } = CommonUtils;
+const { DEFAULT_WINDOW_TITLE, ThemeMode, sirenReducerTypes } = Constants;
+const { applyTheme } = CommonUtils;
 
 /**
  * `SirenWindow` is a React component that displays a list of notifications fetched from the Siren SDK.
@@ -63,34 +63,16 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     customFooter = null,
     customNotificationCard = null,
     onNotificationCardClick = () => null,
-    realTimeNotificationEnabled = false,
-    onError
+    realTimeNotificationEnabled = false
   } = props;
 
-  const { sirenCore, error, clearError, newNotifications, clearNewNotifications } =
-    useSirenContext();
+  const { sirenCore, notifications, dispatch } = useSirenContext();
 
   const { deleteNotification, clearAllNotification } = useSiren();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [notifications, setNotifications] = useState<NotificationDataType[]>([]);
-
-  useEffect(() => {
-    if (newNotifications.length > 0) {
-      setNotifications([...newNotifications, ...notifications]);
-      clearNewNotifications();
-    }
-  }, [newNotifications.length]);
-
-  useEffect(() => {
-    if (error) {
-      if (onError) onError(error);
-      else defaultError(error);
-      clearError();
-    }
-  }, [error]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -106,11 +88,6 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     }
   }, [realTimeNotificationEnabled]);
 
-  const defaultError = (error: SirenErrorType): void => {
-    logger.error(JSON.stringify({ error }));
-    realTimeNotificationEnabled && sirenCore?.stopRealTimeNotificationFetch();
-  };
-
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
     initialize();
@@ -118,8 +95,13 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     // Clean up - stop polling when component unmounts
     return () => {
       sirenCore?.stopRealTimeNotificationFetch();
+      setNotifications([]);
     };
   }, [sirenCore]);
+
+  const setNotifications = (updatedNotifications: NotificationDataType[]) => {
+    dispatch({ type: sirenReducerTypes.SET_NOTIFICATIONS, payload: updatedNotifications });
+  };
 
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
@@ -224,10 +206,10 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
   };
 
   const onPressClearAll = async (): Promise<void> => {
-    const { error } = await clearAllNotification();
+    const response = await clearAllNotification();
 
     // TODO: to refactor
-    if (!error) {
+    if (response?.data) {
       setIsLoading(false);
       setIsError(false);
       setNotifications([]);

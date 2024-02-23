@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Siren } from 'bilta-sdk';
-import type { SirenErrorType } from 'bilta-sdk/dist/types';
+import type { UnviewedCountReturnResponse } from 'bilta-sdk/dist/types';
 
-import type { SirenNotificationIconProps, UnviewedType } from '../types';
-import { Constants, CommonUtils } from '../utils';
+import type { SirenNotificationIconProps } from '../types';
+import { Constants } from '../utils';
 import { useSirenContext } from './sirenProvider';
-import { defaultBadgeStyle } from '../utils/constants';
 
-const { ThemeMode } = Constants;
-const { logger } = CommonUtils;
+const { ThemeMode, defaultBadgeStyle, sirenReducerTypes } = Constants;
 
 /**
  * `SirenNotificationIcon` displays an icon representing the entry point to view notifications.
@@ -36,11 +34,10 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
     theme = { dark: {}, light: {} },
     notificationIcon,
     darkMode = false,
-    realTimeUnviewedCountEnabled = true,
-    onError
+    realTimeUnviewedCountEnabled = true
   } = props;
 
-  const { sirenCore, error, clearError, unviewedCount, setUnviewedCount } = useSirenContext();
+  const { sirenCore, unviewedCount, dispatch } = useSirenContext();
 
   const mode = darkMode ? ThemeMode.DARK : ThemeMode.LIGHT;
   const badgeStyle = theme[mode]?.badgeStyle || {};
@@ -57,29 +54,22 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   }, [sirenCore]);
 
   useEffect(() => {
-    if (error) {
-      if (onError) onError(error);
-      else defaultError(error);
-      clearError();
-    }
-  }, [error]);
-
-  useEffect(() => {
     if (realTimeUnviewedCountEnabled) sirenCore?.startRealTimeUnviewedCountFetch();
     else sirenCore?.stopRealTimeUnviewedCountFetch();
   }, [realTimeUnviewedCountEnabled]);
 
-  const defaultError = (error: SirenErrorType) => {
-    logger.error(JSON.stringify({ error }));
-  };
-
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
     if (Siren && sirenCore) {
-      const unViewed: UnviewedType = await sirenCore.fetchUnviewedNotificationsCount();
+      const unViewed: UnviewedCountReturnResponse =
+        await sirenCore.fetchUnviewedNotificationsCount();
 
       if (realTimeUnviewedCountEnabled) sirenCore?.startRealTimeUnviewedCountFetch();
-      if (unViewed) setUnviewedCount(unViewed.unviewedCount);
+      if (unViewed)
+        dispatch({
+          type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
+          payload: unViewed.data?.unviewedCount || 0
+        });
     }
   };
 

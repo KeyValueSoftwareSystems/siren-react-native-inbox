@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import { Siren } from 'bilta-sdk';
 import type {
   NotificationsApiResponse,
@@ -9,18 +9,22 @@ import type {
 } from 'bilta-sdk/dist/types';
 
 import type { SirenProviderConfigProps } from '../types';
-import { CommonUtils } from '../utils';
+import { CommonUtils, SirenReducer } from '../utils';
+import { sirenReducerTypes } from '../utils/constants';
 
+const { initialState, sirenReducer } = SirenReducer;
 const { logger } = CommonUtils;
 
+type ActionType =
+  | { type: sirenReducerTypes.SET_NOTIFICATIONS; payload: NotificationDataType[] }
+  | { type: sirenReducerTypes.SET_SIREN_CORE; payload: Siren | null }
+  | { type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT; payload: number };
+
 type SirenContextProp = {
-  sirenCore?: Siren | null;
-  error?: SirenErrorType | null;
-  clearError: () => void;
-  newNotifications: NotificationDataType[];
-  clearNewNotifications: () => void;
+  sirenCore: Siren | null;
   unviewedCount: number;
-  setUnviewedCount: React.Dispatch<React.SetStateAction<number>>;
+  notifications: NotificationDataType[];
+  dispatch: (action: ActionType) => void;
 };
 
 interface SirenProvider {
@@ -29,11 +33,10 @@ interface SirenProvider {
 }
 
 export const SirenContext = createContext<SirenContextProp>({
-  clearError: () => null,
-  newNotifications: [],
-  clearNewNotifications: () => null,
   unviewedCount: 0,
-  setUnviewedCount: () => null
+  notifications: [],
+  dispatch: () => null,
+  sirenCore: null
 });
 
 /**
@@ -42,12 +45,9 @@ export const SirenContext = createContext<SirenContextProp>({
  * @example
  * const {
  *   sirenCore,
- *   error,
- *   clearError,
- *   newNotifications,
- *   clearNewNotifications,
  *   unviewedCount,
- *   setUnviewedCount
+ *   setUnviewedCount,
+ *   dispatch
  * } = useSirenContext();
  *
  * @returns {SirenContextProp} The Siren notifications context.
@@ -78,10 +78,9 @@ export const useSirenContext = (): SirenContextProp => useContext(SirenContext);
  * @param {React.ReactNode} props.children - Child components that will have access to the Siren context.
  */
 const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
-  const [newNotifications, setNewNotifications] = useState<NotificationDataType[]>([]);
-  const [sirenCore, setSirenCore] = useState<Siren | null>(null);
-  const [unviewedCount, setUnviewedCount] = useState<number>(0);
-  const [error, setSirenError] = useState<SirenErrorType | null>(null);
+  const [state, dispatch] = useReducer(sirenReducer, initialState);
+
+  const { notifications, sirenCore, unviewedCount } = state;
 
   useEffect(() => {
     initialize();
@@ -95,22 +94,20 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     onUnViewedCountReceived: (response: UnviewedCountApiResponse): void => {
       const totalUnviewed = response?.data?.totalUnviewed || 0;
 
-      setUnviewedCount(totalUnviewed);
+      dispatch({
+        type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
+        payload: totalUnviewed
+      });
     },
     onNotificationReceived: (response: NotificationsApiResponse): void => {
       if (response?.data?.length) {
         logger.info(`new notifications : ${JSON.stringify(response?.data)}`);
-        setNewNotifications(response.data || []);
+        dispatch({
+          type: sirenReducerTypes.NEW_NOTIFICATIONS,
+          payload: response.data
+        });
       }
     }
-  };
-
-  const clearError = (): void => {
-    setSirenError(null);
-  };
-
-  const clearNewNotifications = (): void => {
-    setNewNotifications([]);
   };
 
   // Function to initialize the Siren SDK and fetch notifications
@@ -118,24 +115,24 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     const dataParams: InitConfigType = {
       token: config.userToken,
       recipientId: config.recipientId,
-      onError: (error: SirenErrorType): void => setSirenError(error),
+      onError: (error: SirenErrorType): void => logger.info(`Eroor : ${JSON.stringify(error)}`),
       actionCallbacks: actionCallbacks
     };
     const sirenObject = new Siren(dataParams);
 
-    setSirenCore(sirenObject);
+    dispatch({
+      type: sirenReducerTypes.SET_SIREN_CORE,
+      payload: sirenObject
+    });
   };
 
   return (
     <SirenContext.Provider
       value={{
         sirenCore,
-        error,
-        clearError,
-        newNotifications,
-        clearNewNotifications,
         unviewedCount,
-        setUnviewedCount
+        notifications,
+        dispatch
       }}
     >
       {children}

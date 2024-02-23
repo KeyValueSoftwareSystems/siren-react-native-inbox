@@ -47,6 +47,20 @@ export const levelLogFns = {
   [LogLevel.ERROR]: console.error
 };
 
+export enum updateNotificationsTypes {
+  MARK_ITEM_AS_READ = 'MARK_ITEM_AS_READ',
+  MARK_ALL_AS_READ = 'MARK_ALL_AS_READ',
+  DELETE_ITEM = 'DELETE_ITEM',
+  DELETE_ALL_ITEM = 'DELETE_ALL_ITEM'
+}
+
+export enum sirenReducerTypes {
+  SET_NOTIFICATIONS = 'SET_NOTIFICATIONS',
+  NEW_NOTIFICATIONS = 'NEW_NOTIFICATIONS',
+  SET_UN_VIEWED_NOTIFICATION_COUNT = 'SET_UN_VIEWED_NOTIFICATION_COUNT',
+  SET_SIREN_CORE = 'SET_SIREN_CORE'
+}
+
 export const LIST_EMPTY_TEXT = "You don't have any notifications!";
 export const ERROR_TEXT = 'Something went wrong!';
 export const DEFAULT_WINDOW_TITLE = 'Notifications';
