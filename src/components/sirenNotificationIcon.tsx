@@ -27,7 +27,6 @@ const { ThemeMode, defaultBadgeStyle, sirenReducerTypes } = Constants;
  * @param {JSX.Element} [props.notificationIcon] - Custom icon to be used as the notification indicator.
  * @param {boolean} [props.darkMode=false] - Enables dark mode for the badge.
  * @param {boolean} [props.realTimeUnviewedCountEnabled=true] - Enables real-time fetching of the unviewed notifications count.
- * @param {Function} [props.onError] - Callback function to handle errors.
  */
 const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   const {

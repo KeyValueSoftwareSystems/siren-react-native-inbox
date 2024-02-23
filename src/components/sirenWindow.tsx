@@ -77,7 +77,7 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
 
   const handleMarkNotificationsAsViewed = async () => {
     if (notifications?.length > 0) {
-      const response = await markNotificationsAsViewed();
+      const response = await markNotificationsAsViewed(new Date());
 
       if (response?.error && onError) onError(response.error);
     }
@@ -228,7 +228,7 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
 
   const onPressClearAll = async (): Promise<void> => {
     if (notifications.length > 0) {
-      const response = await clearAllNotification();
+      const response = await clearAllNotification(new Date());
 
       if (response?.error && onError) {
         onError(response.error);

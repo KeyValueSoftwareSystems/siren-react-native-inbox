@@ -16,9 +16,9 @@ const useSiren = () => {
     }
   };
 
-  const markNotificationsAllAsRead = async () => {
-    if (sirenCore) {
-      const response = await sirenCore?.markAllNotificationsAsRead();
+  const markNotificationsAllAsRead = async (untilDate: Date) => {
+    if (sirenCore && untilDate) {
+      const response = await sirenCore?.markAllNotificationsAsRead(untilDate.toISOString());
 
       if (response.data) updateNotifications(updateNotificationsTypes.MARK_ALL_AS_READ);
 
@@ -36,9 +36,9 @@ const useSiren = () => {
     }
   };
 
-  const clearAllNotification = async () => {
-    if (sirenCore) {
-      const response = await sirenCore.clearAllNotifications();
+  const clearAllNotification = async (untilDate: Date) => {
+    if (sirenCore && untilDate) {
+      const response = await sirenCore.clearAllNotifications(untilDate.toISOString());
 
       if (response.data) updateNotifications(updateNotificationsTypes.DELETE_ALL_ITEM);
 
@@ -46,9 +46,9 @@ const useSiren = () => {
     }
   };
 
-  const markNotificationsAsViewed = async () => {
-    if (sirenCore) {
-      const response = await sirenCore?.markNotificationsAsViewed();
+  const markNotificationsAsViewed = async (untilDate: Date) => {
+    if (sirenCore && untilDate) {
+      const response = await sirenCore?.markNotificationsAsViewed(untilDate.toISOString());
 
       if (response.data) updateNotifications(updateNotificationsTypes.MARK_ITEM_AS_VIEWED);
 
