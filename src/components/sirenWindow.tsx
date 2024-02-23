@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
-import { Siren } from 'bilta-sdk';
-import type { NotificationDataType } from 'bilta-sdk/dist/types';
+import { Siren } from 'test_notification';
+import type { NotificationDataType } from 'test_notification/dist/types';
 
 import { Constants, useSiren, CommonUtils } from '../utils';
 import { useSirenContext } from './sirenProvider';

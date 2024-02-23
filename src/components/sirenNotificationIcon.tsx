@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import type { UnviewedCountReturnResponse } from 'bilta-sdk/dist/types';
+import { Siren } from 'test_notification';
+import type { UnviewedCountReturnResponse } from 'test_notification/dist/types';
 
 import type { SirenNotificationIconProps } from '../types';
 import { Constants } from '../utils';
 import { useSirenContext } from './sirenProvider';
-import { Siren } from 'bilta-sdk';
 
 const { ThemeMode, defaultBadgeStyle, sirenReducerTypes } = Constants;
 

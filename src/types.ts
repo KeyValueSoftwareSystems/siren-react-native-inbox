@@ -1,5 +1,5 @@
 import type { DimensionValue, ImageStyle, TextStyle, ViewStyle } from 'react-native';
-import type { NotificationDataType, SirenErrorType } from 'bilta-sdk/dist/types';
+import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/types';
 /**
  * Defines the configuration options for the Siren Notification Window component.
  * @typedef {Object} SirenInboxProps
@@ -268,7 +268,7 @@ export type SirenStyleProps = {
   cardFooterRow: ViewStyle;
   dateStyle: TextStyle;
   deleteButton: ViewStyle;
-  deleteButtonText: TextStyle;
+  deleteIcon: ViewStyle;
   emptyContainer: ViewStyle;
   emptyText: TextStyle;
   errorText: TextStyle;

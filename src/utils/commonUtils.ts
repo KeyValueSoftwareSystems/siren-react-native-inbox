@@ -175,15 +175,14 @@ export const applyTheme = (
     opacity: 0.6
   },
   deleteButton: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    backgroundColor: 'red',
-    borderRadius: 4
+    width: 15,
+    height: 15,
+    overflow: 'hidden',
+    justifyContent: 'center'
   },
-  deleteButtonText: {
-    color: '#FFF',
-    fontWeight: '700',
-    fontSize: 12
+  deleteIcon: {
+    width: '100%',
+    height: '100%',
   },
   emptyContainer: {
     justifyContent: 'center',

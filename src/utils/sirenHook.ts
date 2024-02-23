@@ -1,4 +1,4 @@
-import type { NotificationDataType } from 'bilta-sdk/dist/types';
+import type { NotificationDataType } from 'test_notification/dist/types';
 
 import { useSirenContext } from '../components/sirenProvider';
 import { sirenReducerTypes, updateNotificationsTypes } from './constants';

@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
-import { Siren } from 'bilta-sdk';
+import { Siren } from 'test_notification';
 import type {
   NotificationsApiResponse,
   UnviewedCountApiResponse,
   InitConfigType,
   SirenErrorType,
   NotificationDataType
-} from 'bilta-sdk/dist/types';
+} from 'test_notification/dist/types';
 
 import type { SirenProviderConfigProps } from '../types';
 import { CommonUtils, SirenReducer } from '../utils';

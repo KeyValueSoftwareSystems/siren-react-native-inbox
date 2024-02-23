@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import React from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 import type { NotificationCardProps } from '../types';
 import { CommonUtils } from '../utils';
@@ -64,9 +64,13 @@ const Card = (props: NotificationCardProps): ReactElement => {
           {notification.message?.header}
         </Text>
         {Boolean(notification.message?.subHeader) && (
-          <Text numberOfLines={1} style={styles.cardDescription}>{notification.message?.subHeader}</Text>
+          <Text numberOfLines={1} style={styles.cardDescription}>
+            {notification.message?.subHeader}
+          </Text>
         )}
-        <Text numberOfLines={3} style={styles.cardDescription}>{notification.message?.body}</Text>
+        <Text numberOfLines={3} style={styles.cardDescription}>
+          {notification.message?.body}
+        </Text>
         {/* {cardProps?.showMedia && Boolean(notification.message?.media?.thumbnail) && (
           <Image
             source={{ uri: notification.message?.media?.thumbnail }}
@@ -75,14 +79,31 @@ const Card = (props: NotificationCardProps): ReactElement => {
           />
         )} */}
         <View style={styles.cardFooterRow}>
-          <Text style={styles.dateStyle}>{CommonUtils.generateElapsedTimeText(notification.createdAt)}</Text>
-          <TouchableOpacity onPress={() => onDelete(notification.id)} style={styles.deleteButton}>
-            <Text style={styles.deleteButtonText}>Delete</Text>
+          <Text style={styles.dateStyle}>
+            {CommonUtils.generateElapsedTimeText(notification.createdAt)}
+          </Text>
+          <TouchableOpacity
+            hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
+            onPress={() => onDelete(notification.id)}
+            style={styles.deleteButton}
+          >
+            <Image
+              source={require('../assets/trash.png')}
+              resizeMode='contain'
+              style={style.icon}
+            />
           </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>
   );
 };
+
+const style = StyleSheet.create({
+  icon: {
+    width: '100%',
+    height: '100%'
+  }
+});
 
 export default Card;

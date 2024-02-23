@@ -1,7 +1,7 @@
-import type { NotificationDataType } from 'bilta-sdk/dist/types';
+import type { NotificationDataType } from 'test_notification/dist/types';
 
 import { sirenReducerTypes } from './constants';
-import type { Siren } from 'bilta-sdk';
+import type { Siren } from 'test_notification';
 
 export const initialState = {
   notifications: [],
