@@ -63,16 +63,31 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     customFooter = null,
     customNotificationCard = null,
     onNotificationCardClick = () => null,
-    realTimeNotificationEnabled = false
+    realTimeNotificationEnabled = false,
+    onError = () => {}
   } = props;
 
   const { sirenCore, notifications, dispatch } = useSirenContext();
 
-  const { deleteNotification, clearAllNotification } = useSiren();
+  const { deleteNotification, clearAllNotification, markNotificationsAsViewed } = useSiren();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+
+  const handleMarkNotificationsAsViewed = async () => {
+    if (notifications?.length > 0) {
+      const response = await markNotificationsAsViewed();
+
+      if (response?.error && onError) onError(response.error);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      handleMarkNotificationsAsViewed();
+    };
+  }, []);
 
   useEffect(() => {
     if (!isLoading) {
@@ -142,6 +157,7 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
         if (res && res.data && res.data.length > 0) {
           const updatedNotifications = isResetList ? res.data : [...notifications, ...res.data];
 
+          isResetList && handleMarkNotificationsAsViewed();
           setNotifications(updatedNotifications);
         } else {
           setEndReached(true);
@@ -199,23 +215,28 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
   };
 
   const onDelete = async (id: string): Promise<void> => {
-    await deleteNotification(id);
-    const updatedNotifications = [...notifications].filter((item) => item.id !== id);
+    const response = await deleteNotification(id);
 
-    setNotifications(updatedNotifications);
+    if (response?.error && onError) {
+      onError(response.error);
+    } else {
+      const updatedNotifications = [...notifications].filter((item) => item.id !== id);
+
+      setNotifications(updatedNotifications);
+    }
   };
 
   const onPressClearAll = async (): Promise<void> => {
-    const response = await clearAllNotification();
+    if (notifications.length > 0) {
+      const response = await clearAllNotification();
 
-    // TODO: to refactor
-    if (response?.data) {
-      setIsLoading(false);
-      setIsError(false);
-      setNotifications([]);
-      setEndReached(false);
-    } else {
-      setIsError(true);
+      if (response?.error && onError) {
+        onError(response.error);
+      } else {
+        setIsLoading(false);
+        setNotifications([]);
+        setEndReached(false);
+      }
     }
   };
 
@@ -250,7 +271,14 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     <View style={styles.container}>
       {customHeader
         ? customHeader
-        : !hideHeader && <Header title={title} styles={styles} onPressClearAll={onPressClearAll} />}
+        : !hideHeader && (
+          <Header
+            title={title}
+            styles={styles}
+            onPressClearAll={onPressClearAll}
+            clearAllDisabled={notifications.length === 0}
+          />
+        )}
       <FlatList
         data={notifications}
         renderItem={renderCard}

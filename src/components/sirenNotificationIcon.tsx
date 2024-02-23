@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Siren } from 'bilta-sdk';
 import type { UnviewedCountReturnResponse } from 'bilta-sdk/dist/types';
 
 import type { SirenNotificationIconProps } from '../types';
 import { Constants } from '../utils';
 import { useSirenContext } from './sirenProvider';
+import { Siren } from 'bilta-sdk';
 
 const { ThemeMode, defaultBadgeStyle, sirenReducerTypes } = Constants;
 
@@ -65,7 +65,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
         await sirenCore.fetchUnviewedNotificationsCount();
 
       if (realTimeUnviewedCountEnabled) sirenCore?.startRealTimeUnviewedCountFetch();
-      if (unViewed)
+      if (unViewed && unViewed.data)
         dispatch({
           type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
           payload: unViewed.data?.unviewedCount || 0

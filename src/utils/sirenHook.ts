@@ -46,8 +46,14 @@ const useSiren = () => {
     }
   };
 
-  const markNotificationsAsViewed = () => {
-    if (sirenCore) sirenCore?.markNotificationsAsViewed();
+  const markNotificationsAsViewed = async () => {
+    if (sirenCore) {
+      const response = await sirenCore?.markNotificationsAsViewed();
+
+      if (response.data) updateNotifications(updateNotificationsTypes.MARK_ITEM_AS_VIEWED);
+
+      return response;
+    }
   };
 
   const updateNotifications = (type: updateNotificationsTypes, id?: string) => {
@@ -73,6 +79,10 @@ const useSiren = () => {
       case updateNotificationsTypes.DELETE_ALL_ITEM:
         updatedNotifications = [];
         dispatch({ type: sirenReducerTypes.SET_NOTIFICATIONS, payload: updatedNotifications });
+        break;
+
+      case updateNotificationsTypes.MARK_ITEM_AS_VIEWED:
+        dispatch({ type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT, payload: 0 });
         break;
 
       default:

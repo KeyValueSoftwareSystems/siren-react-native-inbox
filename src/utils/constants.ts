@@ -48,6 +48,7 @@ export const levelLogFns = {
 };
 
 export enum updateNotificationsTypes {
+  MARK_ITEM_AS_VIEWED = 'MARK_ITEM_AS_VIEWED',
   MARK_ITEM_AS_READ = 'MARK_ITEM_AS_READ',
   MARK_ALL_AS_READ = 'MARK_ALL_AS_READ',
   DELETE_ITEM = 'DELETE_ITEM',
