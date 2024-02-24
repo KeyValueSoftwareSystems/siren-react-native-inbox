@@ -24,9 +24,9 @@ const useSiren = () => {
     return {error: errorMap.SIREN_OBJECT_NOT_FOUND};
   };
 
-  const markNotificationsAllAsRead = async (untilDate: Date) => {
+  const markNotificationsAllAsRead = async (untilDate: string) => {
     if (sirenCore && untilDate) {
-      const response = await sirenCore?.markAllNotificationsAsRead(untilDate.toISOString());
+      const response = await sirenCore?.markAllNotificationsAsRead(untilDate);
 
       if (response.data)
         updateNotifications(updateNotificationsTypes.MARK_ALL_AS_READ);
@@ -53,9 +53,9 @@ const useSiren = () => {
     return {error: errorMap.SIREN_OBJECT_NOT_FOUND};
   };
 
-  const clearAllNotification = async (untilDate: Date) => {
+  const clearAllNotification = async (untilDate: string) => {
     if (sirenCore && untilDate) {
-      const response = await sirenCore.clearAllNotifications(untilDate.toISOString());
+      const response = await sirenCore.clearAllNotifications(untilDate);
 
       if (response.data)
         updateNotifications(updateNotificationsTypes.DELETE_ALL_ITEM);
@@ -66,9 +66,9 @@ const useSiren = () => {
     return {error: errorMap.SIREN_OBJECT_NOT_FOUND};
   };
 
-  const markNotificationsAsViewed = async (untilDate: Date) => {
+  const markNotificationsAsViewed = async (untilDate: string) => {
     if (sirenCore && untilDate) {
-      const response = await sirenCore?.markNotificationsAsViewed(untilDate.toISOString());
+      const response = await sirenCore?.markNotificationsAsViewed(untilDate);
 
       if (response.data)
         updateNotifications(updateNotificationsTypes.MARK_ITEM_AS_VIEWED);

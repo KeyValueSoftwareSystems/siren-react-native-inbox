@@ -92,7 +92,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
   const actionCallbacks = {
     onUnViewedCountReceived: (response: UnviewedCountApiResponse): void => {
-      const totalUnviewed = response?.data?.totalUnviewed || 0;
+      const totalUnviewed = response?.data?.totalUnviewed || unviewedCount;
 
       dispatch({
         type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
