@@ -1,6 +1,6 @@
 <div style="display:flex;flex-direction:row:align-items:center;justify-content:center">
-    <img width="50px" src="https://app.dev.sirenapp.io/assets/Siren-b2f89b52.svg" style="margin:10px;">
-    <span style="color: #000;font-size:40px;font-weight:700;padding-top:5px">Siren React Native Inbox</span>
+    <img width="50px" src="https://app.dev.sirenapp.io/assets/Siren-b2f89b52.svg" style="margin:10px;padding-top:5px">
+    <H1 style="color: #000;font-size:40px;font-weight:700">Siren React Native Inbox</H1>
 </div>
 
 ## Table of Contents
