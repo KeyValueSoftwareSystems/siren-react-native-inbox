@@ -1,6 +1,6 @@
-<div style="display:flex;flex-direction:row:align-items:center;justify-content:center">
-    <img width="50px" src="https://app.dev.sirenapp.io/assets/Siren-b2f89b52.svg" style="margin:10px;padding-top:5px">
-    <H1 style="color: #000;font-size:40px;font-weight:700">Siren React Native Inbox</H1>
+<div>
+    <img width="50px" style="float:left;padding-right:12px;" src="https://app.dev.sirenapp.io/assets/Siren-b2f89b52.svg" >
+    <H1>Siren React Native Inbox</H1>
 </div>
 
 ## Table of Contents
@@ -22,20 +22,19 @@
 <a name="introduction"></a>
 ## Overview
 
-The Siren SDK is a powerful tool for integrating notifications functionality into your React Native applications. This documentation provides comprehensive information on how to install, configure, and use the SDK effectively.
+The @siren/react-native-inbox sdk is a comprehensive and customizable React Native UI kit for displaying and managing notifications. This documentation provides comprehensive information on how to install, configure, and use the sdk effectively.
 
 ## Quick Start Guide
 
 ### 1. Install SDK
-To install the Siren SDK, you can use npm or yarn.
+To install the @siren/react-native-inbox sdk, you can use npm or yarn.
 
 #### Prerequisites
 - React Native v0.6+
-- @siren/core-sdk
 #### Steps
 1. Under your app's root directory, install @siren/rn-sdk. 
 ```
-npm install @siren/siren-react-native-inbox
+npm install @siren/react-native-inbox
 ```
 2. Under your application's ios folder, run
 ```
@@ -43,10 +42,10 @@ pod install
 ``` 
 
 ### 2. Siren Provider
- The SirenProvider initializes the Siren SDK with the provided configuration, which includes essential parameters such as the user token and recipient ID. SirenProvider must be wrapped above main App component.
+The SirenProvider initializes the Siren sdk with the specified configuration, which contains important parameters like the user token and recipient ID. The SirenProvider must be wrapped as a root component.
 
 ```js
-import { SirenProvider } from '@siren/siren-react-native-inbox';
+import { SirenProvider } from '@siren/react-native-inbox';
 
 const config = {
   userToken: 'your_user_token',
@@ -59,7 +58,7 @@ const config = {
 
 
 ```
-config prop attached to SirenProvider component is authenticate and initialize sdk.
+The config is a prop for the SirenProvider component is authenticate and initialize sdk.
 
 ```js
 type config = {
@@ -69,10 +68,10 @@ type config = {
 ```
 
 ### 3. Siren Notification Icon
-This is a component have a customizable notification icon component and a badge for displaying un-viewed notification count in UI.
+This component includes a customizable notification icon and a badge for indicating the number of un-viewed notifications in the user interface.
 
 ```js
-import { SirenNotificationIcon } from '@siren/siren-react-native-inbox';
+import { SirenNotificationIcon } from '@siren/react-native-inbox';
 
  <SirenNotificationIcon
    theme={customTheme}
@@ -90,14 +89,13 @@ Given below are all props of Icon component.
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
 theme | Theme object for custom styling |  Theme | {} |
-notificationIcon | Option to use Custom notification Icon |  JSX Element | null |
-realTimeUnviewedCountEnabled |Flag to enable real-time un-viewed notification count |  boolean | true |
+notificationIcon | Option to use custom notification Icon |  JSX Element | null |
+realTimeUnviewedCountEnabled | Flag to enable real-time un-viewed notification count |  boolean | true |
 darkMode | Flag to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
 
 #### Theming options
-
-Customize Unread badge of notification icon and have dark and light theming options. 
+Customize the unread badge of the notification icon, and choose between dark and light theming options. 
 
 ```js
    type Theme = {
@@ -125,10 +123,10 @@ Customize Unread badge of notification icon and have dark and light theming opti
 
 ### 4. Siren Notification Window
 
-Siren Notification Window is a paginated list view for displaying notifications.
+SirenNotificationWindow is a paginated list view for displaying notifications.
 
 ```js
-import { SirenWindow } from '@siren/siren-react-native-inbox';
+import { SirenWindow } from '@siren/react-native-inbox';
 
 <SirenWindow
     theme={customTheme}
@@ -142,7 +140,7 @@ import { SirenWindow } from '@siren/siren-react-native-inbox';
 
 ```
 #### Siren Notification Window Props
-Given below are all props of Window component.
+Given below are all props of window component.
 
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
@@ -150,7 +148,7 @@ theme | Theme object for custom styling |  Theme | {} |
 title |  Title of the notification window |  string | "Notifications" |
 hideHeader | Flag to hide or show the header |  boolean | false |
 darkMode | Flag to enable dark mode |  boolean | false |
-realTimeNotificationEnabled | switch for on and of notification listener |  boolean | false |
+realTimeNotificationEnabled | Switch for on and of notification listener |  boolean | false |
 notificationsPerPage | Number of notifications to fetch per page | number | 10 |
 cardProps | Props for customizing the notification cards | CardProps | null |
 customNotificationCard | Custom function for rendering notification cards | (notification)=> JSX Element | null |
@@ -162,7 +160,7 @@ onError | Callback for handling errors | (error:  SirenErrorType)=> void | null 
 
 #### Theming options
 
-Customizable UI option for notification window and have dark and light theming options. 
+Customizable UI option for notification window, with dark and light theme options. 
 
 ```js
     type Theme = {
@@ -228,10 +226,10 @@ Customizable UI option for notification window and have dark and light theming o
 ```
 
 ### 5. useSiren
-This a sdk hook which contain helper functions for modify notifications.
+This is a hook that provides utility functions for modifying notifications.
 
 ```js
-import useSiren from '@siren/siren-react-native-inbox';
+import { useSiren } from '@siren/react-native-inbox';
 
 function MyComponent() {
   const { markAsRead, deleteNotification } = useSiren();
@@ -253,11 +251,11 @@ function MyComponent() {
 
 Function name | Parameters type | Description |
 --- | --- | --- |
-markNotificationsAllAsRead | none | Set all notification read status to true |
+markAllNotificationsAsReadByDate | startDate: string | Set all notification read status to true until given date |
 markAsRead | id: string | Set read status of a specific notification to true |
 deleteNotification |  id: string  | Delete a specific notification by id |
-clearAllNotification | none | Delete all notifications |
-markNotificationsAsViewed | none | Set all notification viewed status to true |
+clearAllNotificationByDate | startDate: string | Delete all notifications until given date |
+markNotificationsAsViewed | startDate: string | Set all notification viewed status to true until given date |
 
 ### 6. Error codes
 Given below are all possible error codes thrown by sdk.
@@ -273,12 +271,12 @@ SIREN_OBJECT_NOT_FOUND | Siren Object Not found | Was failed to initialize sdk, 
 MISSING_PARAMETER | Missing Parameter | A parameter is missing in function call |
 
 ### Complete Code Example
-Here's a runnable code example that covers everything in this quickstart guide.
+Here's a runnable code example that covers everything in this quick start guide.
 ```js
 
 import React from 'react';
 import {SafeAreaView} from 'react-native';
-import {SirenWindow, SirenNotificationIcon,SirenProvider} from '@siren/siren-react-native-inbox';
+import {SirenWindow,SirenNotificationIcon,SirenProvider} from '@siren/react-native-inbox';
 
 function App(): React.JSX.Element {
 
