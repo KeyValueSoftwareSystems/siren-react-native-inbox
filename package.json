@@ -27,7 +27,8 @@
   "scripts": {
     "prepare": "husky",
     "lint": "eslint src",
-    "build": "bob build"
+    "build": "bob build",
+    "test-build": "npm run build && npm pack && mv siren-react-native-inbox-1.0.0.tgz ../example/siren-sdk03.tgz && cd ../example && npm install"
   },
   "devDependencies": {
     "@types/react": "^18.2.57",
@@ -56,5 +57,8 @@
     "./dist",
     "license",
     "readme"
-  ]
+  ],
+  "dependencies": {
+    "test_notification": "1.0.3"
+  }
 }
