@@ -32,7 +32,7 @@ To install the @siren/react-native-inbox sdk, you can use npm or yarn.
 #### Prerequisites
 - React Native v0.6+
 #### Steps
-1. Under your app's root directory, install @siren/rn-sdk. 
+1. Under your app's root directory, install @siren/react-native-inbox. 
 ```
 npm install @siren/react-native-inbox
 ```
@@ -42,7 +42,7 @@ pod install
 ``` 
 
 ### 2. Siren Provider
-The SirenProvider initializes the Siren sdk with the specified configuration, which contains important parameters like the user token and recipient ID. The SirenProvider must be wrapped as a root component.
+The SirenProvider initializes the Siren sdk with the specified configuration, which contains important parameters like the user token and recipient ID. Wrap the SirenProvider around your App's root.
 
 ```js
 import { SirenProvider } from '@siren/react-native-inbox';
