@@ -106,7 +106,7 @@ export type ThemeProps = {
     activeCardColor?: string;
   };
   notificationIcon?: {
-    size?: DimensionValue,
+    size?: number,
   } 
   unreadBadgeCount?: {
     background?: string;

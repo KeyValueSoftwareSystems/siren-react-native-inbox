@@ -104,6 +104,9 @@ Customize the unread badge of the notification icon, and choose between dark and
     };
 
     type ThemeProps = {
+        notificationIcon?: {
+          size?: number,
+        };
         unreadBadgeCount?: {
             background?: string;
             color?: string;
