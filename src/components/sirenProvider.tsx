@@ -9,10 +9,11 @@ import type {
 } from 'test_notification/dist/types';
 
 import type { SirenProviderConfigProps } from '../types';
-import { initialState, sirenReducer } from '../utils/sirenReducer';
+import { CommonUtils, SirenReducer } from '../utils';
 import { sirenReducerTypes } from '../utils/constants';
-import { logger } from '../utils/commonUtils';
 
+const { initialState, sirenReducer } = SirenReducer;
+const { logger } = CommonUtils;
 
 type ActionType =
   | { type: sirenReducerTypes.SET_NOTIFICATIONS; payload: NotificationDataType[] }

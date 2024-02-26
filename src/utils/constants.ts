@@ -35,10 +35,10 @@ export enum BadgeType {
   DEFAULT = 'default'
 }
 export const defaultBadgeStyle = {
-  size: 20,
+  size: 15,
   color: '#FF0000',
   textColor: '#FFFFFF',
-  textSize: 10
+  textSize: 7
 };
 
 export const levelLogFns = {

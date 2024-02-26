@@ -1,0 +1,22 @@
+node_modules/
+.env
+.DS_Store
+*.log
+*.cache
+
+# Xcode
+#
+build/
+xcuserdata
+DerivedData
+ios/.xcode.env.local
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.keystore
+!debug.keystore
+/ios/Pods/

@@ -4,7 +4,7 @@ import { Siren } from 'test_notification';
 import type { UnviewedCountReturnResponse } from 'test_notification/dist/types';
 
 import type { SirenNotificationIconProps } from '../types';
-import { Constants } from '../utils';
+import { Constants, DefaultTheme } from '../utils';
 import { useSirenContext } from './sirenProvider';
 import { defaultBadgeStyle } from '../utils/constants';
 
@@ -41,6 +41,8 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
 
   const mode = darkMode ? ThemeMode.DARK : ThemeMode.LIGHT;
   const badgeStyle = theme[mode]?.badgeStyle || {};
+  const size = theme[mode]?.notificationIcon?.size || DefaultTheme[mode]?.notificationIcon?.size;
+  const container = { width: size, height: size };
 
   const badge = { ...defaultBadgeStyle, ...badgeStyle };
 
@@ -104,7 +106,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   };
 
   return (
-    <TouchableOpacity disabled style={styles.container}>
+    <TouchableOpacity disabled style={container}>
       {/* Render badge with unviewed count if count is greater than 0 */}
       {unviewedCount > 0 && renderBadge()}
       {/* Render provided notification icon or default icon */}
@@ -120,12 +122,9 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: 50
-  },
   iconStyle: {
-    width: 50,
-    height: 50
+    width: '100%',
+    height: '100%'
   },
   badge: {
     position: 'absolute',
