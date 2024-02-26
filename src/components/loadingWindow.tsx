@@ -32,6 +32,7 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
   return (
     <View style={styles.emptyContainer}>
       <ActivityIndicator
+        testID="activity-indicator"
         color={theme?.colors?.textColor || DefaultTheme[mode].colors.primaryColor}
         size='large'
       />

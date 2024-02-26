@@ -21,7 +21,6 @@ describe('LoadingWindow', () => {
       <LoadingWindow styles={customStyles} mode={mode} theme={customTheme} />
     );
 
-    // Verify that ActivityIndicator is rendered
     expect(getByTestId('activity-indicator')).toBeTruthy();
   });
 
