@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { SirenWindow, useSiren } from '@siren/react-native-inbox';
-import type { NotificationDataType } from 'test_notification/dist/types';
+import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/types';
 import { useNavigation } from '@react-navigation/native';
 
 const windowThemes = [
@@ -179,14 +179,14 @@ function Notifications(): React.JSX.Element {
           customHeader={showCustomHeader ? renderCustomHeader() : undefined}
           customNotificationCard={
             showCustomNotificationCard
-              ? (notification) => renderCustomNotificationCard(notification)
+              ? (notification: NotificationDataType) => renderCustomNotificationCard(notification)
               : undefined
           }
-          onNotificationCardClick={(notification) => {
+          onNotificationCardClick={(notification: NotificationDataType) => {
             console.log('click on notification');
             markAsRead(notification.id);
           }}
-          onError={(error) => {
+          onError={(error: SirenErrorType) => {
             console.log(`error: ${error}`);
           }}
         />
