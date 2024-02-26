@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import EmptyWindow from './emptyWindow';
-import type { SirenStyleProps } from '../types';
+import EmptyWindow from '../../src/components/emptyWindow';
+import type { SirenStyleProps } from '../../src/types';
 
 describe('EmptyWindow', () => {
   it('renders correctly', () => {

@@ -28,6 +28,7 @@
     "prepare": "husky",
     "lint": "eslint src",
     "build": "bob build",
+    "test": "jest",
     "test-build": "npm run build && npm pack && mv siren-react-native-inbox-1.0.0.tgz example/siren-sdk01.tgz && cd example && npm install"
   },
   "devDependencies": {

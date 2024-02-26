@@ -6,7 +6,7 @@ import type { SirenStyleProps, ThemeProps } from '../types';
 import { DefaultTheme, type Constants } from '../utils';
 
 type LoadingWindowProps = {
-  styles: SirenStyleProps;
+  styles: Partial<SirenStyleProps>;
   mode: Constants.ThemeMode;
   theme: ThemeProps;
 };
