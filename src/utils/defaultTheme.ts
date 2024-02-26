@@ -18,6 +18,9 @@ const defaultTheme = {
       inset: 2,
       size: 14
     },
+    notificationIcon: {
+      size: 30,
+    },
     window: {
       width: '100%',
       height: '100%',
@@ -79,6 +82,9 @@ const defaultTheme = {
       fontSize: 14,
       inset: 2,
       size: 14
+    },
+    notificationIcon: {
+      size: 30,
     },
     window: {
       width: '100%',
