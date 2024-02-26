@@ -1,12 +1,32 @@
 import React from 'react';
-import { SirenProvider } from '@siren/react-native-inbox';
+import { SirenNotificationIcon, SirenProvider } from '@siren/react-native-inbox';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from './screens/home';
 import Notifications from './screens/notifications';
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name='Home' component={Home} />
+      <Tab.Screen
+        name='Notifications'
+        component={Notifications}
+        options={{
+          tabBarLabel: 'Notifications',
+          tabBarIcon: () => (
+            <SirenNotificationIcon
+              realTimeUnviewedCountEnabled={true}
+            />
+          )
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
 function App(): React.JSX.Element {
   return (
@@ -17,10 +37,7 @@ function App(): React.JSX.Element {
           recipientId: '6018ebd1-683c-4397-a903-5ce9ea94bcd7'
         }}
       >
-        <Stack.Navigator >
-          <Stack.Screen name="Home" options={{headerShown: false}} component={Home} />
-          <Stack.Screen name="Notifications" options={{headerShown: false}} component={Notifications} />
-        </Stack.Navigator>
+        {MyTabs()}
       </SirenProvider>
     </NavigationContainer>
   );

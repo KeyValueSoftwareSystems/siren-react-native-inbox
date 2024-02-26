@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "React Native SDK for in-app notification inbox",
   "main": "dist/module/index",
-  "types": "dist/typescript/index.d.ts",
+  "types": "dist/typescript/src/index.d.ts",
   "react-native": "dist/module/index",
   "module": "dist/module/index",
   "source": "dist/module/index",

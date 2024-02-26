@@ -10,7 +10,6 @@ import {
   Image
 } from 'react-native';
 import { SirenNotificationIcon } from '@siren/react-native-inbox';
-import { useNavigation } from '@react-navigation/native';
 
 const badgeThemes = [
   undefined,
@@ -49,9 +48,8 @@ const badgeThemes = [
 ];
 
 function Home(): React.JSX.Element {
-  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
-  const [showTestingWindow, setShowTestingWindow] = useState(true);
+  const [showTestingWindow, setShowTestingWindow] = useState(false);
   const [showCustomNotification, setShowCustomNotification] = useState(false);
   const [badgeThemeIndex, setBadgeThemeIndex] = useState(0);
   const [countPollingEnabled, setCountPollingEnabled] = useState(true);
@@ -127,15 +125,12 @@ function Home(): React.JSX.Element {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={styles.contentContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Notifications')}
-        >
-          <SirenNotificationIcon
-            realTimeUnviewedCountEnabled={countPollingEnabled}
-            theme={badgeThemes[badgeThemeIndex]}
-            notificationIcon={showCustomNotification ? renderNotificationIcon() : undefined}
-          />
-        </TouchableOpacity>
+        <SirenNotificationIcon
+          realTimeUnviewedCountEnabled={countPollingEnabled}
+          theme={badgeThemes[badgeThemeIndex]}
+          notificationIcon={showCustomNotification ? renderNotificationIcon() : undefined}
+        />
+        <Text>Siren Notification Icon Theme Testing</Text>
       </View>
       {testingWindow()}
     </SafeAreaView>
