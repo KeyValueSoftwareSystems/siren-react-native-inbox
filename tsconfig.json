@@ -13,5 +13,8 @@
       "strictNullChecks": true,
       "esModuleInterop": true,
       "rootDir": "src",
-    }
+    },
+    "exclude": [
+      "example"
+    ]
 }
