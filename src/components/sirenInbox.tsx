@@ -143,10 +143,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     }
   };
 
-  const createFetchNotificationParams = (isResetList: boolean): fetchProps => {
+  const createFetchNotificationParams = (attachEndDate: boolean): fetchProps => {
     const notificationParams: fetchProps = { size: notificationsPerPage };
 
-    if (!isResetList) notificationParams.end = notifications[notifications.length - 1].createdAt;
+    if (attachEndDate) notificationParams.end = notifications[notifications.length - 1].createdAt;
 
     return notificationParams;
   };
@@ -174,7 +174,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     setIsError(false);
     setIsLoading(true);
     if (siren) {
-      const notificationParams = createFetchNotificationParams(isResetList);
+      const notificationParams = createFetchNotificationParams(!isResetList);
       const response = await siren.fetchAllNotifications(notificationParams);
       const nonEmptyResponse = Boolean(isNonEmptyArray(response?.data));
 

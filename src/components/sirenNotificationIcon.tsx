@@ -115,7 +115,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   };
 
   /* Render badge with unviewed count if count is greater than 0 */
-  const isShowBadge = unviewedCount > 0;
+  const showBadge = unviewedCount > 0;
 
   return (
     <TouchableOpacity
@@ -123,7 +123,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
       onPress={onPress}
       style={[container, styles.iconContainer]}
     >
-      {isShowBadge && renderBadge()}
+      {showBadge && renderBadge()}
 
       {renderNotificationIcon()}
     </TouchableOpacity>
