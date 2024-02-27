@@ -18,7 +18,7 @@ const { LIST_EMPTY_TEXT } = Constants;
  *
  * @param {Object} props.styles - Custom styles applied to the empty window.
  */
-const EmptyWindow = (props: { styles: SirenStyleProps }): ReactElement => {
+const EmptyWindow = (props: { styles: Partial<SirenStyleProps> }): ReactElement => {
   const { styles } = props;
 
   return (

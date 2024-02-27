@@ -39,7 +39,7 @@ import { CommonUtils } from '../utils';
  * @param {Function} props.onDelete - Callback function executed when the delete action is triggered.
  */
 
-const renderAvatar = (notification: NotificationDataType, styles: SirenStyleProps): JSX.Element => {
+const renderAvatar = (notification: NotificationDataType, styles: Partial<SirenStyleProps>): JSX.Element => {
   return (
     <View style={styles.cardIconContainer}>
       <View style={styles.cardIconRound}>
@@ -62,6 +62,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
     <TouchableOpacity
       onPress={() => onCardClick(notification)}
       activeOpacity={0.6}
+      testID='card-touchable'
       style={[styles.cardContainer, notification?.isRead && styles.transparent]}
     >
       {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
@@ -92,6 +93,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
             onPress={() => onDelete(notification.id)}
             style={styles.deleteButton}
+            testID='delete-button'
           >
             <Image
               source={require('../assets/trash.png')}

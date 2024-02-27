@@ -119,6 +119,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
 
   return (
     <TouchableOpacity
+      testID='notification-icon'
       disabled={disabled}
       onPress={onPress}
       style={[container, styles.iconContainer]}
