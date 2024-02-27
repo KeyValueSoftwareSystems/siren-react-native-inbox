@@ -92,9 +92,9 @@ const MarkAsViewedResponse = {
 describe('useSiren hook', () => {
   const mockSirenCore: Pick<Siren, keyof Siren> = {
     markNotificationAsReadById: jest.fn(async () => Response),
-    markAllNotificationsAsRead: jest.fn(async () => ActionResponse),
+    markNotificationsAsReadByDate: jest.fn(async () => ActionResponse),
     deleteNotificationById: jest.fn(async () => ActionResponse),
-    clearAllNotifications: jest.fn(async () => ActionResponse),
+    clearNotificationsByDate: jest.fn(async () => ActionResponse),
     markNotificationsAsViewed: jest.fn(async () => MarkAsViewedResponse),
     verifyToken: jest.fn(),
     fetchUnviewedNotificationsCount: jest.fn(),
@@ -128,7 +128,7 @@ describe('useSiren hook', () => {
     expect(response).toEqual(Response);
   });
 
-  it('should call sirenCore.markAllNotificationsAsRead and update notifications list when sirenCore exists and untilDate is provided', async () => {
+  it('should call sirenCore.markNotificationsAsReadByDate and update notifications list when sirenCore exists and untilDate is provided', async () => {
     const notifications = [newNotification];
     const dispatch = jest.fn();
 
@@ -139,11 +139,11 @@ describe('useSiren hook', () => {
       unviewedCount: 0
     });
 
-    const { markNotificationsAllAsRead } = useSiren();
+    const { markNotificationsAsReadByDate } = useSiren();
     const untilDate = '2024-02-28T00:00:00Z';
-    const response = await markNotificationsAllAsRead(untilDate);
+    const response = await markNotificationsAsReadByDate(untilDate);
 
-    expect(mockSirenCore.markAllNotificationsAsRead).toHaveBeenCalledWith(untilDate);
+    expect(mockSirenCore.markNotificationsAsReadByDate).toHaveBeenCalledWith(untilDate);
     expect(dispatch).toHaveBeenCalledWith({
       type: sirenReducerTypes.SET_NOTIFICATIONS,
       payload: notifications.map((notification) => ({ ...notification, isRead: true }))
@@ -173,7 +173,7 @@ describe('useSiren hook', () => {
     expect(response).toEqual(ActionResponse);
   });
 
-  it('should call sirenCore.clearAllNotifications and update notifications list when sirenCore exists and untilDate is provided', async () => {
+  it('should call sirenCore.clearNotificationsByDate and update notifications list when sirenCore exists and untilDate is provided', async () => {
     const notifications = [newNotification];
     const dispatch = jest.fn();
 
@@ -184,11 +184,11 @@ describe('useSiren hook', () => {
       unviewedCount: 0
     });
 
-    const { clearAllNotification } = useSiren();
+    const { clearNotificationByDate } = useSiren();
     const untilDate = '2024-02-28T00:00:00Z';
-    const response = await clearAllNotification(untilDate);
+    const response = await clearNotificationByDate(untilDate);
 
-    expect(mockSirenCore.clearAllNotifications).toHaveBeenCalledWith(untilDate);
+    expect(mockSirenCore.clearNotificationsByDate).toHaveBeenCalledWith(untilDate);
     expect(dispatch).toHaveBeenCalledWith({
       type: sirenReducerTypes.SET_NOTIFICATIONS,
       payload: []

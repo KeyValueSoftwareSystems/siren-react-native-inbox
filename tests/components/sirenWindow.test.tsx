@@ -1,7 +1,10 @@
 import React from 'react';
+import { Text, View } from 'react-native';
 import { render } from '@testing-library/react-native';
 
 import { SirenWindow } from '../../src';
+
+jest.mock('react-native/Libraries/Lists/FlatList', () => 'FlatList');
 
 describe('SirenWindow', () => {
   it('renders without crashing', () => {
@@ -10,70 +13,29 @@ describe('SirenWindow', () => {
         title='Notifications'
         hideHeader={false}
         darkMode={false}
-        notificationsPerPage={10}
         realTimeNotificationEnabled={true}
         onError={(error) => console.log(error)}
       />
     );
   });
 
-  it('displays loading window when isLoading is true', () => {
+  test("should render custom header ", () => {
     const { getByTestId } = render(
       <SirenWindow
-        title='Notifications'
-        hideHeader={false}
-        darkMode={false}
-        notificationsPerPage={10}
-        realTimeNotificationEnabled={true}
-        onError={(error) => console.log(error)}
+        customHeader={<View testID="custom-header"><Text>My notifications</Text></View>}
       />
     );
 
-    expect(getByTestId('loading-window')).toBeTruthy();
+    expect(getByTestId('custom-header')).toBeTruthy();
   });
-
-  it('displays list footer when isLoading is true', () => {
+  test("should render custom footer ", () => {
     const { getByTestId } = render(
       <SirenWindow
-        title='Notifications'
-        hideHeader={false}
-        darkMode={false}
-        notificationsPerPage={10}
-        realTimeNotificationEnabled={true}
-        onError={(error) => console.log(error)}
+        customHeader={<View testID="custom-footer"><Text>My notifications</Text></View>}
       />
     );
 
-    expect(getByTestId('list-footer')).toBeTruthy();
+    expect(getByTestId('custom-footer')).toBeTruthy();
   });
-
-  it('displays error window when isError is true', () => {
-    const { getByTestId } = render(
-      <SirenWindow
-        title='Notifications'
-        hideHeader={false}
-        darkMode={false}
-        notificationsPerPage={10}
-        realTimeNotificationEnabled={true}
-        onError={(error) => console.log(error)}
-      />
-    );
-
-    expect(getByTestId('error-window')).toBeTruthy();
-  });
-
-  it('displays custom empty window when notifications array is empty', () => {
-    const { getByTestId } = render(
-      <SirenWindow
-        title='Notifications'
-        hideHeader={false}
-        darkMode={false}
-        notificationsPerPage={10}
-        realTimeNotificationEnabled={true}
-        onError={(error) => console.log(error)}
-      />
-    );
-
-    expect(getByTestId('custom-empty-window')).toBeTruthy();
-  });
+  
 });

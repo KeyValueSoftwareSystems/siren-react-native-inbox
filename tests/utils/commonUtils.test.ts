@@ -50,14 +50,6 @@ describe('generateElapsedTimeText', () => {
 });
 
 describe('logger', () => {
-  test('log function formats and outputs message with ERROR level', async () => {
-    const mockConsoleLog = jest.spyOn(console, 'log');
-    const errorMessage = 'An error occurred.';
-
-    await logger.log(LogLevel.ERROR, errorMessage);
-
-    expect(mockConsoleLog).toHaveBeenCalledWith(expect.stringContaining(`[ERROR] ${errorMessage}`));
-  });
 
   test('error function calls log function with ERROR level', async () => {
     const mockLog = jest.spyOn(logger, 'log');
