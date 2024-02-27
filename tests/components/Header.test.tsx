@@ -48,7 +48,9 @@ describe('Header', () => {
 
   it('renders "Clear All" action button and handles onPressClearAll', () => {
     const title = 'Notification Center';
-    const styles = { /* custom styles */ };
+    const styles = {
+      /* custom styles */
+    };
     const onPressClearAll = jest.fn();
     const clearAllDisabled = false;
 
@@ -62,7 +64,7 @@ describe('Header', () => {
     );
 
     const clearAllButton = getByText('Clear All');
-    
+
     expect(clearAllButton).toBeTruthy();
 
     // Simulate button click
@@ -71,5 +73,4 @@ describe('Header', () => {
     // Verify that onPressClearAll is called
     expect(onPressClearAll).toHaveBeenCalled();
   });
-
 });

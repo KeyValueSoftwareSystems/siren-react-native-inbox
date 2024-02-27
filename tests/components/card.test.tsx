@@ -6,12 +6,12 @@ import type { NotificationDataType } from 'test_notification/dist/types';
 
 describe('Card Component', () => {
   const notification: NotificationDataType = {
-    id: "1",
+    id: '1',
     message: {
-      header: "New Message",
-      body: "You have a new message.",
+      header: 'New Message',
+      body: 'You have a new message.',
       avatar: {
-        imageUrl: "https://example.com/avatar.png",
+        imageUrl: 'https://example.com/avatar.png',
         actionUrl: null
       },
       channel: '',
@@ -20,14 +20,14 @@ describe('Card Component', () => {
       additionalData: ''
     },
     isRead: false,
-    createdAt: "2020-01-01T00:00:00Z",
+    createdAt: '2020-01-01T00:00:00Z',
     requestId: ''
   };
 
   const customStyles: Partial<SirenStyleProps> = {
     cardContainer: {
       // Add your custom styles here
-    },
+    }
   };
 
   it('should render the card with correct header and body', () => {

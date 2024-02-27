@@ -1,29 +1,25 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
-import { Text } from "react-native";
-import SirenProvider from "../../src/components/sirenProvider";
-import { Siren } from "test_notification";
+import React from 'react';
+import { render } from '@testing-library/react-native';
+import { Text } from 'react-native';
+import SirenProvider from '../../src/components/sirenProvider';
+import { Siren } from 'test_notification';
 
-jest.mock("test_notification");
+jest.mock('test_notification');
 
-describe("SirenProvider", () => {
-  it("should render children", () => {
+describe('SirenProvider', () => {
+  it('should render children', () => {
     const { getByText } = render(
-      <SirenProvider
-        config={{ userToken: "test-token", recipientId: "test-id" }}
-      >
-        <Text data-testid="child-component">Child</Text>
+      <SirenProvider config={{ userToken: 'test-token', recipientId: 'test-id' }}>
+        <Text data-testid='child-component'>Child</Text>
       </SirenProvider>
     );
 
-    expect(getByText("Child")).toBeTruthy();
+    expect(getByText('Child')).toBeTruthy();
   });
 
-  it("should call initialize function on mount", async () => {
+  it('should call initialize function on mount', async () => {
     render(
-      <SirenProvider
-        config={{ userToken: "test-token", recipientId: "test-id" }}
-      >
+      <SirenProvider config={{ userToken: 'test-token', recipientId: 'test-id' }}>
         <Text>Child</Text>
       </SirenProvider>
     );
@@ -32,13 +28,13 @@ describe("SirenProvider", () => {
     const mockCountHandler = jest.fn();
 
     const sirenObject = new Siren({
-      token: "user-token",
-      recipientId: "recipient-id",
+      token: 'user-token',
+      recipientId: 'recipient-id',
       onError: mocErrorFn,
       actionCallbacks: {
         onNotificationReceived: mockNotificationHandler,
-        onUnViewedCountReceived: mockCountHandler,
-      },
+        onUnViewedCountReceived: mockCountHandler
+      }
     });
 
     expect(sirenObject).toBeInstanceOf(Siren);

@@ -18,23 +18,23 @@ describe('ErrorWindow', () => {
         color: '#FF0000',
         fontSize: 18,
         fontWeight: '400',
-        marginBottom: 10,
+        marginBottom: 10
       },
       errorButton: {
         backgroundColor: '#007AFF',
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 5,
+        borderRadius: 5
       },
       errorButtonText: {
         color: '#FFFFFF',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: 'bold'
       }
     };
 
     const retryCallback = jest.fn();
-    
+
     const { getByText } = render(
       <ErrorWindow styles={customErrorStyles} onRetry={retryCallback} />
     );

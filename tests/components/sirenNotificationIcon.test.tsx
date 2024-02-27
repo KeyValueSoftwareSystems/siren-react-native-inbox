@@ -2,19 +2,19 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Image } from 'react-native';
 
-import {SirenNotificationIcon} from   '../../src';
+import { SirenNotificationIcon } from '../../src';
 import type { Theme } from '../../src/types';
 import * as sirenProvider from '../../src/components/sirenProvider';
-import type { FetchNotificationsType, NotificationDataType, NotificationsApiResponse, VerifyTokenResponse } from 'test_notification/dist/types';
+import type { NotificationDataType } from 'test_notification/dist/types';
 import type { Siren } from 'test_notification';
 import type { sirenReducerTypes } from '../../src/utils/constants';
 
-const UnviewedCountReturnResponse= {
+const UnviewedCountReturnResponse = {
   data: {
-    unviewedCount: 5,
+    unviewedCount: 5
   },
-  error: null,
-}
+  error: null
+};
 
 type ActionType =
   | { type: sirenReducerTypes.SET_NOTIFICATIONS; payload: NotificationDataType[] }
@@ -49,39 +49,27 @@ describe('SirenNotificationIcon', () => {
 
   const notificationIcon = <Image source={require('../../src/assets/icon.png')} />;
   const mockDispatch = jest.fn();
-  const mockSirenCore: Siren = {
+  const mockSirenCore:Pick<Siren, keyof Siren> = {
     markNotificationAsReadById: jest.fn(),
     markAllNotificationsAsRead: jest.fn(),
     deleteNotificationById: jest.fn(),
     clearAllNotifications: jest.fn(),
     markNotificationsAsViewed: jest.fn(),
-    token: undefined,
-    recipientId: undefined,
-    onError: undefined,
-    notificationFetchIntervalId: undefined,
-    unViewedCountFetchIntervalId: undefined,
-    latestNotification: undefined,
-    actionCallbacks: undefined,
-    tokenValidationStatus: undefined,
-    bindMethods: undefined,
     verifyToken: jest.fn(),
-    fetchUnviewedNotificationsCount: jest.fn(async () => (UnviewedCountReturnResponse)),
+    fetchUnviewedNotificationsCount: jest.fn(async () => UnviewedCountReturnResponse),
     fetchAllNotifications: jest.fn(),
     startRealTimeNotificationFetch: jest.fn(),
     stopRealTimeNotificationFetch: jest.fn(),
     startRealTimeUnviewedCountFetch: jest.fn(),
     stopRealTimeUnviewedCountFetch: jest.fn(),
-    emitMissingParameterError: undefined,
-    authorizeUserAction: undefined
   };
 
-  const dispatch = (action  : ActionType) => {
+  const dispatch = (action: ActionType) => {
     mockDispatch(action);
   };
 
-  
   jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-    sirenCore: mockSirenCore,
+    sirenCore: mockSirenCore as Siren,
     notifications: [],
     dispatch,
     unviewedCount: 5
@@ -128,6 +116,9 @@ describe('SirenNotificationIcon', () => {
     await mockSirenCore.fetchUnviewedNotificationsCount();
 
     expect(mockSirenCore.fetchUnviewedNotificationsCount).toHaveBeenCalled();
-    expect(mockDispatch).toHaveBeenCalledWith({ type: 'SET_UN_VIEWED_NOTIFICATION_COUNT', payload: 5 });
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'SET_UN_VIEWED_NOTIFICATION_COUNT',
+      payload: 5
+    });
   });
 });

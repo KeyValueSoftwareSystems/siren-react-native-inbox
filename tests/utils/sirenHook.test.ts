@@ -38,10 +38,10 @@ const Response = {
       subHeader: 'Test,Someone tagged you in a post',
       body: 'hey Sutty10\n"Get ready for our new \'app test challenge\' challenge starting on November 27. Join us to move towards better health!"',
       actionUrl:
-      'https://cdn5.vectorstock.com/i/1000x1000/92/89/hipster-avatar-image-vector-19639289.jpg',
+        'https://cdn5.vectorstock.com/i/1000x1000/92/89/hipster-avatar-image-vector-19639289.jpg',
       avatar: {
         imageUrl:
-        'https://cdn5.vectorstock.com/i/1000x1000/92/89/hipster-avatar-image-vector-19639289.jpg',
+          'https://cdn5.vectorstock.com/i/1000x1000/92/89/hipster-avatar-image-vector-19639289.jpg',
         actionUrl: null
       },
       additionalData: ''
@@ -67,12 +67,12 @@ const Response = {
 };
 
 const ActionResponse = {
-  data: {status: '200'},
-  error: null  
-}
+  data: { status: '200' },
+  error: null
+};
 
-const MarkAsViewedResponse ={
-  data:{
+const MarkAsViewedResponse = {
+  data: {
     id: '6018ebd1-683c-4397-a903-5ce9ea94bcd7',
     createdAt: '2024-02-05T05:43:35.533+00:00',
     updatedAt: '2024-02-23T13:08:55.252+00:00',
@@ -84,36 +84,25 @@ const MarkAsViewedResponse ={
     referenceId: 'ae0ee4af-f21c-4d3f-abfc-7e42dc0642c0',
     providerIntegrationId: 'f46e8256-4b81-4bc6-91c8-b3cf5b980e0b',
     lastOpenedAt: '2024-02-23T13:08:55.186Z',
-    totalUnviewed: 0,
+    totalUnviewed: 0
   },
-  error: null  
-}
+  error: null
+};
 
 describe('useSiren hook', () => {
-  const mockSirenCore: Siren = {
-    markNotificationAsReadById: jest.fn(async () => (Response)),
-    markAllNotificationsAsRead: jest.fn(async () => (ActionResponse)),
-    deleteNotificationById: jest.fn(async () => (ActionResponse)),
-    clearAllNotifications: jest.fn(async () => (ActionResponse)),
-    markNotificationsAsViewed: jest.fn(async () => (MarkAsViewedResponse)),
-    token: undefined,
-    recipientId: undefined,
-    onError: undefined,
-    notificationFetchIntervalId: undefined,
-    unViewedCountFetchIntervalId: undefined,
-    latestNotification: undefined,
-    actionCallbacks: undefined,
-    tokenValidationStatus: undefined,
-    bindMethods: undefined,
+  const mockSirenCore: Pick<Siren, keyof Siren> = {
+    markNotificationAsReadById: jest.fn(async () => Response),
+    markAllNotificationsAsRead: jest.fn(async () => ActionResponse),
+    deleteNotificationById: jest.fn(async () => ActionResponse),
+    clearAllNotifications: jest.fn(async () => ActionResponse),
+    markNotificationsAsViewed: jest.fn(async () => MarkAsViewedResponse),
     verifyToken: jest.fn(),
     fetchUnviewedNotificationsCount: jest.fn(),
     fetchAllNotifications: jest.fn(),
     startRealTimeNotificationFetch: jest.fn(),
     stopRealTimeNotificationFetch: jest.fn(),
     startRealTimeUnviewedCountFetch: jest.fn(),
-    stopRealTimeUnviewedCountFetch: jest.fn(),
-    emitMissingParameterError: undefined,
-    authorizeUserAction: undefined
+    stopRealTimeUnviewedCountFetch: jest.fn()
   };
 
   it('should call sirenCore.markNotificationAsReadById and update notifications list when sirenCore exists and id is not empty', async () => {
@@ -122,7 +111,7 @@ describe('useSiren hook', () => {
 
     // Mock useSirenContext
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore,
+      sirenCore: mockSirenCore as Siren,
       notifications,
       dispatch,
       unviewedCount: 0
@@ -144,7 +133,7 @@ describe('useSiren hook', () => {
     const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore,
+      sirenCore: mockSirenCore as Siren,
       notifications,
       dispatch,
       unviewedCount: 0
@@ -167,7 +156,7 @@ describe('useSiren hook', () => {
     const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore,
+      sirenCore: mockSirenCore as Siren,
       notifications,
       dispatch,
       unviewedCount: 0
@@ -189,7 +178,7 @@ describe('useSiren hook', () => {
     const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore,
+      sirenCore: mockSirenCore as Siren,
       notifications,
       dispatch,
       unviewedCount: 0
@@ -212,7 +201,7 @@ describe('useSiren hook', () => {
     const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore,
+      sirenCore: mockSirenCore as Siren,
       notifications,
       dispatch,
       unviewedCount: 0

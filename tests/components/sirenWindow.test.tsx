@@ -7,7 +7,7 @@ describe('SirenWindow', () => {
   it('renders without crashing', () => {
     render(
       <SirenWindow
-        title="Notifications"
+        title='Notifications'
         hideHeader={false}
         darkMode={false}
         notificationsPerPage={10}
@@ -20,7 +20,7 @@ describe('SirenWindow', () => {
   it('displays loading window when isLoading is true', () => {
     const { getByTestId } = render(
       <SirenWindow
-        title="Notifications"
+        title='Notifications'
         hideHeader={false}
         darkMode={false}
         notificationsPerPage={10}
@@ -35,7 +35,7 @@ describe('SirenWindow', () => {
   it('displays list footer when isLoading is true', () => {
     const { getByTestId } = render(
       <SirenWindow
-        title="Notifications"
+        title='Notifications'
         hideHeader={false}
         darkMode={false}
         notificationsPerPage={10}
@@ -50,7 +50,7 @@ describe('SirenWindow', () => {
   it('displays error window when isError is true', () => {
     const { getByTestId } = render(
       <SirenWindow
-        title="Notifications"
+        title='Notifications'
         hideHeader={false}
         darkMode={false}
         notificationsPerPage={10}
@@ -65,7 +65,7 @@ describe('SirenWindow', () => {
   it('displays custom empty window when notifications array is empty', () => {
     const { getByTestId } = render(
       <SirenWindow
-        title="Notifications"
+        title='Notifications'
         hideHeader={false}
         darkMode={false}
         notificationsPerPage={10}
