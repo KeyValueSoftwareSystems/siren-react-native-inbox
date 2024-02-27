@@ -80,9 +80,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const [endReached, setEndReached] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
-  const handleMarkNotificationsAsViewed = async () => {
-    if (isNonEmptyArray(notifications)) {
-      const response = await markNotificationsAsViewed(notifications[0].createdAt);
+  const handleMarkNotificationsAsViewed = async (newNotifications = notifications) => {
+    if (isNonEmptyArray(newNotifications)) {
+      const response = await markNotificationsAsViewed(newNotifications[0].createdAt);
 
       processError(response.error);
     }
@@ -159,7 +159,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (nonEmptyResponse) {
       const updatedNotifications = isResetList ? responseData : [...notifications, ...responseData];
 
-      isResetList && handleMarkNotificationsAsViewed();
+      isResetList && handleMarkNotificationsAsViewed(updatedNotifications);
       setNotifications(updatedNotifications);
     } else {
       setEndReached(true);
