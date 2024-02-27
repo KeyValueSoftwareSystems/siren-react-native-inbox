@@ -25,7 +25,8 @@ import { Constants } from '../utils';
  */
 const Header = (props: {
   title: string;
-  styles: SirenStyleProps;
+  styles: 
+ Partial<SirenStyleProps>;
   onPressClearAll: () => void;
   clearAllDisabled: boolean;
 }): ReactElement => {

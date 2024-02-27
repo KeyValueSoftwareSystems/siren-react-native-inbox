@@ -106,7 +106,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   };
 
   return (
-    <TouchableOpacity disabled style={container}>
+    <TouchableOpacity testID='notification-icon' disabled style={container}>
       {/* Render badge with unviewed count if count is greater than 0 */}
       {unviewedCount > 0 && renderBadge()}
       {/* Render provided notification icon or default icon */}
