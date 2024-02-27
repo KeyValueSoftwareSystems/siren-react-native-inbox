@@ -9,7 +9,6 @@ import type { NotificationDataType, SirenErrorType } from 'test_notification/dis
  * @property {boolean} [darkMode] - Enables dark theme for the notification feed.
  * @property {CardProps} [cardProps] - Customization options for the notification card.
  * @property {boolean} [realTimeNotificationEnabled] - Enables real-time polling for new notifications.
- * @property {number} [notificationsPerPage=10] - Number of notifications to fetch per API call for pagination.
  * @property {JSX.Element} [listEmptyComponent] - Custom UI to display when the notification list is empty.
  * @property {JSX.Element} [customFooter] - Custom UI for the notification panel's footer.
  * @property {JSX.Element} [customHeader] - Custom UI for the notification panel's header.
@@ -24,7 +23,6 @@ export type SirenInboxProps = {
   darkMode?: boolean;
   cardProps?: CardProps;
   realTimeNotificationEnabled?: boolean;
-  notificationsPerPage?: number;
   listEmptyComponent?: JSX.Element;
   customFooter?: JSX.Element;
   customHeader?: JSX.Element;
@@ -48,6 +46,8 @@ export type SirenNotificationIconProps = {
   notificationIcon?: JSX.Element;
   onError?: (error: SirenErrorType) => void;
   darkMode?: boolean;
+  onPress?: () => void;
+  disabled?: boolean;
 };
 
 /**
