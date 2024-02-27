@@ -59,6 +59,6 @@
     "readme"
   ],
   "dependencies": {
-    "test_notification": "1.0.3"
+    "test_notification": "^1.0.4"
   }
 }

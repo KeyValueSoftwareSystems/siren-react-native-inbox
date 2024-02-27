@@ -30,7 +30,6 @@ const { applyTheme } = CommonUtils;
  *   title="Notifications"
  *   hideHeader={false}
  *   darkMode={true}
- *   notificationsPerPage={10}
  *   realTimeNotificationEnabled={true}
  *   onError={(error) => console.log(error)}
  * />
@@ -40,7 +39,6 @@ const { applyTheme } = CommonUtils;
  * @param {string} [props.title=DEFAULT_WINDOW_TITLE] - Title of the notification window.
  * @param {boolean} [props.hideHeader=false] - Flag to hide or show the header.
  * @param {boolean} [props.darkMode=false] - Flag to enable dark mode.
- * @param {number} [props.notificationsPerPage=10] - Number of notifications to fetch per page.
  * @param {Object} [props.cardProps={ hideAvatar: false, showMedia: true }] - Props for customizing the notification cards.
  * @param {JSX.Element} [props.listEmptyComponent=null] - Custom component to display when the notification list is empty.
  * @param {JSX.Element} [props.customHeader=null] - Custom header component.
@@ -56,7 +54,6 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     title = DEFAULT_WINDOW_TITLE,
     hideHeader = false,
     darkMode = false,
-    notificationsPerPage = 10,
     cardProps = { hideAvatar: false, showMedia: true },
     listEmptyComponent = null,
     customHeader = null,
@@ -67,9 +64,11 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
     onError = () => {}
   } = props;
 
+  const notificationsPerPage = 10;
+
   const { sirenCore, notifications, dispatch } = useSirenContext();
 
-  const { deleteNotification, clearAllNotification, markNotificationsAsViewed } = useSiren();
+  const { deleteNotification, clearAllNotificationByDate, markNotificationsAsViewed } = useSiren();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
@@ -224,7 +223,7 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
 
   const onPressClearAll = async (): Promise<void> => {
     if (notifications.length > 0) {
-      const response = await clearAllNotification(notifications[notifications.length - 1].createdAt);
+      const response = await clearAllNotificationByDate(notifications[notifications.length - 1].createdAt);
 
       if (response?.error && onError) {
         onError(response.error);

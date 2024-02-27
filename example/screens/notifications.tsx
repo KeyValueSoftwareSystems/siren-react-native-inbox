@@ -53,7 +53,7 @@ function Notifications(): React.JSX.Element {
     backgroundColor: isDarkMode ? '#000' : '#FFF'
   };
 
-  const { markNotificationsAllAsRead, markAsRead } = useSiren();
+  const { markNotificationsAsReadByDate, markAsRead } = useSiren();
 
   const renderListEmpty = () => {
     return (
@@ -77,7 +77,7 @@ function Notifications(): React.JSX.Element {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.whiteLabel}>Back</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => markNotificationsAllAsRead(String(new Date().getTime()))}>
+        <TouchableOpacity onPress={() => markNotificationsAsReadByDate(String(new Date().getTime()))}>
           <Text style={styles.whiteLabel}>Mark allAsRead</Text>
         </TouchableOpacity>
       </View>
@@ -172,7 +172,6 @@ function Notifications(): React.JSX.Element {
           darkMode={sdkDarkModeEnabled}
           cardProps={{ hideAvatar: hideAvatar, showMedia: true }}
           realTimeNotificationEnabled={notificationPollingEnabled}
-          notificationsPerPage={5}
           theme={windowThemes[windowThemeIndex]}
           customFooter={showCustomFooter ? renderCustomFooter() : undefined}
           listEmptyComponent={showCustomEmptyComponent ? renderListEmpty() : undefined}

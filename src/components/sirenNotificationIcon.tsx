@@ -106,7 +106,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   };
 
   return (
-    <TouchableOpacity disabled style={container}>
+    <TouchableOpacity disabled style={[container, styles.iconContainer]}>
       {/* Render badge with unviewed count if count is greater than 0 */}
       {unviewedCount > 0 && renderBadge()}
       {/* Render provided notification icon or default icon */}
@@ -122,6 +122,11 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
 };
 
 const styles = StyleSheet.create({
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden'
+  },
   iconStyle: {
     width: '100%',
     height: '100%'

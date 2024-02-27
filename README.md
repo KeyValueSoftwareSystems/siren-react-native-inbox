@@ -136,7 +136,6 @@ import { SirenWindow } from '@siren/react-native-inbox';
     title="Notifications"
     hideHeader={false}
     darkMode={true}
-    notificationsPerPage={10}
     realTimeNotificationEnabled={true}
     onError={(error) => console.log(error)}
 />
@@ -152,7 +151,6 @@ title |  Title of the notification window |  string | "Notifications" |
 hideHeader | Flag to hide or show the header |  boolean | false |
 darkMode | Flag to enable dark mode |  boolean | false |
 realTimeNotificationEnabled | Switch for on and of notification listener |  boolean | false |
-notificationsPerPage | Number of notifications to fetch per page | number | 10 |
 cardProps | Props for customizing the notification cards | CardProps | null |
 customNotificationCard | Custom function for rendering notification cards | (notification)=> JSX Element | null |
 onNotificationCardClick | Props for customizing the notification cards | (notification)=> void | ()=>null |
