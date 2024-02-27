@@ -46,6 +46,8 @@ export type SirenNotificationIconProps = {
   notificationIcon?: JSX.Element;
   onError?: (error: SirenErrorType) => void;
   darkMode?: boolean;
+  onPress?: () => void;
+  disabled?: boolean;
 };
 
 /**

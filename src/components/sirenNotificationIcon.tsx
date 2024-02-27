@@ -28,13 +28,17 @@ const { ThemeMode, sirenReducerTypes } = Constants;
  * @param {JSX.Element} [props.notificationIcon] - Custom icon to be used as the notification indicator.
  * @param {boolean} [props.darkMode=false] - Enables dark mode for the badge.
  * @param {boolean} [props.realTimeUnviewedCountEnabled=true] - Enables real-time fetching of the unviewed notifications count.
+ * @param {boolean} [props.onPress=() => null] - Function for handling press of icon.
+ * @param {boolean} [props.disabled=false] - Disable click handler of icon. 
  */
 const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   const {
     theme = { dark: {}, light: {} },
     notificationIcon,
     darkMode = false,
-    realTimeUnviewedCountEnabled = true
+    realTimeUnviewedCountEnabled = true,
+    onPress = () => null,
+    disabled = false
   } = props;
 
   const { sirenCore, unviewedCount, dispatch } = useSirenContext();
@@ -106,7 +110,11 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   };
 
   return (
-    <TouchableOpacity disabled style={[container, styles.iconContainer]}>
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
+      style={[container, styles.iconContainer]}
+    >
       {/* Render badge with unviewed count if count is greater than 0 */}
       {unviewedCount > 0 && renderBadge()}
       {/* Render provided notification icon or default icon */}

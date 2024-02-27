@@ -93,6 +93,8 @@ notificationIcon | Option to use custom notification Icon |  JSX Element | null 
 realTimeUnviewedCountEnabled | Flag to enable real-time un-viewed notification count |  boolean | true |
 darkMode | Flag to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
+onPress | Function for handling press of icon | ()=> void | null |
+disabled | Flag to disable click handler of icon |  boolean | false |
 
 #### Theming options
 Customize the unread badge of the notification icon, and choose between dark and light theming options. 
