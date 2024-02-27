@@ -241,7 +241,7 @@ export type NotificationCardProps = {
   onCardClick: (notification: NotificationDataType) => void;
   notification: NotificationDataType;
   cardProps: CardProps;
-  styles: SirenStyleProps;
+  styles: Partial<SirenStyleProps>;
   onDelete: (id: string) => void;
 };
 

@@ -20,7 +20,7 @@ const { ERROR_TEXT, RETRY_BUTTON_LABEL } = Constants;
  * @param {Object} props.styles - Custom styles applied to the error window
  * @param {Function} props.onRetry - A callback function that is invoked when the user presses the refresh button.
  */
-const ErrorWindow = (props: { styles: SirenStyleProps; onRetry: () => void }): ReactElement => {
+const ErrorWindow = (props: { styles: Partial<SirenStyleProps>; onRetry: () => void }): ReactElement => {
   const { styles, onRetry } = props;
 
   return (

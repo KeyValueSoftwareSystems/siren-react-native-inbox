@@ -6,7 +6,7 @@ import type { SirenStyleProps, ThemeProps } from '../types';
 import { DefaultTheme, type Constants } from '../utils';
 
 type LoadingWindowProps = {
-  styles: SirenStyleProps;
+  styles: Partial<SirenStyleProps>;
   mode: Constants.ThemeMode;
   theme: ThemeProps;
 };
@@ -32,6 +32,7 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
   return (
     <View style={styles.emptyContainer}>
       <ActivityIndicator
+        testID="activity-indicator"
         color={theme?.colors?.textColor || DefaultTheme[mode].colors.primaryColor}
         size='large'
       />
