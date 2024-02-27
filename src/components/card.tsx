@@ -44,6 +44,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
     <TouchableOpacity
       onPress={() => onCardClick(notification)}
       activeOpacity={0.6}
+      testID='card-touchable'
       style={[styles.cardContainer, notification?.isRead && styles.transparent]}
     >
       {!cardProps?.hideAvatar && (
@@ -86,6 +87,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
             onPress={() => onDelete(notification.id)}
             style={styles.deleteButton}
+            testID='delete-button'
           >
             <Image
               source={require('../assets/trash.png')}

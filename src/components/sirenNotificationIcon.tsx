@@ -29,7 +29,7 @@ const { ThemeMode, sirenReducerTypes } = Constants;
  * @param {boolean} [props.darkMode=false] - Enables dark mode for the badge.
  * @param {boolean} [props.realTimeUnviewedCountEnabled=true] - Enables real-time fetching of the unviewed notifications count.
  * @param {boolean} [props.onPress=() => null] - Function for handling press of icon.
- * @param {boolean} [props.disabled=false] - Disable click handler of icon. 
+ * @param {boolean} [props.disabled=false] - Disable click handler of icon.
  */
 const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   const {
@@ -111,6 +111,7 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
 
   return (
     <TouchableOpacity
+      testID='notification-icon'
       disabled={disabled}
       onPress={onPress}
       style={[container, styles.iconContainer]}
