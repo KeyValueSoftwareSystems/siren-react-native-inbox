@@ -28,7 +28,9 @@
     "prepare": "husky",
     "lint": "eslint src",
     "build": "bob build",
-    "test-build": "npm run build && npm pack && mv siren-react-native-inbox-1.0.0.tgz example/siren-sdk01.tgz && cd example && npm install"
+    "test-build": "npm run build && npm pack && mv siren-react-native-inbox-1.0.0.tgz example/siren-sdk01.tgz && cd example && npm install",
+    "test": "npx jest",
+    "coverage": "npm run test -- --coverage"
   },
   "devDependencies": {
     "@types/react": "^18.2.57",
