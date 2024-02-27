@@ -1,8 +1,9 @@
 import type { ReactElement } from 'react';
 import React from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import type { NotificationDataType } from 'test_notification/dist/types';
 
-import type { NotificationCardProps } from '../types';
+import type { NotificationCardProps, SirenStyleProps } from '../types';
 import { CommonUtils } from '../utils';
 
 /**
@@ -37,6 +38,23 @@ import { CommonUtils } from '../utils';
  * @param {Object} props.styles - Custom styles applied to the card and its elements.
  * @param {Function} props.onDelete - Callback function executed when the delete action is triggered.
  */
+
+const renderAvatar = (notification: NotificationDataType, styles: SirenStyleProps): JSX.Element => {
+  return (
+    <View style={styles.cardIconContainer}>
+      <View style={styles.cardIconRound}>
+        {Boolean(notification?.message?.avatar?.imageUrl) && (
+          <Image
+            source={{ uri: notification.message?.avatar?.imageUrl }}
+            resizeMode='cover'
+            style={styles.cardAvatarStyle}
+          />
+        )}
+      </View>
+    </View>
+  );
+};
+
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps, styles, onDelete } = props;
 
@@ -46,19 +64,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
       activeOpacity={0.6}
       style={[styles.cardContainer, notification?.isRead && styles.transparent]}
     >
-      {!cardProps?.hideAvatar && (
-        <View style={styles.cardIconContainer}>
-          <View style={styles.cardIconRound}>
-            {Boolean(notification?.message?.avatar?.imageUrl) && (
-              <Image
-                source={{ uri: notification.message?.avatar?.imageUrl }}
-                resizeMode='cover'
-                style={styles.cardAvatarStyle}
-              />
-            )}
-          </View>
-        </View>
-      )}
+      {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
       <View style={styles.cardContentContainer}>
         <Text numberOfLines={1} style={styles.cardTitle}>
           {notification.message?.header}

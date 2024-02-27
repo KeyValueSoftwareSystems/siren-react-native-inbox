@@ -10,7 +10,7 @@
     - [Install SDK](#1-install-sdk)
     - [Siren Provider](#2-siren-provider)
     - [Siren Notification Icon](#3-siren-notification-icon)
-    - [Siren Notification Window](#4-siren-notification-window)
+    - [Siren Inbox](#4-siren-inbox)
     - [useSiren](#5-usesiren)
     - [Error Codes](#6-error-codes)
     - [Complete Code Example](#complete-code-example)
@@ -126,14 +126,14 @@ Customize the unread badge of the notification icon, and choose between dark and
     }
 ```
 
-### 4. Siren Notification Window
+### 4. Siren Inbox
 
 SirenNotificationWindow is a paginated list view for displaying notifications.
 
 ```js
-import { SirenWindow } from '@siren/react-native-inbox';
+import { SirenInbox } from '@siren/react-native-inbox';
 
-<SirenWindow
+<SirenInbox
     theme={customTheme}
     title="Notifications"
     hideHeader={false}
@@ -279,7 +279,7 @@ Here's a runnable code example that covers everything in this quick start guide.
 
 import React from 'react';
 import {SafeAreaView} from 'react-native';
-import {SirenWindow,SirenNotificationIcon,SirenProvider} from '@siren/react-native-inbox';
+import {SirenInbox,SirenNotificationIcon,SirenProvider} from '@siren/react-native-inbox';
 
 function App(): React.JSX.Element {
 
@@ -304,7 +304,7 @@ function MyContainer(): React.JSX.Element {
       <SirenNotificationIcon
         darkMode={false}
       />
-      <SirenWindow
+      <SirenInbox
         title="Notifications"
         hideHeader={false}
         darkMode={false}

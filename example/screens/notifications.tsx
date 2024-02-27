@@ -9,7 +9,7 @@ import {
   StyleSheet
 } from 'react-native';
 
-import { SirenWindow, useSiren } from '@siren/react-native-inbox';
+import { SirenInbox, useSiren } from '@siren/react-native-inbox';
 import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/types';
 import { useNavigation } from '@react-navigation/native';
 
@@ -166,7 +166,7 @@ function Notifications(): React.JSX.Element {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={styles.contentContainer}>
-        <SirenWindow
+        <SirenInbox
           title='Siren Notifications'
           hideHeader={hideHeader}
           darkMode={sdkDarkModeEnabled}
