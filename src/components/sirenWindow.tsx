@@ -68,7 +68,7 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
 
   const { sirenCore, notifications, dispatch } = useSirenContext();
 
-  const { deleteNotification, clearAllNotificationByDate, markNotificationsAsViewed } = useSiren();
+  const { deleteNotification, clearNotificationByDate, markNotificationsAsViewed } = useSiren();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
@@ -223,7 +223,7 @@ const SirenWindow = (props: SirenInboxProps): ReactElement => {
 
   const onPressClearAll = async (): Promise<void> => {
     if (notifications.length > 0) {
-      const response = await clearAllNotificationByDate(notifications[notifications.length - 1].createdAt);
+      const response = await clearNotificationByDate(notifications[notifications.length - 1].createdAt);
 
       if (response?.error && onError) {
         onError(response.error);

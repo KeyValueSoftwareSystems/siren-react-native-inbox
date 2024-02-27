@@ -255,7 +255,7 @@ Function name | Parameters type | Description |
 markAllNotificationsAsReadByDate | startDate: string | Set all notification read status to true until given date |
 markAsRead | id: string | Set read status of a specific notification to true |
 deleteNotification |  id: string  | Delete a specific notification by id |
-clearAllNotificationByDate | startDate: string | Delete all notifications until given date |
+clearNotificationByDate | startDate: string | Delete all notifications until given date |
 markNotificationsAsViewed | startDate: string | Set all notification viewed status to true until given date |
 
 ### 6. Error codes
