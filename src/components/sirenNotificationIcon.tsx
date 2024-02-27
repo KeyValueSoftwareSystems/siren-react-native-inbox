@@ -91,8 +91,8 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
       color: badge.textColor,
       fontSize: badge.textSize
     };
-    const countLimit = 100;
-    const reachCountLimit = unviewedCount < countLimit;
+    const countLimit = 99;
+    const reachCountLimit = unviewedCount >= countLimit;
 
     const defaultBadge = (
       <View style={[defaultBadgeStyle, styles.badge]}>

@@ -19,7 +19,8 @@ function MyTabs() {
           tabBarLabel: 'Notifications',
           tabBarIcon: () => (
             <SirenNotificationIcon
-              realTimeUnviewedCountEnabled={true}
+              realTimeUnviewedCountEnabled={false}
+              disabled
             />
           )
         }}
