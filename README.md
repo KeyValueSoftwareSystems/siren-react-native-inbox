@@ -93,6 +93,8 @@ notificationIcon | Option to use custom notification Icon |  JSX Element | null 
 realTimeUnviewedCountEnabled | Flag to enable real-time un-viewed notification count |  boolean | true |
 darkMode | Flag to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
+onPress | Function for handling press of icon | ()=> void | null |
+disabled | Flag to disable click handler of icon |  boolean | false |
 
 #### Theming options
 Customize the unread badge of the notification icon, and choose between dark and light theming options. 
@@ -136,7 +138,6 @@ import { SirenWindow } from '@siren/react-native-inbox';
     title="Notifications"
     hideHeader={false}
     darkMode={true}
-    notificationsPerPage={10}
     realTimeNotificationEnabled={true}
     onError={(error) => console.log(error)}
 />
@@ -152,7 +153,6 @@ title |  Title of the notification window |  string | "Notifications" |
 hideHeader | Flag to hide or show the header |  boolean | false |
 darkMode | Flag to enable dark mode |  boolean | false |
 realTimeNotificationEnabled | Switch for on and of notification listener |  boolean | false |
-notificationsPerPage | Number of notifications to fetch per page | number | 10 |
 cardProps | Props for customizing the notification cards | CardProps | null |
 customNotificationCard | Custom function for rendering notification cards | (notification)=> JSX Element | null |
 onNotificationCardClick | Props for customizing the notification cards | (notification)=> void | ()=>null |
@@ -257,7 +257,7 @@ Function name | Parameters type | Description |
 markAllNotificationsAsReadByDate | startDate: string | Set all notification read status to true until given date |
 markAsRead | id: string | Set read status of a specific notification to true |
 deleteNotification |  id: string  | Delete a specific notification by id |
-clearAllNotificationByDate | startDate: string | Delete all notifications until given date |
+clearNotificationByDate | startDate: string | Delete all notifications until given date |
 markNotificationsAsViewed | startDate: string | Set all notification viewed status to true until given date |
 
 ### 6. Error codes
