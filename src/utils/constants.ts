@@ -3,7 +3,6 @@ export const COLORS = {
     primaryColor: '#EB5017',
     activeCardColor: '#FDEDE7',
     primaryTextColor: '#FFFFFF',
-    secondaryColor: '#3D89DF',
     textColor: '#121212',
     neutralColor: '#FFFFFF',
     borderColor: '#D0D5DD'
@@ -12,7 +11,6 @@ export const COLORS = {
     primaryColor: '#EB5017',
     activeCardColor: '#292929',
     primaryTextColor: '#FFFFFF',
-    secondaryColor: '#3D89DF',
     textColor: '#FFFFFF',
     neutralColor: '#121212',
     borderColor: '#D0D5DD'

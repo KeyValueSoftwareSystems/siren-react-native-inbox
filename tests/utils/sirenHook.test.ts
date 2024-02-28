@@ -90,7 +90,7 @@ const MarkAsViewedResponse = {
 };
 
 describe('useSiren hook', () => {
-  const mockSirenCore: Pick<Siren, keyof Siren> = {
+  const mockSiren: Pick<Siren, keyof Siren> = {
     markNotificationAsReadById: jest.fn(async () => Response),
     markNotificationsAsReadByDate: jest.fn(async () => ActionResponse),
     deleteNotificationById: jest.fn(async () => ActionResponse),
@@ -105,13 +105,13 @@ describe('useSiren hook', () => {
     stopRealTimeUnviewedCountFetch: jest.fn()
   };
 
-  it('should call sirenCore.markNotificationAsReadById and update notifications list when sirenCore exists and id is not empty', async () => {
+  it('should call siren.markNotificationAsReadById and update notifications list when siren exists and id is not empty', async () => {
     const notifications = [newNotification];
     const dispatch = jest.fn();
 
     // Mock useSirenContext
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore as Siren,
+      siren: mockSiren as Siren,
       notifications,
       dispatch,
       unviewedCount: 0
@@ -120,7 +120,7 @@ describe('useSiren hook', () => {
     const { markAsRead } = useSiren();
     const response = await markAsRead('xyz');
 
-    expect(mockSirenCore.markNotificationAsReadById).toHaveBeenCalledWith('xyz');
+    expect(mockSiren.markNotificationAsReadById).toHaveBeenCalledWith('xyz');
     expect(dispatch).toHaveBeenCalledWith({
       type: sirenReducerTypes.SET_NOTIFICATIONS,
       payload: [{ ...newNotification, isRead: true }]
@@ -128,12 +128,12 @@ describe('useSiren hook', () => {
     expect(response).toEqual(Response);
   });
 
-  it('should call sirenCore.markNotificationsAsReadByDate and update notifications list when sirenCore exists and untilDate is provided', async () => {
+  it('should call siren.markNotificationsAsReadByDate and update notifications list when siren exists and untilDate is provided', async () => {
     const notifications = [newNotification];
     const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore as Siren,
+      siren: mockSiren as Siren,
       notifications,
       dispatch,
       unviewedCount: 0
@@ -143,7 +143,7 @@ describe('useSiren hook', () => {
     const untilDate = '2024-02-28T00:00:00Z';
     const response = await markNotificationsAsReadByDate(untilDate);
 
-    expect(mockSirenCore.markNotificationsAsReadByDate).toHaveBeenCalledWith(untilDate);
+    expect(mockSiren.markNotificationsAsReadByDate).toHaveBeenCalledWith(untilDate);
     expect(dispatch).toHaveBeenCalledWith({
       type: sirenReducerTypes.SET_NOTIFICATIONS,
       payload: notifications.map((notification) => ({ ...notification, isRead: true }))
@@ -151,12 +151,12 @@ describe('useSiren hook', () => {
     expect(response).toEqual(ActionResponse);
   });
 
-  it('should call sirenCore.deleteNotificationById and update notifications list when sirenCore exists and id is not empty', async () => {
+  it('should call siren.deleteNotificationById and update notifications list when siren exists and id is not empty', async () => {
     const notifications = [newNotification];
     const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore as Siren,
+      siren: mockSiren as Siren,
       notifications,
       dispatch,
       unviewedCount: 0
@@ -165,7 +165,7 @@ describe('useSiren hook', () => {
     const { deleteNotification } = useSiren();
     const response = await deleteNotification('xyz');
 
-    expect(mockSirenCore.deleteNotificationById).toHaveBeenCalledWith('xyz');
+    expect(mockSiren.deleteNotificationById).toHaveBeenCalledWith('xyz');
     expect(dispatch).toHaveBeenCalledWith({
       type: sirenReducerTypes.SET_NOTIFICATIONS,
       payload: []
@@ -173,12 +173,12 @@ describe('useSiren hook', () => {
     expect(response).toEqual(ActionResponse);
   });
 
-  it('should call sirenCore.clearNotificationsByDate and update notifications list when sirenCore exists and untilDate is provided', async () => {
+  it('should call siren.clearNotificationsByDate and update notifications list when siren exists and untilDate is provided', async () => {
     const notifications = [newNotification];
     const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore as Siren,
+      siren: mockSiren as Siren,
       notifications,
       dispatch,
       unviewedCount: 0
@@ -188,7 +188,7 @@ describe('useSiren hook', () => {
     const untilDate = '2024-02-28T00:00:00Z';
     const response = await clearNotificationByDate(untilDate);
 
-    expect(mockSirenCore.clearNotificationsByDate).toHaveBeenCalledWith(untilDate);
+    expect(mockSiren.clearNotificationsByDate).toHaveBeenCalledWith(untilDate);
     expect(dispatch).toHaveBeenCalledWith({
       type: sirenReducerTypes.SET_NOTIFICATIONS,
       payload: []
@@ -196,12 +196,12 @@ describe('useSiren hook', () => {
     expect(response).toEqual(ActionResponse);
   });
 
-  it('should call sirenCore.markNotificationsAsViewed and update notifications list when sirenCore exists and untilDate is provided', async () => {
+  it('should call siren.markNotificationsAsViewed and update notifications list when siren exists and untilDate is provided', async () => {
     const notifications = [newNotification];
     const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
-      sirenCore: mockSirenCore as Siren,
+      siren: mockSiren as Siren,
       notifications,
       dispatch,
       unviewedCount: 0
@@ -211,7 +211,7 @@ describe('useSiren hook', () => {
     const untilDate = '2024-02-28T00:00:00Z';
     const response = await markNotificationsAsViewed(untilDate);
 
-    expect(mockSirenCore.markNotificationsAsViewed).toHaveBeenCalledWith(untilDate);
+    expect(mockSiren.markNotificationsAsViewed).toHaveBeenCalledWith(untilDate);
     expect(dispatch).toHaveBeenCalledWith({
       type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
       payload: 0

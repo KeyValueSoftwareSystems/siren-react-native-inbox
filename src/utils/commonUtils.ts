@@ -2,6 +2,9 @@ import { DefaultTheme } from './index';
 import { LogLevel, ThemeMode, levelLogFns } from './constants';
 import type { SirenStyleProps, ThemeProps } from '../types';
 
+export const isNonEmptyArray = (arr?: unknown[] | null) =>
+  Boolean(arr && typeof arr === 'object' && arr instanceof Array && arr.length> 0);
+
 export const generateElapsedTimeText = (timeString: string) => {
   const currentTime = new Date().getTime();
   const targetTime = new Date(timeString).getTime();

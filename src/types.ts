@@ -8,7 +8,6 @@ import type { NotificationDataType, SirenErrorType } from 'test_notification/dis
  * @property {boolean} [hideHeader] - Whether to hide the window header.
  * @property {boolean} [darkMode] - Enables dark theme for the notification feed.
  * @property {CardProps} [cardProps] - Customization options for the notification card.
- * @property {boolean} [realTimeNotificationEnabled] - Enables real-time polling for new notifications.
  * @property {JSX.Element} [listEmptyComponent] - Custom UI to display when the notification list is empty.
  * @property {JSX.Element} [customFooter] - Custom UI for the notification panel's footer.
  * @property {JSX.Element} [customHeader] - Custom UI for the notification panel's header.
@@ -22,7 +21,6 @@ export type SirenInboxProps = {
   hideHeader?: boolean;
   darkMode?: boolean;
   cardProps?: CardProps;
-  realTimeNotificationEnabled?: boolean;
   listEmptyComponent?: JSX.Element;
   customFooter?: JSX.Element;
   customHeader?: JSX.Element;
@@ -32,17 +30,15 @@ export type SirenInboxProps = {
 };
 
 /**
- * Describes the props for the SirenNotificationIcon component.
- * @typedef {Object} SirenNotificationIconProps
+ * Describes the props for the SirenInboxIcon component.
+ * @typedef {Object} SirenInboxIconProps
  * @property {Theme} [theme] - Customization options for the component's theme.
- * @property {boolean} [realTimeUnviewedCountEnabled] - Toggles real-time fetching of the unviewed notification count.
  * @property {JSX.Element} [notificationIcon] - Custom icon for the notification bell.
  * @property {(error: SirenErrorType) => void} [onError] - Callback function for handling errors.
  * @property {boolean} [darkMode] - Enables dark theme for the component.
  */
-export type SirenNotificationIconProps = {
+export type SirenInboxIconProps = {
   theme?: Theme;
-  realTimeUnviewedCountEnabled?: boolean;
   notificationIcon?: JSX.Element;
   onError?: (error: SirenErrorType) => void;
   darkMode?: boolean;
@@ -98,7 +94,6 @@ export type Theme = {
 export type ThemeProps = {
   colors?: {
     primaryColor?: string;
-    secondaryColor?: string;
     textColor?: string;
     neutralColor?: string;
     borderColor?: string;

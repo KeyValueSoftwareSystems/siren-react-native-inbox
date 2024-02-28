@@ -3,7 +3,7 @@ import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Siren } from 'test_notification';
 import type { UnviewedCountReturnResponse } from 'test_notification/dist/types';
 
-import type { SirenNotificationIconProps } from '../types';
+import type { SirenInboxIconProps } from '../types';
 import { Constants, DefaultTheme } from '../utils';
 import { useSirenContext } from './sirenProvider';
 import { defaultBadgeStyle } from '../utils/constants';
@@ -11,37 +11,34 @@ import { defaultBadgeStyle } from '../utils/constants';
 const { ThemeMode, sirenReducerTypes } = Constants;
 
 /**
- * `SirenNotificationIcon` displays an icon representing the entry point to view notifications.
+ * `SirenInboxIcon` displays an icon representing the entry point to view notifications.
  *
  * @component
  * @example
- * <SirenNotificationIcon
+ * <SirenInboxIcon
  *   theme={customTheme}
  *   notificationIcon={<CustomIcon />}
  *   darkMode={true}
- *   realTimeUnviewedCountEnabled={true}
  *   onError={(error) => console.error(error)}
  * />
  *
- * @param {Object} props - Props for configuring the SirenNotificationIcon component.
+ * @param {Object} props - Props for configuring the SirenInboxIcon component.
  * @param {Object} [props.theme={}] - Theme object for custom styling of the badge.
  * @param {JSX.Element} [props.notificationIcon] - Custom icon to be used as the notification indicator.
  * @param {boolean} [props.darkMode=false] - Enables dark mode for the badge.
- * @param {boolean} [props.realTimeUnviewedCountEnabled=true] - Enables real-time fetching of the unviewed notifications count.
  * @param {boolean} [props.onPress=() => null] - Function for handling press of icon.
  * @param {boolean} [props.disabled=false] - Disable click handler of icon.
  */
-const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
+const SirenInboxIcon = (props: SirenInboxIconProps) => {
   const {
     theme = { dark: {}, light: {} },
     notificationIcon,
     darkMode = false,
-    realTimeUnviewedCountEnabled = true,
     onPress = () => null,
     disabled = false
   } = props;
 
-  const { sirenCore, unviewedCount, dispatch } = useSirenContext();
+  const { siren, unviewedCount, dispatch } = useSirenContext();
 
   const mode = darkMode ? ThemeMode.DARK : ThemeMode.LIGHT;
   const badgeStyle = theme[mode]?.badgeStyle || {};
@@ -50,28 +47,24 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
 
   const badge = { ...defaultBadgeStyle, ...badgeStyle };
 
+  // Clean up - stop polling when component unmounts
+  const cleanUp = () => () => {
+    siren?.stopRealTimeUnviewedCountFetch();
+  };
+
   useEffect(() => {
     initialize();
 
-    // Clean up - stop polling when component unmounts
-    return () => {
-      if (realTimeUnviewedCountEnabled) sirenCore?.stopRealTimeUnviewedCountFetch();
-    };
-  }, [sirenCore]);
-
-  useEffect(() => {
-    if (realTimeUnviewedCountEnabled) sirenCore?.startRealTimeUnviewedCountFetch();
-    else sirenCore?.stopRealTimeUnviewedCountFetch();
-  }, [realTimeUnviewedCountEnabled]);
+    return cleanUp();
+  }, [siren]);
 
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
-    if (Siren && sirenCore) {
-      const unViewed: UnviewedCountReturnResponse =
-        await sirenCore.fetchUnviewedNotificationsCount();
+    if (Siren && siren) {
+      const unViewed: UnviewedCountReturnResponse = await siren.fetchUnviewedNotificationsCount();
 
-      if (realTimeUnviewedCountEnabled) sirenCore?.startRealTimeUnviewedCountFetch();
-      if (unViewed && unViewed.data)
+      siren.startRealTimeUnviewedCountFetch();
+      if (unViewed?.data)
         dispatch({
           type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
           payload: unViewed.data?.unviewedCount || 0
@@ -80,34 +73,41 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
   };
 
   const renderBadge = (): JSX.Element | null => {
+    const defaultBadgeStyle = {
+      minWidth: badge.size,
+      height: badge.size,
+      borderRadius: badge.size * 0.5,
+      backgroundColor: badge.color
+    };
+    const defaultBadgeText = {
+      color: badge.textColor,
+      fontSize: badge.textSize
+    };
+    const countLimit = 99;
+    const reachCountLimit = unviewedCount >= countLimit;
+
     const defaultBadge = (
-      <View
-        style={[
-          {
-            minWidth: badge.size,
-            height: badge.size,
-            borderRadius: badge.size * 0.5,
-            backgroundColor: badge.color
-          },
-          styles.badge
-        ]}
-      >
-        <Text
-          style={[
-            {
-              color: badge.textColor,
-              fontSize: badge.textSize
-            },
-            styles.badgeText
-          ]}
-        >
-          {unviewedCount > 99 ? '99+' : unviewedCount}
+      <View style={[defaultBadgeStyle, styles.badge]}>
+        <Text style={[defaultBadgeText, styles.badgeText]}>
+          {reachCountLimit ? '99+' : unviewedCount}
         </Text>
       </View>
     );
 
     return defaultBadge;
   };
+
+  const renderNotificationIcon = (): JSX.Element | null => {
+    /* Render provided notification icon or default icon */
+    if (notificationIcon) return notificationIcon;
+
+    return (
+      <Image source={require('../assets/icon.png')} resizeMode='contain' style={styles.iconStyle} />
+    );
+  };
+
+  /* Render badge with unviewed count if count is greater than 0 */
+  const showBadge = unviewedCount > 0;
 
   return (
     <TouchableOpacity
@@ -116,16 +116,9 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
       onPress={onPress}
       style={[container, styles.iconContainer]}
     >
-      {/* Render badge with unviewed count if count is greater than 0 */}
-      {unviewedCount > 0 && renderBadge()}
-      {/* Render provided notification icon or default icon */}
-      {notificationIcon || (
-        <Image
-          source={require('../assets/icon.png')}
-          resizeMode='contain'
-          style={styles.iconStyle}
-        />
-      )}
+      {showBadge && renderBadge()}
+
+      {renderNotificationIcon()}
     </TouchableOpacity>
   );
 };
@@ -166,4 +159,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SirenNotificationIcon;
+export default SirenInboxIcon;

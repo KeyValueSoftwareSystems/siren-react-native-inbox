@@ -6,12 +6,12 @@ import { useSirenContext } from "../components/sirenProvider";
 import { errorMap, sirenReducerTypes, updateNotificationsTypes } from "./constants";
 
 const useSiren = () => {
-  const { sirenCore, notifications, dispatch } = useSirenContext();
+  const { siren, notifications, dispatch } = useSirenContext();
 
   const markAsRead = async (id: string) => {
-    if (sirenCore) 
+    if (siren) 
       if (id?.length > 0) {
-        const response = await sirenCore?.markNotificationAsReadById(id);
+        const response = await siren?.markNotificationAsReadById(id);
 
         if (response.data)
           updateNotifications(updateNotificationsTypes.MARK_ITEM_AS_READ, id);
@@ -25,8 +25,8 @@ const useSiren = () => {
   };
 
   const markNotificationsAsReadByDate = async (untilDate: string) => {
-    if (sirenCore && untilDate) {
-      const response = await sirenCore?.markNotificationsAsReadByDate(untilDate);
+    if (siren && untilDate) {
+      const response = await siren?.markNotificationsAsReadByDate(untilDate);
 
       if (response.data)
         updateNotifications(updateNotificationsTypes.MARK_ALL_AS_READ);
@@ -38,9 +38,9 @@ const useSiren = () => {
   };
 
   const deleteNotification = async (id: string) => {
-    if (sirenCore) 
+    if (siren) 
       if (id?.length > 0) {
-        const response = await sirenCore?.deleteNotificationById(id);
+        const response = await siren?.deleteNotificationById(id);
 
         if (response.data)
           updateNotifications(updateNotificationsTypes.DELETE_ITEM, id);
@@ -54,8 +54,8 @@ const useSiren = () => {
   };
 
   const clearNotificationByDate = async (untilDate: string) => {
-    if (sirenCore && untilDate) {
-      const response = await sirenCore.clearNotificationsByDate(untilDate);
+    if (siren && untilDate) {
+      const response = await siren.clearNotificationsByDate(untilDate);
 
       if (response.data)
         updateNotifications(updateNotificationsTypes.DELETE_ALL_ITEM);
@@ -67,8 +67,8 @@ const useSiren = () => {
   };
 
   const markNotificationsAsViewed = async (untilDate: string) => {
-    if (sirenCore && untilDate) {
-      const response = await sirenCore?.markNotificationsAsViewed(untilDate);
+    if (siren && untilDate) {
+      const response = await siren?.markNotificationsAsViewed(untilDate);
 
       if (response.data)
         updateNotifications(updateNotificationsTypes.MARK_ITEM_AS_VIEWED);

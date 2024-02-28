@@ -1,11 +1,11 @@
-import SirenWindow from './components/sirenWindow';
+import SirenInbox from './components/sirenInbox';
 import SirenProvider from './components/sirenProvider';
-import SirenNotificationIcon from './components/sirenNotificationIcon';
+import SirenInboxIcon from './components/sirenInboxIcon';
 import useSiren from './utils/sirenHook';
 
 export {
   SirenProvider,
-  SirenWindow,
-  SirenNotificationIcon,
+  SirenInbox,
+  SirenInboxIcon,
   useSiren
 };

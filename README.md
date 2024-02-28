@@ -10,7 +10,7 @@
     - [Install SDK](#1-install-sdk)
     - [Siren Provider](#2-siren-provider)
     - [Siren Notification Icon](#3-siren-notification-icon)
-    - [Siren Notification Window](#4-siren-notification-window)
+    - [Siren Inbox](#4-siren-inbox)
     - [useSiren](#5-usesiren)
     - [Error Codes](#6-error-codes)
     - [Complete Code Example](#complete-code-example)
@@ -71,13 +71,12 @@ type config = {
 This component includes a customizable notification icon and a badge for indicating the number of un-viewed notifications in the user interface.
 
 ```js
-import { SirenNotificationIcon } from '@siren/react-native-inbox';
+import { SirenInboxIcon } from '@siren/react-native-inbox';
 
- <SirenNotificationIcon
+ <SirenInboxIcon
    theme={customTheme}
    notificationIcon={<CustomIcon />}
    darkMode={true}
-   realTimeUnviewedCountEnabled={true}
    onError={(error) => console.error(error)}
  />
 
@@ -90,7 +89,6 @@ Prop | Description | Type | Default value |
 --- | --- | --- | --- |
 theme | Theme object for custom styling |  Theme | {} |
 notificationIcon | Option to use custom notification Icon |  JSX Element | null |
-realTimeUnviewedCountEnabled | Flag to enable real-time un-viewed notification count |  boolean | true |
 darkMode | Flag to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
 onPress | Function for handling press of icon | ()=> void | null |
@@ -126,19 +124,18 @@ Customize the unread badge of the notification icon, and choose between dark and
     }
 ```
 
-### 4. Siren Notification Window
+### 4. Siren Inbox
 
 SirenNotificationWindow is a paginated list view for displaying notifications.
 
 ```js
-import { SirenWindow } from '@siren/react-native-inbox';
+import { SirenInbox } from '@siren/react-native-inbox';
 
-<SirenWindow
+<SirenInbox
     theme={customTheme}
     title="Notifications"
     hideHeader={false}
     darkMode={true}
-    realTimeNotificationEnabled={true}
     onError={(error) => console.log(error)}
 />
 
@@ -152,7 +149,6 @@ theme | Theme object for custom styling |  Theme | {} |
 title |  Title of the notification window |  string | "Notifications" |
 hideHeader | Flag to hide or show the header |  boolean | false |
 darkMode | Flag to enable dark mode |  boolean | false |
-realTimeNotificationEnabled | Switch for on and of notification listener |  boolean | false |
 cardProps | Props for customizing the notification cards | CardProps | null |
 customNotificationCard | Custom function for rendering notification cards | (notification)=> JSX Element | null |
 onNotificationCardClick | Props for customizing the notification cards | (notification)=> void | ()=>null |
@@ -174,7 +170,6 @@ Customizable UI option for notification window, with dark and light theme option
     type ThemeProps = {
         colors?: {
             primaryColor?: string;
-            secondaryColor?: string;
             textColor?: string;
             neutralColor?: string;
             borderColor?: string;
@@ -279,7 +274,7 @@ Here's a runnable code example that covers everything in this quick start guide.
 
 import React from 'react';
 import {SafeAreaView} from 'react-native';
-import {SirenWindow,SirenNotificationIcon,SirenProvider} from '@siren/react-native-inbox';
+import {SirenInbox,SirenInboxIcon,SirenProvider} from '@siren/react-native-inbox';
 
 function App(): React.JSX.Element {
 
@@ -301,10 +296,10 @@ function MyContainer(): React.JSX.Element {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <SirenNotificationIcon
+      <SirenInboxIcon
         darkMode={false}
       />
-      <SirenWindow
+      <SirenInbox
         title="Notifications"
         hideHeader={false}
         darkMode={false}

@@ -53,14 +53,14 @@ describe('sirenReducer', () => {
   });
 
   it('handles SET_SIREN_CORE action correctly', () => {
-    const sirenCore = null;
+    const siren = null;
     const action: actionType = {
       type: sirenReducerTypes.SET_SIREN_CORE,
-      payload: sirenCore
+      payload: siren
     };
     const newState = sirenReducer(initialState, action);
 
-    expect(newState.sirenCore).toEqual(sirenCore);
+    expect(newState.siren).toEqual(siren);
   });
 
   it('handles SET_UN_VIEWED_NOTIFICATION_COUNT action correctly', () => {
@@ -74,7 +74,7 @@ describe('sirenReducer', () => {
   });
 
   test("returns the initial state for unknown actions", () => {
-    const initialState = { notifications: [], unviewedCount: 0, sirenCore: null };
+    const initialState = { notifications: [], unviewedCount: 0, siren: null };
     const action = { type: "UNKNOWN_ACTION" };
   
     const newState = sirenReducer(

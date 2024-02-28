@@ -11,7 +11,7 @@ import type {
 import { sirenReducerTypes } from '../utils/constants';
 import { initialState, sirenReducer } from '../utils/sirenReducer';
 import type { SirenProviderConfigProps } from '../types';
-import { logger } from '../utils/commonUtils';
+import { isNonEmptyArray, logger } from '../utils/commonUtils';
 
 type ActionType =
   | { type: sirenReducerTypes.SET_NOTIFICATIONS; payload: NotificationDataType[] }
@@ -19,7 +19,7 @@ type ActionType =
   | { type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT; payload: number };
 
 type SirenContextProp = {
-  sirenCore: Siren | null;
+  siren: Siren | null;
   unviewedCount: number;
   notifications: NotificationDataType[];
   dispatch: (action: ActionType) => void;
@@ -34,7 +34,7 @@ export const SirenContext = createContext<SirenContextProp>({
   unviewedCount: 0,
   notifications: [],
   dispatch: () => null,
-  sirenCore: null
+  siren: null
 });
 
 /**
@@ -42,7 +42,7 @@ export const SirenContext = createContext<SirenContextProp>({
  *
  * @example
  * const {
- *   sirenCore,
+ *   siren,
  *   unviewedCount,
  *   setUnviewedCount,
  *   dispatch
@@ -78,7 +78,7 @@ export const useSirenContext = (): SirenContextProp => useContext(SirenContext);
 const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   const [state, dispatch] = useReducer(sirenReducer, initialState);
 
-  const { notifications, sirenCore, unviewedCount } = state;
+  const { notifications, siren, unviewedCount } = state;
 
   useEffect(() => {
     initialize();
@@ -88,46 +88,50 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     logger.info(`unviewed notification count : ${unviewedCount}`);
   }, [unviewedCount]);
 
-  const actionCallbacks = {
-    onUnViewedCountReceived: (response: UnviewedCountApiResponse): void => {
-      const totalUnviewed = response?.data?.totalUnviewed || unviewedCount;
+  const onUnViewedCountReceived = (response: UnviewedCountApiResponse): void => {
+    const totalUnviewed = response?.data?.totalUnviewed || unviewedCount;
 
+    dispatch({
+      type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
+      payload: totalUnviewed
+    });
+  };
+
+  const onNotificationReceived = (response: NotificationsApiResponse): void => {
+    const responseData: NotificationDataType[] = response?.data || [];
+
+    if (isNonEmptyArray(responseData)) {
+      logger.info(`new notifications : ${JSON.stringify(response?.data)}`);
       dispatch({
-        type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
-        payload: totalUnviewed
+        type: sirenReducerTypes.NEW_NOTIFICATIONS,
+        payload: responseData
       });
-    },
-    onNotificationReceived: (response: NotificationsApiResponse): void => {
-      if (response?.data?.length) {
-        logger.info(`new notifications : ${JSON.stringify(response?.data)}`);
-        dispatch({
-          type: sirenReducerTypes.NEW_NOTIFICATIONS,
-          payload: response.data
-        });
-      }
     }
   };
 
-  // Function to initialize the Siren SDK and fetch notifications
-  const initialize = (): void => {
-    const dataParams: InitConfigType = {
+  const actionCallbacks = { onUnViewedCountReceived, onNotificationReceived };
+
+  const getDataParams = () => {
+    return {
       token: config.userToken,
       recipientId: config.recipientId,
       onError: (error: SirenErrorType): void => logger.info(`Error : ${JSON.stringify(error)}`),
       actionCallbacks: actionCallbacks
     };
-    const sirenObject = new Siren(dataParams);
+  };
 
-    dispatch({
-      type: sirenReducerTypes.SET_SIREN_CORE,
-      payload: sirenObject
-    });
+  // Function to initialize the Siren SDK and fetch notifications
+  const initialize = (): void => {
+    const dataParams: InitConfigType = getDataParams();
+    const siren = new Siren(dataParams);
+
+    dispatch({ type: sirenReducerTypes.SET_SIREN_CORE, payload: siren });
   };
 
   return (
     <SirenContext.Provider
       value={{
-        sirenCore,
+        siren,
         unviewedCount,
         notifications,
         dispatch

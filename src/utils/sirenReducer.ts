@@ -6,11 +6,11 @@ import type { Siren } from 'test_notification';
 export const initialState = {
   notifications: [],
   unviewedCount: 0,
-  sirenCore: null
+  siren: null
 };
 
 export const sirenReducer = (
-  state: { notifications: NotificationDataType[]; unviewedCount: number; sirenCore: Siren | null },
+  state: { notifications: NotificationDataType[]; unviewedCount: number; siren: Siren | null },
   action:
     | { type: sirenReducerTypes.SET_NOTIFICATIONS; payload: NotificationDataType[] }
     | { type: sirenReducerTypes.NEW_NOTIFICATIONS; payload: NotificationDataType[] }
@@ -31,7 +31,7 @@ export const sirenReducer = (
     case sirenReducerTypes.SET_SIREN_CORE:
       return {
         ...state,
-        sirenCore: action.payload
+        siren: action.payload
       };
     case sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT:
       return {
