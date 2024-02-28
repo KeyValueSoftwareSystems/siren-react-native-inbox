@@ -1,12 +1,11 @@
 import type { ReactElement } from 'react';
 import React from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
 
-import type { SirenStyleProps, ThemeProps } from '../types';
+import type { ThemeProps } from '../types';
 import { DefaultTheme, type Constants } from '../utils';
 
 type LoadingWindowProps = {
-  styles: Partial<SirenStyleProps>;
   mode: Constants.ThemeMode;
   theme: ThemeProps;
 };
@@ -27,17 +26,27 @@ type LoadingWindowProps = {
  * @param {ThemeProps} [props.theme] - Optional theme properties to customize the appearance.
  */
 const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
-  const { styles, mode, theme } = props;
+  const { mode, theme } = props;
 
   return (
-    <View style={styles.emptyContainer}>
+    <View style={style.container}>
       <ActivityIndicator
-        testID="activity-indicator"
+        testID='activity-indicator'
         color={theme?.colors?.textColor || DefaultTheme[mode].colors.primaryColor}
         size='large'
       />
     </View>
   );
 };
+
+const style = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    minHeight: 100,
+    width: '100%'
+  }
+});
 
 export default LoadingWindow;

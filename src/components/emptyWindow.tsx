@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 import type { SirenStyleProps } from '../types';
 import { Constants } from '../utils';
@@ -22,10 +22,27 @@ const EmptyWindow = (props: { styles: Partial<SirenStyleProps> }): ReactElement 
   const { styles } = props;
 
   return (
-    <View style={styles.emptyContainer}>
-      <Text numberOfLines={1} style={styles.emptyText}>{LIST_EMPTY_TEXT}</Text>
+    <View style={style.container}>
+      <Text numberOfLines={1} style={[style.emptyText, styles.emptyText]}>
+        {LIST_EMPTY_TEXT}
+      </Text>
     </View>
   );
 };
+
+const style = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    minHeight: 100,
+    width: '100%'
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: '400',
+    padding: 20
+  }
+});
 
 export default EmptyWindow;

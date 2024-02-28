@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 
 import type { SirenStyleProps } from '../types';
 import { Constants } from '../utils';
@@ -25,16 +25,15 @@ import { Constants } from '../utils';
  */
 const Header = (props: {
   title: string;
-  styles: 
- Partial<SirenStyleProps>;
+  styles: Partial<SirenStyleProps>;
   onPressClearAll: () => void;
   clearAllDisabled: boolean;
 }): ReactElement => {
   const { title = '', styles, onPressClearAll, clearAllDisabled = false } = props;
 
   return (
-    <View style={styles.headerContainer}>
-      <Text numberOfLines={1} style={styles.headerTitle}>
+    <View style={[style.headerContainer, styles.headerContainer]}>
+      <Text numberOfLines={1} style={[style.headerTitle, styles.headerTitle]}>
         {title}
       </Text>
       <TouchableOpacity disabled={clearAllDisabled} onPress={onPressClearAll}>
@@ -43,5 +42,19 @@ const Header = (props: {
     </View>
   );
 };
+
+const style = StyleSheet.create({
+  headerContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 15
+  },
+  headerTitle: {
+    width: '70%'
+  }
+});
 
 export default Header;
