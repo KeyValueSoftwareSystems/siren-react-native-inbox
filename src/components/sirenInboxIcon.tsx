@@ -63,6 +63,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     if (Siren && siren) {
       const unViewed: UnviewedCountReturnResponse = await siren.fetchUnviewedNotificationsCount();
 
+      siren.startRealTimeUnviewedCountFetch();
       if (unViewed?.data)
         dispatch({
           type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
