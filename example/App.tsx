@@ -21,7 +21,7 @@ function MyTabs() {
           tabBarIcon: () => (
             <Image
               source={{
-                uri: 'https://www.rawshorts.com/freeicons/wp-content/uploads/2017/01/blue_repicthousebase_1484336386-1.png'
+                uri: 'https://i.pngimg.me/thumb/f/720/m2i8K9m2N4m2K9m2.jpg'
               }}
               resizeMode='contain'
               style={{width: 40, height: 40}}
