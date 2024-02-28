@@ -4,14 +4,13 @@ const defaultTheme = {
   light: {
     colors: {
       primaryColor: COLORS[ThemeMode.LIGHT].primaryColor,
-      secondaryColor: COLORS[ThemeMode.LIGHT].secondaryColor,
       textColor: COLORS[ThemeMode.LIGHT].textColor,
       neutralColor: COLORS[ThemeMode.LIGHT].neutralColor,
       borderColor: COLORS[ThemeMode.LIGHT].borderColor,
       primaryTextColor: COLORS[ThemeMode.DARK].primaryTextColor
     },
     unreadBadgeCount: {
-      background: COLORS[ThemeMode.LIGHT].secondaryColor,
+      background: 'red',
       color: COLORS[ThemeMode.LIGHT].neutralColor,
       borderRadius: 10,
       fontSize: 14,
@@ -69,14 +68,13 @@ const defaultTheme = {
   dark: {
     colors: {
       primaryColor: COLORS[ThemeMode.DARK].primaryColor,
-      secondaryColor: COLORS[ThemeMode.DARK].secondaryColor,
       textColor: COLORS[ThemeMode.DARK].textColor,
       neutralColor: COLORS[ThemeMode.DARK].neutralColor,
       borderColor: COLORS[ThemeMode.DARK].borderColor,
       primaryTextColor: COLORS[ThemeMode.DARK].primaryTextColor
     },
     unreadBadgeCount: {
-      background: COLORS[ThemeMode.DARK].secondaryColor,
+      background: 'red',
       color: COLORS[ThemeMode.DARK].neutralColor,
       borderRadius: 10,
       fontSize: 14,

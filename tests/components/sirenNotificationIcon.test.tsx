@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Image } from 'react-native';
 
-import { SirenNotificationIcon } from '../../src';
+import { SirenInboxIcon } from '../../src';
 import type { Theme } from '../../src/types';
 import * as sirenProvider from '../../src/components/sirenProvider';
 import type { NotificationDataType } from 'test_notification/dist/types';
@@ -21,7 +21,7 @@ type ActionType =
   | { type: sirenReducerTypes.SET_SIREN_CORE; payload: Siren | null }
   | { type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT; payload: number };
 
-describe('SirenNotificationIcon', () => {
+describe('SirenInboxIcon', () => {
   const customTheme: Theme = {
     light: {
       badgeStyle: {
@@ -77,22 +77,20 @@ describe('SirenNotificationIcon', () => {
 
   it('renders without crashing', () => {
     render(
-      <SirenNotificationIcon
+      <SirenInboxIcon
         theme={customTheme}
         notificationIcon={notificationIcon}
         darkMode={true}
-        realTimeUnviewedCountEnabled={true}
       />
     );
   });
 
   it('renders correct badge based on unviewedCount', () => {
     const { getByText } = render(
-      <SirenNotificationIcon
+      <SirenInboxIcon
         theme={customTheme}
         notificationIcon={notificationIcon}
         darkMode={true}
-        realTimeUnviewedCountEnabled={true}
       />
     );
 
@@ -101,11 +99,10 @@ describe('SirenNotificationIcon', () => {
 
   it('renders provided notificationIcon or default icon', () => {
     const { getByTestId } = render(
-      <SirenNotificationIcon
+      <SirenInboxIcon
         theme={customTheme}
         notificationIcon={notificationIcon}
         darkMode={true}
-        realTimeUnviewedCountEnabled={true}
       />
     );
 

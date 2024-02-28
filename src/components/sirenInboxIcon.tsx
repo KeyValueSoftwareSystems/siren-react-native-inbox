@@ -3,7 +3,7 @@ import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Siren } from 'test_notification';
 import type { UnviewedCountReturnResponse } from 'test_notification/dist/types';
 
-import type { SirenNotificationIconProps } from '../types';
+import type { SirenInboxIconProps } from '../types';
 import { Constants, DefaultTheme } from '../utils';
 import { useSirenContext } from './sirenProvider';
 import { defaultBadgeStyle } from '../utils/constants';
@@ -11,32 +11,29 @@ import { defaultBadgeStyle } from '../utils/constants';
 const { ThemeMode, sirenReducerTypes } = Constants;
 
 /**
- * `SirenNotificationIcon` displays an icon representing the entry point to view notifications.
+ * `SirenInboxIcon` displays an icon representing the entry point to view notifications.
  *
  * @component
  * @example
- * <SirenNotificationIcon
+ * <SirenInboxIcon
  *   theme={customTheme}
  *   notificationIcon={<CustomIcon />}
  *   darkMode={true}
- *   realTimeUnviewedCountEnabled={true}
  *   onError={(error) => console.error(error)}
  * />
  *
- * @param {Object} props - Props for configuring the SirenNotificationIcon component.
+ * @param {Object} props - Props for configuring the SirenInboxIcon component.
  * @param {Object} [props.theme={}] - Theme object for custom styling of the badge.
  * @param {JSX.Element} [props.notificationIcon] - Custom icon to be used as the notification indicator.
  * @param {boolean} [props.darkMode=false] - Enables dark mode for the badge.
- * @param {boolean} [props.realTimeUnviewedCountEnabled=true] - Enables real-time fetching of the unviewed notifications count.
  * @param {boolean} [props.onPress=() => null] - Function for handling press of icon.
  * @param {boolean} [props.disabled=false] - Disable click handler of icon.
  */
-const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
+const SirenInboxIcon = (props: SirenInboxIconProps) => {
   const {
     theme = { dark: {}, light: {} },
     notificationIcon,
     darkMode = false,
-    realTimeUnviewedCountEnabled = true,
     onPress = () => null,
     disabled = false
   } = props;
@@ -61,17 +58,11 @@ const SirenNotificationIcon = (props: SirenNotificationIconProps) => {
     return cleanUp();
   }, [siren]);
 
-  useEffect(() => {
-    if (realTimeUnviewedCountEnabled) siren?.startRealTimeUnviewedCountFetch();
-    else siren?.stopRealTimeUnviewedCountFetch();
-  }, [realTimeUnviewedCountEnabled]);
-
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
     if (Siren && siren) {
       const unViewed: UnviewedCountReturnResponse = await siren.fetchUnviewedNotificationsCount();
 
-      if (realTimeUnviewedCountEnabled) siren?.startRealTimeUnviewedCountFetch();
       if (unViewed?.data)
         dispatch({
           type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
@@ -167,4 +158,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SirenNotificationIcon;
+export default SirenInboxIcon;

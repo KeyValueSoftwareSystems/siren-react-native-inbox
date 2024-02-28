@@ -9,7 +9,8 @@ import {
   StyleSheet,
   Image
 } from 'react-native';
-import { SirenNotificationIcon } from '@siren/react-native-inbox';
+import { SirenInboxIcon } from '@siren/react-native-inbox';
+import NetworkLogDebugModal from './networkLogDebugModal';
 
 const badgeThemes = [
   undefined,
@@ -52,7 +53,7 @@ function Home(): React.JSX.Element {
   const [showTestingWindow, setShowTestingWindow] = useState(false);
   const [showCustomNotification, setShowCustomNotification] = useState(false);
   const [badgeThemeIndex, setBadgeThemeIndex] = useState(0);
-  const [countPollingEnabled, setCountPollingEnabled] = useState(true);
+  const [showNetwork, setShowNetwork] = useState(true);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? '#000' : '#FFF'
@@ -84,11 +85,10 @@ function Home(): React.JSX.Element {
         {showTestingWindow && (
           <View style={styles.testingWindowInnerContainer}>
             {renderButton(
-              `N-Ct-Fetch-${countPollingEnabled ? 'E' : 'D'}`,
+              `${showNetwork ? 'hide' : 'show'} network`,
               () => {
-                setCountPollingEnabled((countPollingEnabled) => !countPollingEnabled);
-              },
-              countPollingEnabled ? 'green' : 'red'
+                setShowNetwork((showNetwork) => !showNetwork);
+              }
             )}
             {renderButton(`${showCustomNotification ? 'Default' : 'Custom'}-N-Icon`, () =>
               setShowCustomNotification((showCustomNotification) => !showCustomNotification)
@@ -125,12 +125,12 @@ function Home(): React.JSX.Element {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={styles.contentContainer}>
-        <SirenNotificationIcon
-          realTimeUnviewedCountEnabled={countPollingEnabled}
+        <SirenInboxIcon
           theme={badgeThemes[badgeThemeIndex]}
           notificationIcon={showCustomNotification ? renderNotificationIcon() : undefined}
         />
         <Text>Siren Notification Icon Theme Testing</Text>
+        {showNetwork && <NetworkLogDebugModal />}
       </View>
       {testingWindow()}
     </SafeAreaView>

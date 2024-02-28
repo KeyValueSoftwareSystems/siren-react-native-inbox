@@ -1,5 +1,6 @@
 import React from 'react';
-import { SirenNotificationIcon, SirenProvider } from '@siren/react-native-inbox';
+import {Image} from 'react-native';
+import { SirenInboxIcon, SirenProvider } from '@siren/react-native-inbox';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -11,18 +12,30 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name='Home' component={Home} />
+      <Tab.Screen
+        name='Home'
+        component={Home}
+        options={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: () => (
+            <Image
+              source={{
+                uri: 'https://www.rawshorts.com/freeicons/wp-content/uploads/2017/01/blue_repicthousebase_1484336386-1.png'
+              }}
+              resizeMode='contain'
+              style={{width: 40, height: 40}}
+            />
+          )
+        }}
+      />
       <Tab.Screen
         name='Notifications'
         component={Notifications}
         options={{
-          tabBarLabel: 'Notifications',
-          tabBarIcon: () => (
-            <SirenNotificationIcon
-              realTimeUnviewedCountEnabled={false}
-              disabled
-            />
-          )
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: () => <SirenInboxIcon disabled />
         }}
       />
     </Tab.Navigator>

@@ -36,7 +36,6 @@ type fetchProps = {
  *   title="Notifications"
  *   hideHeader={false}
  *   darkMode={true}
- *   realTimeNotificationEnabled={true}
  *   onError={(error) => console.log(error)}
  * />
  *
@@ -51,7 +50,6 @@ type fetchProps = {
  * @param {JSX.Element} [props.customFooter=null] - Custom footer component.
  * @param {Function} [props.customNotificationCard=null] - Custom function for rendering notification cards.
  * @param {Function} [props.onNotificationCardClick=() => null] - Callback for handling notification card clicks.
- * @param {boolean} [props.realTimeNotificationEnabled=false] - Flag to enable real-time notification updates.
  * @param {Function} [props.onError] - Callback for handling errors.
  */
 const SirenInbox = (props: SirenInboxProps): ReactElement => {
@@ -66,7 +64,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     customFooter = null,
     customNotificationCard = null,
     onNotificationCardClick = () => null,
-    realTimeNotificationEnabled = false,
     onError = () => {}
   } = props;
 
@@ -107,17 +104,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading) {
-      const notificationParams: fetchProps = { size: notificationsPerPage };
-
-      if (isNonEmptyArray(notifications)) notificationParams.start = notifications[0].createdAt;
-
-      if (realTimeNotificationEnabled) siren?.startRealTimeNotificationFetch(notificationParams);
-      else siren?.stopRealTimeNotificationFetch();
-    }
-  }, [realTimeNotificationEnabled]);
-
-  useEffect(() => {
     // Initialize Siren SDK and start polling notifications
     initialize();
   }, [siren]);
@@ -132,14 +118,12 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
     if (readyForInitialize) {
       const allNotifications = await fetchNotifications(siren, true);
+      const notificationParams: fetchProps = { size: notificationsPerPage };
 
-      if (realTimeNotificationEnabled) {
-        const notificationParams: fetchProps = { size: notificationsPerPage };
-
-        if (isNonEmptyArray(allNotifications))
-          notificationParams.start = allNotifications[0].createdAt;
-        siren?.startRealTimeNotificationFetch(notificationParams);
-      }
+      if (isNonEmptyArray(allNotifications))
+        notificationParams.start = allNotifications[0].createdAt;
+      siren?.startRealTimeNotificationFetch(notificationParams);
+      
     }
   };
 
@@ -203,14 +187,14 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       setEndReached(false);
       setIsError(false);
       setNotifications([]);
-      realTimeNotificationEnabled && siren?.stopRealTimeNotificationFetch();
+      siren?.stopRealTimeNotificationFetch();
       const allNotifications = (await fetchNotifications(siren, true)) || [];
       const notificationParams: fetchProps = { size: notificationsPerPage };
 
       if (isNonEmptyArray(allNotifications))
         notificationParams.start = allNotifications[0].createdAt;
 
-      realTimeNotificationEnabled && siren?.startRealTimeNotificationFetch(notificationParams);
+      siren?.startRealTimeNotificationFetch(notificationParams);
     }
   };
 

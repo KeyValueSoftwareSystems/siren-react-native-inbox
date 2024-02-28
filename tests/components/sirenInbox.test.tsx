@@ -13,7 +13,6 @@ describe('SirenInbox', () => {
         title='Notifications'
         hideHeader={false}
         darkMode={false}
-        realTimeNotificationEnabled={true}
         onError={(error) => console.log(error)}
       />
     );

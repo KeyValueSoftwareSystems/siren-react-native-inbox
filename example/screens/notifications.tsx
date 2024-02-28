@@ -12,6 +12,7 @@ import {
 import { SirenInbox, useSiren } from '@siren/react-native-inbox';
 import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/types';
 import { useNavigation } from '@react-navigation/native';
+import NetworkLogDebugModal from './networkLogDebugModal';
 
 const windowThemes = [
   undefined,
@@ -26,7 +27,6 @@ const windowThemes = [
         primaryColor: '#800000',
         activeCardColor: '#FFDADA',
         primaryTextColor: '#FFFFFF',
-        secondaryColor: '#3D89DF',
         textColor: '#000000',
         neutralColor: '#FFFFFF',
         borderColor: '#560000'
@@ -44,7 +44,7 @@ function Notifications(): React.JSX.Element {
   const [showCustomFooter, setShowCustomFooter] = useState(true);
   const [hideHeader, setHideHeader] = useState(false);
   const [hideAvatar, setHideAvatar] = useState(false);
-  const [notificationPollingEnabled, setNotificationPollingEnabled] = useState(true);
+  const [showNetwork, setShowNetwork] = useState(true);
   const [windowThemeIndex, setWindowThemeIndex] = useState(0);
   const [showCustomEmptyComponent, setShowCustomEmptyComponent] = useState(false);
   const [showCustomNotificationCard, setShowCustomNotificationCard] = useState(false);
@@ -110,13 +110,10 @@ function Notifications(): React.JSX.Element {
         {showTestingWindow && (
           <View style={styles.testingWindowInnerContainer}>
             {renderButton(
-              `N-Fetch-${notificationPollingEnabled ? 'E' : 'D'}`,
+              `${showNetwork ? 'hide' : 'show'} network`,
               () => {
-                setNotificationPollingEnabled(
-                  (notificationPollingEnabled) => !notificationPollingEnabled
-                );
-              },
-              notificationPollingEnabled ? 'green' : 'red'
+                setShowNetwork((showNetwork) => !showNetwork);
+              }
             )}
             {renderButton('Theme-Mode', () =>
               setSdkDarkModeEnabled((sdkDarkModeEnabled) => !sdkDarkModeEnabled)
@@ -171,7 +168,6 @@ function Notifications(): React.JSX.Element {
           hideHeader={hideHeader}
           darkMode={sdkDarkModeEnabled}
           cardProps={{ hideAvatar: hideAvatar, showMedia: true }}
-          realTimeNotificationEnabled={notificationPollingEnabled}
           theme={windowThemes[windowThemeIndex]}
           customFooter={showCustomFooter ? renderCustomFooter() : undefined}
           listEmptyComponent={showCustomEmptyComponent ? renderListEmpty() : undefined}
@@ -189,6 +185,7 @@ function Notifications(): React.JSX.Element {
             console.log(`error: ${error}`);
           }}
         />
+        {showNetwork && <NetworkLogDebugModal />}
       </View>
       {testingWindow()}
     </SafeAreaView>
