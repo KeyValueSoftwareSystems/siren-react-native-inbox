@@ -1,26 +1,6 @@
 import { useSiren } from '../../src';
-import { sirenReducerTypes } from '../../src/utils/constants';
 import * as sirenProvider from '../../src/components/sirenProvider';
 import type { Siren } from 'test_notification';
-
-const newNotification = {
-  id: 'xyz',
-  message: {
-    header: 'New Message',
-    body: 'You have a new message.',
-    avatar: {
-      imageUrl: 'https://example.com/avatar.png',
-      actionUrl: null
-    },
-    channel: '',
-    subHeader: '',
-    actionUrl: '',
-    additionalData: ''
-  },
-  isRead: false,
-  createdAt: '2020-01-01T00:00:00Z',
-  requestId: ''
-};
 
 const Response = {
   data: {
@@ -106,37 +86,22 @@ describe('useSiren hook', () => {
   };
 
   it('should call siren.markNotificationAsReadById and update notifications list when siren exists and id is not empty', async () => {
-    const notifications = [newNotification];
-    const dispatch = jest.fn();
 
     // Mock useSirenContext
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      notifications,
-      dispatch,
-      unviewedCount: 0
     });
 
     const { markAsRead } = useSiren();
     const response = await markAsRead('xyz');
 
     expect(mockSiren.markNotificationAsReadById).toHaveBeenCalledWith('xyz');
-    expect(dispatch).toHaveBeenCalledWith({
-      type: sirenReducerTypes.SET_NOTIFICATIONS,
-      payload: [{ ...newNotification, isRead: true }]
-    });
     expect(response).toEqual(Response);
   });
 
   it('should call siren.markNotificationsAsReadByDate and update notifications list when siren exists and untilDate is provided', async () => {
-    const notifications = [newNotification];
-    const dispatch = jest.fn();
-
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      notifications,
-      dispatch,
-      unviewedCount: 0
     });
 
     const { markNotificationsAsReadByDate } = useSiren();
@@ -144,44 +109,26 @@ describe('useSiren hook', () => {
     const response = await markNotificationsAsReadByDate(untilDate);
 
     expect(mockSiren.markNotificationsAsReadByDate).toHaveBeenCalledWith(untilDate);
-    expect(dispatch).toHaveBeenCalledWith({
-      type: sirenReducerTypes.SET_NOTIFICATIONS,
-      payload: notifications.map((notification) => ({ ...notification, isRead: true }))
-    });
     expect(response).toEqual(ActionResponse);
   });
 
   it('should call siren.deleteNotificationById and update notifications list when siren exists and id is not empty', async () => {
-    const notifications = [newNotification];
-    const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      notifications,
-      dispatch,
-      unviewedCount: 0
     });
 
     const { deleteNotification } = useSiren();
     const response = await deleteNotification('xyz');
 
     expect(mockSiren.deleteNotificationById).toHaveBeenCalledWith('xyz');
-    expect(dispatch).toHaveBeenCalledWith({
-      type: sirenReducerTypes.SET_NOTIFICATIONS,
-      payload: []
-    });
     expect(response).toEqual(ActionResponse);
   });
 
-  it('should call siren.clearNotificationsByDate and update notifications list when siren exists and untilDate is provided', async () => {
-    const notifications = [newNotification];
-    const dispatch = jest.fn();
+  it('should call siren.clearNotificationsByDate and update notifications list when siren exists and untilDate is provided', async () => {;
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      notifications,
-      dispatch,
-      unviewedCount: 0
     });
 
     const { clearNotificationByDate } = useSiren();
@@ -189,22 +136,13 @@ describe('useSiren hook', () => {
     const response = await clearNotificationByDate(untilDate);
 
     expect(mockSiren.clearNotificationsByDate).toHaveBeenCalledWith(untilDate);
-    expect(dispatch).toHaveBeenCalledWith({
-      type: sirenReducerTypes.SET_NOTIFICATIONS,
-      payload: []
-    });
     expect(response).toEqual(ActionResponse);
   });
 
   it('should call siren.markNotificationsAsViewed and update notifications list when siren exists and untilDate is provided', async () => {
-    const notifications = [newNotification];
-    const dispatch = jest.fn();
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      notifications,
-      dispatch,
-      unviewedCount: 0
     });
 
     const { markNotificationsAsViewed } = useSiren();
@@ -212,10 +150,6 @@ describe('useSiren hook', () => {
     const response = await markNotificationsAsViewed(untilDate);
 
     expect(mockSiren.markNotificationsAsViewed).toHaveBeenCalledWith(untilDate);
-    expect(dispatch).toHaveBeenCalledWith({
-      type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
-      payload: 0
-    });
     expect(response).toEqual(MarkAsViewedResponse);
   });
 });

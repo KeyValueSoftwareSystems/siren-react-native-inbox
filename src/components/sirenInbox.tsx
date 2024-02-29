@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import type { Siren } from 'test_notification';
 import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/types';
+import PubSub from 'pubsub-js';
 
 import { Constants, useSiren, CommonUtils } from '../utils';
 import { useSirenContext } from './sirenProvider';
@@ -13,7 +14,7 @@ import ErrorWindow from './errorWindow';
 import Header from './header';
 import Card from './card';
 
-const { DEFAULT_WINDOW_TITLE, ThemeMode, sirenReducerTypes } = Constants;
+const { DEFAULT_WINDOW_TITLE, ThemeMode, eventTypes, events } = Constants;
 const { applyTheme, isNonEmptyArray } = CommonUtils;
 
 type fetchProps = {
@@ -69,13 +70,19 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const notificationsPerPage = 10;
 
-  const { siren, notifications, dispatch } = useSirenContext();
+  const { siren } = useSirenContext();
 
   const { deleteNotification, clearNotificationByDate, markNotificationsAsViewed } = useSiren();
 
+  const [notifications, setNotifications] = useState<NotificationDataType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [listenerData, setListenerData] = useState<{
+    id?: string;
+    action: string;
+    newNotifications?: NotificationDataType[];
+  } | null>(null);
 
   const handleMarkNotificationsAsViewed = async (newNotifications = notifications) => {
     if (isNonEmptyArray(newNotifications)) {
@@ -99,7 +106,15 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     handleMarkNotificationsAsViewed();
   };
 
+  const notificationSubscriber = async (type: string, dataString: string) => {
+    const data = await JSON.parse(dataString);
+
+    setListenerData(data);
+  };
+
   useEffect(() => {
+    PubSub.subscribe(events.NOTIFICATION_LIST_EVENT, notificationSubscriber);
+
     return cleanUp();
   }, []);
 
@@ -108,9 +123,45 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     initialize();
   }, [siren]);
 
-  const setNotifications = (updatedNotifications: NotificationDataType[]) => {
-    dispatch({ type: sirenReducerTypes.SET_NOTIFICATIONS, payload: updatedNotifications });
-  };
+  useEffect(() => {
+    if (listenerData) {
+      let updatedNotifications: NotificationDataType[] = [];
+
+      switch (listenerData.action) {
+        case eventTypes.MARK_ITEM_AS_READ:
+          updatedNotifications = notifications.map((item) =>
+            item.id === listenerData.id ? { ...item, isRead: true } : item
+          );
+          break;
+        case eventTypes.MARK_ALL_AS_READ:
+          updatedNotifications = notifications.map((item) => ({
+            ...item,
+            isRead: true
+          }));
+          break;
+
+        case eventTypes.DELETE_ITEM:
+          updatedNotifications = notifications.filter((item) => item.id != listenerData.id);
+          break;
+
+        case eventTypes.DELETE_ALL_ITEM:
+          updatedNotifications = [];
+          break;
+
+        case eventTypes.NEW_NOTIFICATIONS: {
+          const newNotifications: NotificationDataType[] = listenerData?.newNotifications || [];
+
+          updatedNotifications = [...newNotifications, ...notifications];
+          break;
+        }
+
+        default:
+          break;
+      }
+      setNotifications(updatedNotifications);
+      setListenerData(null);
+    }
+  }, [listenerData]);
 
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
