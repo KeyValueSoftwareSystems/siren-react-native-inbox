@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image} from 'react-native';
+import { Image } from 'react-native';
 import { SirenInboxIcon, SirenProvider } from '@siren/react-native-inbox';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -20,11 +20,9 @@ function MyTabs() {
           tabBarShowLabel: false,
           tabBarIcon: () => (
             <Image
-              source={{
-                uri: 'https://i.pngimg.me/thumb/f/720/m2i8K9m2N4m2K9m2.jpg'
-              }}
+              source={require('./assets/icon.png')}
               resizeMode='contain'
-              style={{width: 40, height: 40}}
+              style={{ width: 30, height: 30 }}
             />
           )
         }}
