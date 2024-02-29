@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import type { Siren } from 'test_notification';
 import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/types';
 
@@ -123,7 +123,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       if (isNonEmptyArray(allNotifications))
         notificationParams.start = allNotifications[0].createdAt;
       siren?.startRealTimeNotificationFetch(notificationParams);
-      
     }
   };
 
@@ -258,7 +257,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (isLoading)
       return (
         <LoadingWindow
-          styles={styles}
           theme={darkMode ? theme?.dark : theme?.light}
           mode={darkMode ? ThemeMode.DARK : ThemeMode.LIGHT}
         />
@@ -299,12 +297,18 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[style.container, styles.container]}>
       {renderHeader()}
       {renderList()}
       {customFooter || null}
     </View>
   );
 };
+
+const style = StyleSheet.create({
+  container: {
+    minWidth: 300
+  }
+});
 
 export default SirenInbox;
