@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import type { Siren } from 'test_notification';
-import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/types';
+import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/esm/types';
 import PubSub from 'pubsub-js';
 
 import { Constants, useSiren, CommonUtils } from '../utils';

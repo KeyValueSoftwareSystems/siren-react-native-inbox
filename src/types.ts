@@ -1,5 +1,5 @@
 import type { DimensionValue, ImageStyle, TextStyle, ViewStyle } from 'react-native';
-import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/types';
+import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/esm/types';
 /**
  * Defines the configuration options for the Siren Notification Window component.
  * @typedef {Object} SirenInboxProps

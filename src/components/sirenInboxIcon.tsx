@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Siren } from 'test_notification';
 import PubSub from 'pubsub-js';
-import type { UnviewedCountReturnResponse } from 'test_notification/dist/types';
+import type { UnviewedCountReturnResponse } from 'test_notification/dist/esm/types';
 
 import type { SirenInboxIconProps } from '../types';
 import { Constants, DefaultTheme } from '../utils';

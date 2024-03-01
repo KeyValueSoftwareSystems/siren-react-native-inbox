@@ -7,7 +7,7 @@ import type {
   InitConfigType,
   SirenErrorType,
   NotificationDataType
-} from 'test_notification/dist/types';
+} from 'test_notification/dist/esm/types';
 
 import { eventTypes, events } from '../utils/constants';
 import type { SirenProviderConfigProps } from '../types';

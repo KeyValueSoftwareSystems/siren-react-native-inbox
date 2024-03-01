@@ -1,4 +1,4 @@
-import type { NotificationDataType } from 'test_notification/dist/types';
+import type { NotificationDataType } from 'test_notification/dist/esm/types';
 
 import { DefaultTheme } from './index';
 import { LogLevel, ThemeMode, eventTypes, levelLogFns } from './constants';
