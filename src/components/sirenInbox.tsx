@@ -14,8 +14,8 @@ import ErrorWindow from './errorWindow';
 import Header from './header';
 import Card from './card';
 
-const { DEFAULT_WINDOW_TITLE, ThemeMode, eventTypes, events } = Constants;
-const { applyTheme, isNonEmptyArray } = CommonUtils;
+const { DEFAULT_WINDOW_TITLE, ThemeMode, events } = Constants;
+const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
 
 type fetchProps = {
   size: number;
@@ -78,10 +78,11 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [listenerData, setListenerData] = useState<{
+  const [eventListenerData, setEventListenerData] = useState<{
     id?: string;
     action: string;
     newNotifications?: NotificationDataType[];
+    unreadCount?: number;
   } | null>(null);
 
   const handleMarkNotificationsAsViewed = async (newNotifications = notifications) => {
@@ -109,7 +110,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const notificationSubscriber = async (type: string, dataString: string) => {
     const data = await JSON.parse(dataString);
 
-    setListenerData(data);
+    setEventListenerData(data);
   };
 
   useEffect(() => {
@@ -124,44 +125,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   }, [siren]);
 
   useEffect(() => {
-    if (listenerData) {
-      let updatedNotifications: NotificationDataType[] = [];
+    if (eventListenerData) {
+      const updatedNotifications: NotificationDataType[] = updateNotifications(eventListenerData, notifications);
 
-      switch (listenerData.action) {
-        case eventTypes.MARK_ITEM_AS_READ:
-          updatedNotifications = notifications.map((item) =>
-            item.id === listenerData.id ? { ...item, isRead: true } : item
-          );
-          break;
-        case eventTypes.MARK_ALL_AS_READ:
-          updatedNotifications = notifications.map((item) => ({
-            ...item,
-            isRead: true
-          }));
-          break;
-
-        case eventTypes.DELETE_ITEM:
-          updatedNotifications = notifications.filter((item) => item.id != listenerData.id);
-          break;
-
-        case eventTypes.DELETE_ALL_ITEM:
-          updatedNotifications = [];
-          break;
-
-        case eventTypes.NEW_NOTIFICATIONS: {
-          const newNotifications: NotificationDataType[] = listenerData?.newNotifications || [];
-
-          updatedNotifications = [...newNotifications, ...notifications];
-          break;
-        }
-
-        default:
-          break;
-      }
       setNotifications(updatedNotifications);
-      setListenerData(null);
+      setEventListenerData(null);
     }
-  }, [listenerData]);
+  }, [eventListenerData]);
 
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
