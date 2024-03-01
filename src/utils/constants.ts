@@ -44,19 +44,19 @@ export const levelLogFns = {
   [LogLevel.ERROR]: console.error
 };
 
-export enum updateNotificationsTypes {
+export enum eventTypes {
   MARK_ITEM_AS_VIEWED = 'MARK_ITEM_AS_VIEWED',
   MARK_ITEM_AS_READ = 'MARK_ITEM_AS_READ',
   MARK_ALL_AS_READ = 'MARK_ALL_AS_READ',
   DELETE_ITEM = 'DELETE_ITEM',
-  DELETE_ALL_ITEM = 'DELETE_ALL_ITEM'
+  DELETE_ALL_ITEM = 'DELETE_ALL_ITEM',
+  NEW_NOTIFICATIONS = 'NEW_NOTIFICATIONS',
+  UPDATE_NOTIFICATIONS_COUNT = 'UPDATE_NOTIFICATIONS_COUNT'
 }
 
-export enum sirenReducerTypes {
-  SET_NOTIFICATIONS = 'SET_NOTIFICATIONS',
-  NEW_NOTIFICATIONS = 'NEW_NOTIFICATIONS',
-  SET_UN_VIEWED_NOTIFICATION_COUNT = 'SET_UN_VIEWED_NOTIFICATION_COUNT',
-  SET_SIREN_CORE = 'SET_SIREN_CORE'
+export enum events {
+  NOTIFICATION_LIST_EVENT = 'NOTIFICATION_LIST_EVENT',
+  NOTIFICATION_COUNT_EVENT = 'NOTIFICATION_COUNT_EVENT'
 }
 
 export const LIST_EMPTY_TEXT = "You don't have any notifications!";
@@ -67,13 +67,13 @@ export const CLEAR_ALL_LABEL = 'Clear All';
 
 export const errorMap = {
   SIREN_OBJECT_NOT_FOUND: {
-    Type: "ERROR",
-    Code: "SIREN_OBJECT_NOT_FOUND",
-    Message: "Siren Object Not found",
+    Type: 'ERROR',
+    Code: 'SIREN_OBJECT_NOT_FOUND',
+    Message: 'Siren Object Not found'
   },
   MISSING_PARAMETER: {
-    Type: "ERROR",
-    Code: "MISSING_PARAMETER",
-    Message: "Missing Parameter",
-  },
-}
+    Type: 'ERROR',
+    Code: 'MISSING_PARAMETER',
+    Message: 'Missing Parameter'
+  }
+};

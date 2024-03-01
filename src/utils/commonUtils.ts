@@ -1,9 +1,53 @@
+import type { NotificationDataType } from 'test_notification/dist/esm/types';
+
 import { DefaultTheme } from './index';
-import { LogLevel, ThemeMode, levelLogFns } from './constants';
+import { LogLevel, ThemeMode, eventTypes, levelLogFns } from './constants';
 import type { SirenStyleProps, ThemeProps } from '../types';
 
 export const isNonEmptyArray = (arr?: unknown[] | null) =>
   Boolean(arr && typeof arr === 'object' && arr instanceof Array && arr.length > 0);
+
+export const updateNotifications = (
+  eventData: {
+    id?: string;
+    action: string;
+    newNotifications?: NotificationDataType[];
+    unreadCount?: number;
+  },
+  notifications: NotificationDataType[]
+): NotificationDataType[] => {
+  let updatedNotifications: NotificationDataType[] = [];
+
+  switch (eventData.action) {
+    case eventTypes.MARK_ITEM_AS_READ:
+      updatedNotifications = notifications.map((item) =>
+        item.id === eventData.id ? { ...item, isRead: true } : item
+      );
+      break;
+    case eventTypes.MARK_ALL_AS_READ:
+      updatedNotifications = notifications.map((item) => ({
+        ...item,
+        isRead: true
+      }));
+      break;
+    case eventTypes.DELETE_ITEM:
+      updatedNotifications = notifications.filter((item) => item.id != eventData.id);
+      break;
+    case eventTypes.DELETE_ALL_ITEM:
+      updatedNotifications = [];
+      break;
+    case eventTypes.NEW_NOTIFICATIONS: {
+      const newNotifications: NotificationDataType[] = eventData?.newNotifications || [];
+
+      updatedNotifications = [...newNotifications, ...notifications];
+      break;
+    }
+    default:
+      break;
+  }
+
+  return updatedNotifications;
+};
 
 export const generateElapsedTimeText = (timeString: string) => {
   const currentTime = new Date().getTime();

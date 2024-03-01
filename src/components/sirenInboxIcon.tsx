@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Siren } from 'test_notification';
-import type { UnviewedCountReturnResponse } from 'test_notification/dist/types';
+import PubSub from 'pubsub-js';
+import type { UnviewedCountReturnResponse } from 'test_notification/dist/esm/types';
 
 import type { SirenInboxIconProps } from '../types';
 import { Constants, DefaultTheme } from '../utils';
 import { useSirenContext } from './sirenProvider';
-import { defaultBadgeStyle } from '../utils/constants';
 
-const { ThemeMode, sirenReducerTypes } = Constants;
+const { ThemeMode, defaultBadgeStyle, eventTypes, events } = Constants;
 
 /**
  * `SirenInboxIcon` displays an icon representing the entry point to view notifications.
@@ -38,7 +38,9 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     disabled = false
   } = props;
 
-  const { siren, unviewedCount, dispatch } = useSirenContext();
+  const { siren } = useSirenContext();
+
+  const [unviewedCount, seUnviewedCount] = useState<number>(0);
 
   const mode = darkMode ? ThemeMode.DARK : ThemeMode.LIGHT;
   const badgeStyle = theme[mode]?.badgeStyle || {};
@@ -52,6 +54,12 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     siren?.stopRealTimeUnviewedCountFetch();
   };
 
+  const notificationSubscriber = async (type: string, dataString: string) => {
+    const data = await JSON.parse(dataString);
+
+    if (data.action === eventTypes.UPDATE_NOTIFICATIONS_COUNT) seUnviewedCount(data.unviewedCount);
+  };
+
   useEffect(() => {
     initialize();
 
@@ -61,14 +69,11 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
     if (Siren && siren) {
+      PubSub.subscribe(events.NOTIFICATION_COUNT_EVENT, notificationSubscriber);
       const unViewed: UnviewedCountReturnResponse = await siren.fetchUnviewedNotificationsCount();
 
       siren.startRealTimeUnviewedCountFetch();
-      if (unViewed?.data)
-        dispatch({
-          type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
-          payload: unViewed.data?.unviewedCount || 0
-        });
+      if (unViewed?.data) seUnviewedCount(unViewed.data?.unviewedCount || 0);
     }
   };
 

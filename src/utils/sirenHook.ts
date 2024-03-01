@@ -1,134 +1,95 @@
-import type {
-  NotificationDataType,
-} from "test_notification/dist/types";
+import PubSub from 'pubsub-js';
 
-import { useSirenContext } from "../components/sirenProvider";
-import { errorMap, sirenReducerTypes, updateNotificationsTypes } from "./constants";
+import { useSirenContext } from '../components/sirenProvider';
+import { errorMap, eventTypes, events } from './constants';
 
 const useSiren = () => {
-  const { siren, notifications, dispatch } = useSirenContext();
+  const { siren } = useSirenContext();
 
   const markAsRead = async (id: string) => {
-    if (siren) 
+    if (siren)
       if (id?.length > 0) {
         const response = await siren?.markNotificationAsReadById(id);
 
-        if (response.data)
-          updateNotifications(updateNotificationsTypes.MARK_ITEM_AS_READ, id);
+        if (response.data) {
+          const payload = { id, action: eventTypes.MARK_ITEM_AS_READ };
+
+          PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+        }
 
         return response;
       } else {
-        return {error: errorMap.MISSING_PARAMETER};
+        return { error: errorMap.MISSING_PARAMETER };
       }
-    
-    return {error: errorMap.SIREN_OBJECT_NOT_FOUND};
+
+    return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
   const markNotificationsAsReadByDate = async (untilDate: string) => {
     if (siren && untilDate) {
       const response = await siren?.markNotificationsAsReadByDate(untilDate);
 
-      if (response.data)
-        updateNotifications(updateNotificationsTypes.MARK_ALL_AS_READ);
+      if (response.data) {
+        const payload = { action: eventTypes.MARK_ALL_AS_READ };
+
+        PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+      }
 
       return response;
     }
 
-    return {error: errorMap.SIREN_OBJECT_NOT_FOUND};
+    return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
   const deleteNotification = async (id: string) => {
-    if (siren) 
+    if (siren)
       if (id?.length > 0) {
         const response = await siren?.deleteNotificationById(id);
 
-        if (response.data)
-          updateNotifications(updateNotificationsTypes.DELETE_ITEM, id);
+        if (response.data) {
+          const payload = { id, action: eventTypes.DELETE_ITEM };
+
+          PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+        }
 
         return response;
       } else {
-        return {error: errorMap.MISSING_PARAMETER};
+        return { error: errorMap.MISSING_PARAMETER };
       }
-    
-    return {error: errorMap.SIREN_OBJECT_NOT_FOUND};
+
+    return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
   const clearNotificationByDate = async (untilDate: string) => {
     if (siren && untilDate) {
       const response = await siren.clearNotificationsByDate(untilDate);
 
-      if (response.data)
-        updateNotifications(updateNotificationsTypes.DELETE_ALL_ITEM);
+      if (response.data) {
+        const payload = { action: eventTypes.DELETE_ALL_ITEM };
+
+        PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+      }
 
       return response;
     }
 
-    return {error: errorMap.SIREN_OBJECT_NOT_FOUND};
+    return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
   const markNotificationsAsViewed = async (untilDate: string) => {
     if (siren && untilDate) {
       const response = await siren?.markNotificationsAsViewed(untilDate);
 
-      if (response.data)
-        updateNotifications(updateNotificationsTypes.MARK_ITEM_AS_VIEWED);
+      if (response.data) {
+        const payload = { notificationsCount: 0, action: eventTypes.UPDATE_NOTIFICATIONS_COUNT };
+
+        PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(payload));
+      }
 
       return response;
     }
 
-    return {error: errorMap.SIREN_OBJECT_NOT_FOUND};
-  };
-
-  const updateNotifications = (type: updateNotificationsTypes, id?: string) => {
-    let updatedNotifications: NotificationDataType[];
-
-    switch (type) {
-      case updateNotificationsTypes.MARK_ITEM_AS_READ:
-        updatedNotifications = notifications.map((item) =>
-          item.id === id ? { ...item, isRead: true } : item
-        );
-        dispatch({
-          type: sirenReducerTypes.SET_NOTIFICATIONS,
-          payload: updatedNotifications,
-        });
-        break;
-      case updateNotificationsTypes.MARK_ALL_AS_READ:
-        updatedNotifications = notifications.map((item) => ({
-          ...item,
-          isRead: true,
-        }));
-        dispatch({
-          type: sirenReducerTypes.SET_NOTIFICATIONS,
-          payload: updatedNotifications,
-        });
-        break;
-
-      case updateNotificationsTypes.DELETE_ITEM:
-        updatedNotifications = notifications.filter((item) => item.id != id);
-        dispatch({
-          type: sirenReducerTypes.SET_NOTIFICATIONS,
-          payload: updatedNotifications,
-        });
-        break;
-
-      case updateNotificationsTypes.DELETE_ALL_ITEM:
-        updatedNotifications = [];
-        dispatch({
-          type: sirenReducerTypes.SET_NOTIFICATIONS,
-          payload: updatedNotifications,
-        });
-        break;
-
-      case updateNotificationsTypes.MARK_ITEM_AS_VIEWED:
-        dispatch({
-          type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
-          payload: 0,
-        });
-        break;
-
-      default:
-        break;
-    }
+    return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
   return {
@@ -136,7 +97,7 @@ const useSiren = () => {
     markAsRead,
     deleteNotification,
     clearNotificationByDate,
-    markNotificationsAsViewed,
+    markNotificationsAsViewed
   };
 };
 

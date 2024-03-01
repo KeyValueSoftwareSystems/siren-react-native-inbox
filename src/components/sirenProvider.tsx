@@ -1,28 +1,20 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Siren } from 'test_notification';
+import PubSub from 'pubsub-js';
 import type {
   NotificationsApiResponse,
   UnviewedCountApiResponse,
   InitConfigType,
   SirenErrorType,
   NotificationDataType
-} from 'test_notification/dist/types';
+} from 'test_notification/dist/esm/types';
 
-import { sirenReducerTypes } from '../utils/constants';
-import { initialState, sirenReducer } from '../utils/sirenReducer';
+import { eventTypes, events } from '../utils/constants';
 import type { SirenProviderConfigProps } from '../types';
 import { isNonEmptyArray, logger } from '../utils/commonUtils';
 
-type ActionType =
-  | { type: sirenReducerTypes.SET_NOTIFICATIONS; payload: NotificationDataType[] }
-  | { type: sirenReducerTypes.SET_SIREN_CORE; payload: Siren | null }
-  | { type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT; payload: number };
-
 type SirenContextProp = {
   siren: Siren | null;
-  unviewedCount: number;
-  notifications: NotificationDataType[];
-  dispatch: (action: ActionType) => void;
 };
 
 interface SirenProvider {
@@ -31,9 +23,6 @@ interface SirenProvider {
 }
 
 export const SirenContext = createContext<SirenContextProp>({
-  unviewedCount: 0,
-  notifications: [],
-  dispatch: () => null,
   siren: null
 });
 
@@ -76,25 +65,22 @@ export const useSirenContext = (): SirenContextProp => useContext(SirenContext);
  * @param {React.ReactNode} props.children - Child components that will have access to the Siren context.
  */
 const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
-  const [state, dispatch] = useReducer(sirenReducer, initialState);
-
-  const { notifications, siren, unviewedCount } = state;
+  const [siren, setSiren] = useState<Siren | null>(null);
 
   useEffect(() => {
     initialize();
   }, []);
 
-  useEffect(() => {
-    logger.info(`unviewed notification count : ${unviewedCount}`);
-  }, [unviewedCount]);
-
   const onUnViewedCountReceived = (response: UnviewedCountApiResponse): void => {
-    const totalUnviewed = response?.data?.totalUnviewed || unviewedCount;
+    const totalUnviewed = response?.data?.totalUnviewed;
 
-    dispatch({
-      type: sirenReducerTypes.SET_UN_VIEWED_NOTIFICATION_COUNT,
-      payload: totalUnviewed
-    });
+    logger.info(`unviewed notification count : ${totalUnviewed}`);
+    const payload = {
+      unviewedCount: totalUnviewed,
+      action: eventTypes.UPDATE_NOTIFICATIONS_COUNT
+    };
+
+    PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(payload));
   };
 
   const onNotificationReceived = (response: NotificationsApiResponse): void => {
@@ -102,10 +88,9 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
     if (isNonEmptyArray(responseData)) {
       logger.info(`new notifications : ${JSON.stringify(response?.data)}`);
-      dispatch({
-        type: sirenReducerTypes.NEW_NOTIFICATIONS,
-        payload: responseData
-      });
+      const payload = { newNotifications: response?.data, action: eventTypes.NEW_NOTIFICATIONS };
+
+      PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
     }
   };
 
@@ -125,16 +110,13 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     const dataParams: InitConfigType = getDataParams();
     const siren = new Siren(dataParams);
 
-    dispatch({ type: sirenReducerTypes.SET_SIREN_CORE, payload: siren });
+    setSiren(siren);
   };
 
   return (
     <SirenContext.Provider
       value={{
-        siren,
-        unviewedCount,
-        notifications,
-        dispatch
+        siren
       }}
     >
       {children}
