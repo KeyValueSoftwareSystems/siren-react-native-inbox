@@ -4,7 +4,6 @@ import LoadingWindow from '../../src/components/loadingWindow';
 import { ThemeMode } from '../../src/utils/constants';
 
 describe('LoadingWindow', () => {
-  const customStyles = {};
   const customTheme = {
     colors: {
       textColor: '#000'
@@ -13,12 +12,12 @@ describe('LoadingWindow', () => {
   const mode = ThemeMode.LIGHT;
 
   it('renders without crashing', () => {
-    render(<LoadingWindow styles={customStyles} mode={mode} theme={customTheme} />);
+    render(<LoadingWindow mode={mode} theme={customTheme} />);
   });
 
   it('renders ActivityIndicator', () => {
     const { getByTestId } = render(
-      <LoadingWindow styles={customStyles} mode={mode} theme={customTheme} />
+      <LoadingWindow  mode={mode} theme={customTheme} />
     );
 
     expect(getByTestId('activity-indicator')).toBeTruthy();
@@ -26,7 +25,7 @@ describe('LoadingWindow', () => {
 
   it('sets color based on theme and mode', () => {
     const { getByTestId } = render(
-      <LoadingWindow styles={customStyles} mode={mode} theme={customTheme} />
+      <LoadingWindow mode={mode} theme={customTheme} />
     );
 
     const activityIndicator = getByTestId('activity-indicator');

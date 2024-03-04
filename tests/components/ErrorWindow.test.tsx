@@ -7,13 +7,6 @@ import type { SirenStyleProps } from '../../src/types';
 describe('ErrorWindow', () => {
   it('renders correctly', () => {
     const customErrorStyles: Partial<SirenStyleProps> = {
-      emptyContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        minHeight: 100,
-        width: '100%'
-      },
       errorText: {
         color: '#FF0000',
         fontSize: 18,

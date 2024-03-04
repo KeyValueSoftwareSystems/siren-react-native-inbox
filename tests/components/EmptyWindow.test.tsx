@@ -6,13 +6,6 @@ import type { SirenStyleProps } from '../../src/types';
 describe('EmptyWindow', () => {
   it('renders correctly', () => {
     const customStyles: Partial<SirenStyleProps> = {
-      emptyContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        minHeight: 100,
-        width: '100%'
-      },
       emptyText: {
         color: '#000',
         fontSize: 18,
