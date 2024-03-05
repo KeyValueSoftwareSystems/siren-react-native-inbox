@@ -1,17 +1,18 @@
 import React, { type ReactElement, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+
+import PubSub from 'pubsub-js';
 import type { Siren } from 'test_notification';
 import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/esm/types';
-import PubSub from 'pubsub-js';
 
-import { CommonUtils, Constants, useSiren } from '../utils';
-import { useSirenContext } from './sirenProvider';
-import type { SirenInboxProps } from '../types';
-import LoadingWindow from './loadingWindow';
+import Card from './card';
 import EmptyWindow from './emptyWindow';
 import ErrorWindow from './errorWindow';
 import Header from './header';
-import Card from './card';
+import LoadingWindow from './loadingWindow';
+import { useSirenContext } from './sirenProvider';
+import type { SirenInboxProps } from '../types';
+import { CommonUtils, Constants, useSiren } from '../utils';
 
 const { DEFAULT_WINDOW_TITLE, ThemeMode, events } = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;

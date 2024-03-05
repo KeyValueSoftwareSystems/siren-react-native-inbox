@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import PubSub from 'pubsub-js';
 import { Siren } from 'test_notification';
 import type { UnviewedCountReturnResponse } from 'test_notification/dist/esm/types';
-import PubSub from 'pubsub-js';
 
-import type { SirenInboxIconProps } from '../types';
-import { Constants, DefaultTheme } from '../utils';
 import { useSirenContext } from './sirenProvider';
+import type { SirenInboxIconProps } from '../types';
+import { CommonUtils, Constants, DefaultTheme } from '../utils';
 
 const { ThemeMode, defaultBadgeStyle, eventTypes, events } = Constants;
+const { logger } = CommonUtils;
 
 /**
  * `SirenInboxIcon` displays an icon representing the entry point to view notifications.
@@ -65,6 +67,10 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
 
     return cleanUp();
   }, [siren]);
+
+  useEffect(() => {
+    if(unviewedCount >0) logger.info(`unviewed notification count : ${unviewedCount}`);
+  }, [unviewedCount])
 
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
