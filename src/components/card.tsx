@@ -1,6 +1,5 @@
-import type { ReactElement } from 'react';
-import React from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { type ReactElement } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { NotificationDataType } from 'test_notification/dist/esm/types';
 
 import type { NotificationCardProps, SirenStyleProps } from '../types';

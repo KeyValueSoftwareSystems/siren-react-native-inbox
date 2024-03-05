@@ -1,6 +1,5 @@
-import type { ReactElement } from 'react';
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, { type ReactElement } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 import type { SirenStyleProps } from '../types';
 import { Constants } from '../utils';

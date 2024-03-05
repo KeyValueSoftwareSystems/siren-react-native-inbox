@@ -1,6 +1,6 @@
 import * as Constants from './constants';
+import * as CommonUtils from './commonUtils';
 import DefaultTheme from './defaultTheme';
 import useSiren from './sirenHook';
-import * as CommonUtils from './commonUtils';
 
 export { Constants, DefaultTheme, useSiren, CommonUtils };

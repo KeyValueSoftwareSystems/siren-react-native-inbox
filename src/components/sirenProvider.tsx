@@ -1,15 +1,15 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Siren } from 'test_notification';
-import PubSub from 'pubsub-js';
 import type {
-  NotificationsApiResponse,
-  UnviewedCountApiResponse,
   InitConfigType,
+  NotificationDataType,
+  NotificationsApiResponse,
   SirenErrorType,
-  NotificationDataType
+  UnviewedCountApiResponse
 } from 'test_notification/dist/esm/types';
+import PubSub from 'pubsub-js';
 
-import { eventTypes, events } from '../utils/constants';
+import { events, eventTypes } from '../utils/constants';
 import type { SirenProviderConfigProps } from '../types';
 import { isNonEmptyArray, logger } from '../utils/commonUtils';
 
