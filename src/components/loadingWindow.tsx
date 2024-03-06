@@ -1,9 +1,8 @@
-import type { ReactElement } from 'react';
-import React from 'react';
-import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import React, { type ReactElement } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import type { ThemeProps } from '../types';
-import { DefaultTheme, type Constants } from '../utils';
+import { type Constants, DefaultTheme } from '../utils';
 
 type LoadingWindowProps = {
   mode: Constants.ThemeMode;

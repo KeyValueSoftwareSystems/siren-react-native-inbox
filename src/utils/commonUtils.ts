@@ -1,8 +1,9 @@
 import type { NotificationDataType } from 'test_notification/dist/esm/types';
 
-import { DefaultTheme } from './index';
-import { LogLevel, ThemeMode, eventTypes, levelLogFns } from './constants';
+import { eventTypes, levelLogFns, LogLevel, ThemeMode } from './constants';
 import type { SirenStyleProps, ThemeProps } from '../types';
+
+import { DefaultTheme } from './index';
 
 export const isNonEmptyArray = (arr?: unknown[] | null) =>
   Boolean(arr && typeof arr === 'object' && arr instanceof Array && arr.length > 0);

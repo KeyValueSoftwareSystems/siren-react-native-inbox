@@ -1,18 +1,18 @@
-import type { ReactElement } from 'react';
-import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import React, { type ReactElement, useEffect, useMemo, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+
+import PubSub from 'pubsub-js';
 import type { Siren } from 'test_notification';
 import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/esm/types';
-import PubSub from 'pubsub-js';
 
-import { Constants, useSiren, CommonUtils } from '../utils';
-import { useSirenContext } from './sirenProvider';
-import type { SirenInboxProps } from '../types';
-import LoadingWindow from './loadingWindow';
+import Card from './card';
 import EmptyWindow from './emptyWindow';
 import ErrorWindow from './errorWindow';
 import Header from './header';
-import Card from './card';
+import LoadingWindow from './loadingWindow';
+import { useSirenContext } from './sirenProvider';
+import type { SirenInboxProps } from '../types';
+import { CommonUtils, Constants, useSiren } from '../utils';
 
 const { DEFAULT_WINDOW_TITLE, ThemeMode, events } = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
@@ -226,12 +226,14 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   // Render empty window, error window, or custom empty component
-  const renderListEmpty = (): JSX.Element | undefined => {
+  const renderListEmpty = (): JSX.Element | null => {
     if (!isLoading) {
       if (isError) return <ErrorWindow onRetry={onRefresh} styles={styles} />;
 
       return listEmptyComponent || <EmptyWindow styles={styles} />;
     }
+
+    return null;
   };
 
   const onDelete = async (id: string): Promise<void> => {
@@ -328,7 +330,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
 const style = StyleSheet.create({
   container: {
-    minWidth: 300
+    minWidth: 300,
+    flex: 1,
   }
 });
 

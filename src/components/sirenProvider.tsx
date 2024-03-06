@@ -1,17 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Siren } from 'test_notification';
+
 import PubSub from 'pubsub-js';
+import { Siren } from 'test_notification';
 import type {
-  NotificationsApiResponse,
-  UnviewedCountApiResponse,
   InitConfigType,
+  NotificationDataType,
+  NotificationsApiResponse,
   SirenErrorType,
-  NotificationDataType
+  UnviewedCountApiResponse
 } from 'test_notification/dist/esm/types';
 
-import { eventTypes, events } from '../utils/constants';
 import type { SirenProviderConfigProps } from '../types';
 import { isNonEmptyArray, logger } from '../utils/commonUtils';
+import { events, eventTypes } from '../utils/constants';
 
 type SirenContextProp = {
   siren: Siren | null;
@@ -74,7 +75,6 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   const onUnViewedCountReceived = (response: UnviewedCountApiResponse): void => {
     const totalUnviewed = response?.data?.totalUnviewed;
 
-    logger.info(`unviewed notification count : ${totalUnviewed}`);
     const payload = {
       unviewedCount: totalUnviewed,
       action: eventTypes.UPDATE_NOTIFICATIONS_COUNT

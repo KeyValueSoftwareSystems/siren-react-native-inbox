@@ -1,7 +1,7 @@
 import PubSub from 'pubsub-js';
 
+import { errorMap, events, eventTypes } from './constants';
 import { useSirenContext } from '../components/sirenProvider';
-import { errorMap, eventTypes, events } from './constants';
 
 const useSiren = () => {
   const { siren } = useSirenContext();

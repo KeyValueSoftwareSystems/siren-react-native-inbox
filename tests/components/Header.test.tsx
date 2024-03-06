@@ -13,23 +13,15 @@ describe('Header', () => {
       headerTitle: undefined,
       headerAction: undefined,
       cardContainer: undefined,
-      cardIconContainer: undefined,
       cardIconRound: undefined,
-      cardAvatarStyle: undefined,
-      cardContentContainer: undefined,
       cardTitle: undefined,
       cardDescription: undefined,
       cardImageStyle: undefined,
-      cardFooterRow: undefined,
       dateStyle: undefined,
-      deleteButton: undefined,
-      deleteIcon: undefined,
-      emptyContainer: undefined,
       emptyText: undefined,
       errorText: undefined,
       errorButton: undefined,
       errorButtonText: undefined,
-      transparent: undefined
     };
     const onPressClearAll = jest.fn();
     const clearAllDisabled = false;
