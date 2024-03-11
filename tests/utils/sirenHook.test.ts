@@ -131,9 +131,9 @@ describe('useSiren hook', () => {
       siren: mockSiren as Siren,
     });
 
-    const { clearNotificationByDate } = useSiren();
+    const { deleteNotificationsByDate } = useSiren();
     const untilDate = '2024-02-28T00:00:00Z';
-    const response = await clearNotificationByDate(untilDate);
+    const response = await deleteNotificationsByDate(untilDate);
 
     expect(mockSiren.clearNotificationsByDate).toHaveBeenCalledWith(untilDate);
     expect(response).toEqual(ActionResponse);

@@ -60,9 +60,9 @@ const useSiren = () => {
     return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
-  const clearNotificationByDate = async (untilDate: string) => {
+  const deleteNotificationsByDate = async (untilDate: string) => {
     if (siren && untilDate) {
-      const response = await siren.clearNotificationsByDate(untilDate);
+      const response = await siren.deleteNotificationsByDate(untilDate);
 
       if (response.data) {
         const payload = { action: eventTypes.DELETE_ALL_ITEM };
@@ -96,7 +96,7 @@ const useSiren = () => {
     markNotificationsAsReadByDate,
     markAsRead,
     deleteNotification,
-    clearNotificationByDate,
+    deleteNotificationsByDate,
     markNotificationsAsViewed
   };
 };

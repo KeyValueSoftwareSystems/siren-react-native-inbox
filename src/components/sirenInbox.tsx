@@ -23,6 +23,13 @@ type fetchProps = {
   start?: string;
 };
 
+type NotificationFetchParams = {
+  size: number;
+  end?: string;
+  start?: string;
+  sort?: string;
+};
+
 /**
  * `SirenInbox` is a React component that displays a list of notifications fetched from the Siren SDK.
  *
@@ -72,7 +79,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const { siren } = useSirenContext();
 
-  const { deleteNotification, clearNotificationByDate, markNotificationsAsViewed } = useSiren();
+  const { deleteNotification, deleteNotificationsByDate, markNotificationsAsViewed } = useSiren();
 
   const [notifications, setNotifications] = useState<NotificationDataType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -148,7 +155,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   const createFetchNotificationParams = (attachEndDate: boolean): fetchProps => {
-    const notificationParams: fetchProps = { size: notificationsPerPage };
+    const notificationParams: NotificationFetchParams = { size: notificationsPerPage, sort: 'createdAt' };
 
     if (attachEndDate) notificationParams.end = notifications[notifications.length - 1].createdAt;
 
@@ -244,7 +251,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const onPressClearAll = async (): Promise<void> => {
     if (isNonEmptyArray(notifications)) {
-      const response = await clearNotificationByDate(notifications[0].createdAt);
+      const response = await deleteNotificationsByDate(notifications[0].createdAt);
 
       if (response?.error) {
         processError(response?.error);
