@@ -46,7 +46,7 @@ describe('SirenInboxIcon', () => {
     markNotificationAsReadById: jest.fn(),
     markNotificationsAsReadByDate: jest.fn(),
     deleteNotificationById: jest.fn(),
-    clearNotificationsByDate: jest.fn(),
+    deleteNotificationsByDate: jest.fn(),
     markNotificationsAsViewed: jest.fn(),
     verifyToken: jest.fn(),
     fetchUnviewedNotificationsCount: jest.fn(async () => UnviewedCountReturnResponse),
