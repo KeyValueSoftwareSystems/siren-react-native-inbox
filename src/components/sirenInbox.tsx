@@ -27,7 +27,7 @@ type NotificationFetchParams = {
   size: number;
   end?: string;
   start?: string;
-  sort?: string;
+  sort?: 'createdAt' | 'updatedAt';
 };
 
 /**
@@ -154,7 +154,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     }
   };
 
-  const createFetchNotificationParams = (attachEndDate: boolean): fetchProps => {
+  const generateNotificationParams = (attachEndDate: boolean): fetchProps => {
     const notificationParams: NotificationFetchParams = { size: notificationsPerPage, sort: 'createdAt' };
 
     if (attachEndDate) notificationParams.end = notifications[notifications.length - 1].createdAt;
@@ -185,7 +185,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     setIsError(false);
     setIsLoading(true);
     if (siren) {
-      const notificationParams = createFetchNotificationParams(!isResetList);
+      const notificationParams = generateNotificationParams(!isResetList);
       const response = await siren.fetchAllNotifications(notificationParams);
       const nonEmptyResponse = Boolean(isNonEmptyArray(response?.data));
 
