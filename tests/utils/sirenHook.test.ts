@@ -74,7 +74,7 @@ describe('useSiren hook', () => {
     markNotificationAsReadById: jest.fn(async () => Response),
     markNotificationsAsReadByDate: jest.fn(async () => ActionResponse),
     deleteNotificationById: jest.fn(async () => ActionResponse),
-    clearNotificationsByDate: jest.fn(async () => ActionResponse),
+    deleteNotificationsByDate: jest.fn(async () => ActionResponse),
     markNotificationsAsViewed: jest.fn(async () => MarkAsViewedResponse),
     verifyToken: jest.fn(),
     fetchUnviewedNotificationsCount: jest.fn(),
@@ -125,17 +125,17 @@ describe('useSiren hook', () => {
     expect(response).toEqual(ActionResponse);
   });
 
-  it('should call siren.clearNotificationsByDate and update notifications list when siren exists and untilDate is provided', async () => {;
+  it('should call siren.deleteNotificationsByDate and update notifications list when siren exists and untilDate is provided', async () => {;
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
     });
 
-    const { clearNotificationByDate } = useSiren();
+    const { deleteNotificationsByDate } = useSiren();
     const untilDate = '2024-02-28T00:00:00Z';
-    const response = await clearNotificationByDate(untilDate);
+    const response = await deleteNotificationsByDate(untilDate);
 
-    expect(mockSiren.clearNotificationsByDate).toHaveBeenCalledWith(untilDate);
+    expect(mockSiren.deleteNotificationsByDate).toHaveBeenCalledWith(untilDate);
     expect(response).toEqual(ActionResponse);
   });
 
