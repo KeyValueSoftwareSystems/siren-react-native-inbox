@@ -37,7 +37,8 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     notificationIcon,
     darkMode = false,
     onPress = () => null,
-    disabled = false
+    disabled = false, 
+    onError = () => null
   } = props;
 
   const { siren } = useSirenContext();
@@ -54,6 +55,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   // Clean up - stop polling when component unmounts
   const cleanUp = () => () => {
     siren?.stopRealTimeUnviewedCountFetch();
+    seUnviewedCount(0);
   };
 
   const notificationSubscriber = async (type: string, dataString: string) => {
@@ -80,6 +82,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
 
       siren.startRealTimeUnviewedCountFetch();
       if (unViewed?.data) seUnviewedCount(unViewed.data?.unviewedCount || 0);
+      if (unViewed?.error) onError(unViewed?.error);
     }
   };
 

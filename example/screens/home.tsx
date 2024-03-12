@@ -20,6 +20,9 @@ const badgeThemes = [
         color: 'black',
         size: 24,
         textSize: 12
+      }, 
+      notificationIcon: {
+        size: 60
       }
     },
     dark: {
@@ -85,7 +88,7 @@ function Home(): React.JSX.Element {
         {showTestingWindow && (
           <View style={styles.testingWindowInnerContainer}>
             {renderButton(
-              `${showNetwork ? 'hide' : 'show'} network`,
+              `${showNetwork ? 'Hide' : 'Show'} network`,
               () => {
                 setShowNetwork((showNetwork) => !showNetwork);
               }

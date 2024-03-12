@@ -85,7 +85,6 @@ export type Theme = {
  * Defines the configuration options for theme elements.
  * @typedef {Object} ThemeProps
  * @property {Object} [colors] - Color configuration for theme elements.
- * @property {Object} [unreadBadgeCount] - Styling options for the unread badge count indicator.
  * @property {Object} [badgeStyle] - Styling options for badges.
  * @property {WindowProps} [window] - Configuration for the notification window appearance.
  * @property {WindowHeaderProps} [windowHeader] - Configuration for the window header.
@@ -104,14 +103,6 @@ export type ThemeProps = {
   notificationIcon?: {
     size?: number,
   } 
-  unreadBadgeCount?: {
-    background?: string;
-    color?: string;
-    borderRadius?: number;
-    fontSize?: number;
-    inset?: number;
-    size?: number;
-  };
   badgeStyle?: {
     size?: number;
     color?: string;

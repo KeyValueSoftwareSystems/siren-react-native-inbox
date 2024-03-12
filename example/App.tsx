@@ -45,8 +45,8 @@ function App(): React.JSX.Element {
     <NavigationContainer>
       <SirenProvider
         config={{
-          userToken: '1b961622e24c4a118a4108123d645c28',
-          recipientId: '6018ebd1-683c-4397-a903-5ce9ea94bcd7'
+          userToken: '227047349b3044fbac7c24fdf5537c44',
+          recipientId: '551cd601-65b3-41b2-bbce-bbd15908992f'
         }}
       >
         {MyTabs()}

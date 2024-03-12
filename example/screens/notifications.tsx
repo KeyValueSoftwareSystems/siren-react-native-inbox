@@ -110,7 +110,7 @@ function Notifications(): React.JSX.Element {
         {showTestingWindow && (
           <View style={styles.testingWindowInnerContainer}>
             {renderButton(
-              `${showNetwork ? 'hide' : 'show'} network`,
+              `${showNetwork ? 'Hide' : 'Show'} network`,
               () => {
                 setShowNetwork((showNetwork) => !showNetwork);
               }

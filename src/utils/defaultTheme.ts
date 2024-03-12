@@ -9,14 +9,6 @@ const defaultTheme = {
       borderColor: COLORS[ThemeMode.LIGHT].borderColor,
       primaryTextColor: COLORS[ThemeMode.DARK].primaryTextColor
     },
-    unreadBadgeCount: {
-      background: 'red',
-      color: COLORS[ThemeMode.LIGHT].neutralColor,
-      borderRadius: 10,
-      fontSize: 14,
-      inset: 2,
-      size: 14
-    },
     notificationIcon: {
       size: 30,
     },
@@ -72,14 +64,6 @@ const defaultTheme = {
       neutralColor: COLORS[ThemeMode.DARK].neutralColor,
       borderColor: COLORS[ThemeMode.DARK].borderColor,
       primaryTextColor: COLORS[ThemeMode.DARK].primaryTextColor
-    },
-    unreadBadgeCount: {
-      background: 'red',
-      color: COLORS[ThemeMode.DARK].neutralColor,
-      borderRadius: 10,
-      fontSize: 14,
-      inset: 2,
-      size: 14
     },
     notificationIcon: {
       size: 30,
