@@ -6,14 +6,14 @@ const defaultTheme = {
       primaryColor: COLORS[ThemeMode.LIGHT].primaryColor,
       textColor: COLORS[ThemeMode.LIGHT].textColor,
       neutralColor: COLORS[ThemeMode.LIGHT].neutralColor,
-      borderColor: COLORS[ThemeMode.LIGHT].borderColor,
+      borderColor: COLORS[ThemeMode.LIGHT].borderColor
     },
     notificationIcon: {
-      size: 30,
+      size: 30
     },
     window: {
       width: '100%',
-      height: '100%',
+      height: '100%'
     },
     windowHeader: {
       background: COLORS[ThemeMode.LIGHT].neutralColor,
@@ -24,6 +24,7 @@ const defaultTheme = {
       headerActionColor: COLORS[ThemeMode.LIGHT].textColor,
       closeIconSize: 20,
       titlePadding: 0,
+      borderColor: COLORS[ThemeMode.LIGHT].borderColor
     },
     windowContainer: {
       background: COLORS[ThemeMode.LIGHT].neutralColor,
@@ -51,14 +52,14 @@ const defaultTheme = {
       primaryColor: COLORS[ThemeMode.DARK].primaryColor,
       textColor: COLORS[ThemeMode.DARK].textColor,
       neutralColor: COLORS[ThemeMode.DARK].neutralColor,
-      borderColor: COLORS[ThemeMode.DARK].borderColor,
+      borderColor: COLORS[ThemeMode.DARK].borderColor
     },
     notificationIcon: {
-      size: 30,
+      size: 30
     },
     window: {
       width: '100%',
-      height: '100%',
+      height: '100%'
     },
     windowHeader: {
       background: COLORS[ThemeMode.DARK].neutralColor,
@@ -68,7 +69,8 @@ const defaultTheme = {
       titleSize: 20,
       headerActionColor: COLORS[ThemeMode.DARK].textColor,
       closeIconSize: 20,
-      titlePadding: 0
+      titlePadding: 0,
+      borderColor: COLORS[ThemeMode.DARK].borderColor
     },
     windowContainer: {
       background: COLORS[ThemeMode.DARK].neutralColor,

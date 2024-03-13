@@ -94,7 +94,7 @@ export const applyTheme = (
       theme.colors?.neutralColor ||
       DefaultTheme[mode].windowContainer.background,
     width: theme.window?.width || DefaultTheme[mode].window.width,
-    height: theme.window?.height || DefaultTheme[mode].window.height,
+    height: theme.window?.height || DefaultTheme[mode].window.height
   },
   contentContainer: {
     backgroundColor:
@@ -109,12 +109,15 @@ export const applyTheme = (
       theme.colors?.neutralColor ||
       DefaultTheme[mode].windowHeader.background,
     height: theme.windowHeader?.height || DefaultTheme[mode].windowHeader.height,
-    borderBottomColor: theme.colors?.borderColor ||  DefaultTheme[mode].colors.borderColor
+    borderBottomColor:
+      theme.windowHeader?.borderColor ||
+      theme.colors?.borderColor ||
+      DefaultTheme[mode].windowHeader?.borderColor
   },
   headerTitle: {
     color:
       theme.windowHeader?.titleColor ||
-      theme.colors?.neutralColor ||
+      theme.colors?.textColor ||
       DefaultTheme[mode].windowHeader.titleColor,
     fontSize: theme.windowHeader?.titleSize || DefaultTheme[mode].windowHeader.titleSize,
     fontWeight:
@@ -134,21 +137,17 @@ export const applyTheme = (
       DefaultTheme[mode].windowHeader.headerActionColor
   },
   timerIcon: {
-    borderColor:
-      theme.colors?.textColor ||
-      DefaultTheme[mode].colors.textColor
+    borderColor: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
   },
   timerIconLine: {
-    backgroundColor:
-      theme.colors?.textColor ||
-      DefaultTheme[mode].colors.textColor
+    backgroundColor: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
   },
   cardContainer: {
     backgroundColor:
       theme.notificationCard?.background ||
       theme.colors?.highlightedCardColor ||
       DefaultTheme[mode].notificationCard.background,
-    padding: theme.notificationCard?.padding || DefaultTheme[mode].notificationCard.padding,
+    padding: theme.notificationCard?.padding || DefaultTheme[mode].notificationCard.padding
   },
   cardWrapper: {
     borderBottomWidth:
@@ -159,9 +158,7 @@ export const applyTheme = (
       DefaultTheme[mode].notificationCard.borderColor
   },
   activeCardMarker: {
-    backgroundColor:
-      theme.colors?.primaryColor ||
-      DefaultTheme[mode].colors?.primaryColor,
+    backgroundColor: theme.colors?.primaryColor || DefaultTheme[mode].colors?.primaryColor
   },
   cardIconRound: {
     width: theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize,
@@ -171,9 +168,7 @@ export const applyTheme = (
     backgroundColor: theme.colors?.borderColor || DefaultTheme[mode].colors.borderColor
   },
   closeIcon: {
-    backgroundColor:
-      theme.colors?.textColor ||
-      DefaultTheme[mode].colors.textColor
+    backgroundColor: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
   },
   cardTitle: {
     color:

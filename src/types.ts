@@ -100,8 +100,8 @@ export type ThemeProps = {
     highlightedCardColor?: string;
   };
   notificationIcon?: {
-    size?: number,
-  } 
+    size?: number;
+  };
   badgeStyle?: {
     size?: number;
     color?: string;
@@ -145,6 +145,7 @@ type WindowHeaderProps = {
   headerActionColor?: string;
   closeIconSize?: number;
   titlePadding?: number;
+  borderColor?: string;
 };
 
 /**
