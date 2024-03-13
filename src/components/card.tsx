@@ -5,6 +5,8 @@ import type { NotificationDataType } from 'test_notification/dist/esm/types';
 
 import type { NotificationCardProps, SirenStyleProps } from '../types';
 import { CommonUtils } from '../utils';
+import CloseIcon from './closeIcon';
+import TimerIcon from './timerIcon';
 
 /**
  * `Card` component represents an individual notification card in the notification list.
@@ -58,46 +60,6 @@ const renderAvatar = (
   );
 };
 
-const renderCloseIcon = (
-  onDelete: (id: string) => void,
-  notification: NotificationDataType,
-  styles: Partial<SirenStyleProps>
-) => {
-  const icon: JSX.Element[] = [];
-
-  for (let i = 0; i < 2; i++)
-    icon.push(
-      <View
-        key={i}
-        style={[
-          style.closeIconLine,
-          styles.closeIcon,
-          { transform: [{ rotate: `${45 + i * 90}deg` }] }
-        ]}
-      />
-    );
-
-  return (
-    <TouchableOpacity
-      hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
-      onPress={() => onDelete(notification.id)}
-      style={style.deleteButton}
-      testID='delete-button'
-    >
-      <>{icon}</>
-    </TouchableOpacity>
-  );
-};
-
-const renderTimerIcon = (styles: Partial<SirenStyleProps>) => {
-  return (
-    <View style={[style.timerIcon, styles.timerIcon]}>
-      <View style={[style.timerIconLine1, styles.timerIconLine]} />
-      <View style={[style.timerIconLine2, styles.timerIconLine]} />
-    </View>
-  );
-};
-
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps, styles, onDelete } = props;
 
@@ -128,8 +90,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             <Text numberOfLines={1} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
-
-            {renderCloseIcon(onDelete, notification, styles)}
+            <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
           </View>
           {Boolean(notification.message?.subHeader) && (
             <Text numberOfLines={1} style={[style.cardDescription, styles.cardDescription]}>
@@ -140,7 +101,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             {notification.message?.body}
           </Text>
           <View style={style.dateContainer}>
-            {renderTimerIcon(styles)}
+            <TimerIcon styles={styles} />
             <Text style={[style.dateStyle, styles.dateStyle]}>
               {CommonUtils.generateElapsedTimeText(notification.createdAt)}
             </Text>
@@ -193,50 +154,16 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  deleteButton: {
-    width: 14,
-    height: 14,
-    overflow: 'hidden',
-    justifyContent: 'center',
-    opacity: 0.8
-  },
   dateStyle: {
     paddingLeft: 3
   },
   transparent: {
     backgroundColor: 'transparent'
   },
-  closeIconLine: {
-    height: 1.6,
-    marginVertical: 2,
-    width: '100%',
-    borderRadius: 1,
-    position: 'absolute'
-  },
   dateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     opacity: 0.8
-  },
-  timerIcon: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    overflow: 'hidden',
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  timerIconLine1: {
-    height: 4,
-    width: 1
-  },
-  timerIconLine2: {
-    height: 4,
-    marginLeft: 2,
-    marginTop: -1,
-    width: 1.1,
-    transform: [{ rotate: '120deg' }]
   },
   activeCardMarker: {
     width: 6,

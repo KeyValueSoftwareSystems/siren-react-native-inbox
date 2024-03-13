@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import type { SirenStyleProps } from '../types';
 import { Constants } from '../utils';
+import ClearIcon from './clearIcon';
 
 /**
  * Renders a header component with a title and a "Clear All" (deletes all the notifications till date) action.
@@ -22,16 +23,6 @@ import { Constants } from '../utils';
  * @param {Function} props.onClearAllNotifications - A callback function that is called when the "Clear All" action is triggered.
  * @param {boolean} props.clearAllDisabled - Disables the clear all button.
  */
-const renderClearIcon = (styles: Partial<SirenStyleProps>): JSX.Element => {
-  const icon: JSX.Element[] = [];
-
-  for (let i = 0; i < 3; i++)
-    icon.push(
-      <View key={i} style={[style.clearIcon, styles.clearIcon, { marginLeft: (3 - i) * 2 }]} />
-    );
-
-  return <View>{icon}</View>;
-};
 
 const Header = (props: {
   title: string;
@@ -47,7 +38,7 @@ const Header = (props: {
         {title}
       </Text>
       <View style={style.clearIconContainer}>
-        {renderClearIcon(styles)}
+        <ClearIcon styles={styles} />
         <TouchableOpacity disabled={clearAllDisabled} onPress={onPressClearAll}>
           <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
         </TouchableOpacity>
@@ -65,13 +56,6 @@ const style = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderBottomWidth: 0.5
-  },
-  clearIcon: {
-    height: 2.4,
-    width: 14,
-    borderRadius: 1.2,
-    margin: 1,
-    marginRight: 5
   },
   clearIconContainer: {
     flexDirection: 'row',

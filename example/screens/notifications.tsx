@@ -25,7 +25,7 @@ const windowThemes = [
     light: {
       colors: {
         primaryColor: '#800000',
-        activeCardColor: '#FFDADA',
+        highlightedCardColor: '#FFDADA',
         textColor: '#000000',
         neutralColor: '#FFFFFF',
         borderColor: '#560000'
