@@ -37,7 +37,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     notificationIcon,
     darkMode = false,
     onPress = () => null,
-    disabled = false, 
+    disabled = false,
     onError = () => null
   } = props;
 
@@ -61,7 +61,12 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   const notificationSubscriber = async (type: string, dataString: string) => {
     const data = await JSON.parse(dataString);
 
-    if (data.action === eventTypes.UPDATE_NOTIFICATIONS_COUNT) seUnviewedCount(data.unviewedCount);
+    if (data.action === eventTypes.RESET_NOTIFICATIONS_COUNT) {
+      seUnviewedCount(0);
+      siren?.stopRealTimeUnviewedCountFetch();
+    } else if (data.action === eventTypes.UPDATE_NOTIFICATIONS_COUNT) {
+      seUnviewedCount(data.unviewedCount);
+    }
   };
 
   useEffect(() => {
@@ -71,8 +76,8 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   }, [siren]);
 
   useEffect(() => {
-    if(unviewedCount >0) logger.info(`unviewed notification count : ${unviewedCount}`);
-  }, [unviewedCount])
+    if (unviewedCount > 0) logger.info(`unviewed notification count : ${unviewedCount}`);
+  }, [unviewedCount]);
 
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
