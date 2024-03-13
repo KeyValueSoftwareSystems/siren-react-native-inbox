@@ -1,19 +1,17 @@
 export const COLORS = {
   light: {
-    primaryColor: '#EB5017',
-    activeCardColor: '#FDEDE7',
-    primaryTextColor: '#FFFFFF',
-    textColor: '#121212',
+    primaryColor: '#F56630',
+    activeCardColor: '#FFECE5',
+    textColor: '#344054',
     neutralColor: '#FFFFFF',
-    borderColor: '#D0D5DD'
+    borderColor: '#667185'
   },
   dark: {
-    primaryColor: '#EB5017',
+    primaryColor: '#F56630',
     activeCardColor: '#292929',
-    primaryTextColor: '#FFFFFF',
     textColor: '#FFFFFF',
-    neutralColor: '#121212',
-    borderColor: '#D0D5DD'
+    neutralColor: '#344054',
+    borderColor: '#667185'
   }
 };
 

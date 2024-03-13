@@ -1,4 +1,4 @@
-import type { DimensionValue, ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import type { DimensionValue, TextStyle, ViewStyle } from 'react-native';
 
 import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/esm/types';
 /**
@@ -97,7 +97,6 @@ export type ThemeProps = {
     textColor?: string;
     neutralColor?: string;
     borderColor?: string;
-    primaryTextColor?: string;
     activeCardColor?: string;
   };
   notificationIcon?: {
@@ -120,18 +119,10 @@ export type ThemeProps = {
  * @typedef {Object} WindowProps
  * @property {DimensionValue} [width] - Width of the window.
  * @property {DimensionValue} [height] - Height of the window.
- * @property {string} [borderColor] - Color of the window's border.
- * @property {number} [borderRadius] - Radius of the window's corners.
- * @property {number} [shadowDepth] - Depth of the shadow cast by the window, affecting its blur radius.
- * @property {string} [shadowColor] - Color of the shadow cast by the window.
  */
 type WindowProps = {
   width?: DimensionValue;
   height?: DimensionValue;
-  borderColor?: string;
-  borderRadius?: number;
-  shadowDepth?: number;
-  shadowColor?: string;
 };
 
 /**
@@ -142,7 +133,7 @@ type WindowProps = {
  * @property {string} [titleColor] - Color of the header title text.
  * @property {TextStyle['fontWeight']} [titleFontWeight] - Font weight of the header title.
  * @property {number} [titleSize] - Font size of the header title.
- * @property {string} [closeIconColor] - Color of the close icon in the header.
+ * @property {string} [headerActionColor] - Color of the close icon in the header.
  * @property {number} [closeIconSize] - Size of the close icon in the header.
  */
 type WindowHeaderProps = {
@@ -151,8 +142,9 @@ type WindowHeaderProps = {
   titleColor?: string;
   titleFontWeight?: TextStyle['fontWeight'];
   titleSize?: number;
-  closeIconColor?: string;
+  headerActionColor?: string;
   closeIconSize?: number;
+  titlePadding?: number;
 };
 
 /**
@@ -169,12 +161,10 @@ type WindowContainerProps = {
 /**
  * Describes theme-related properties for styling individual notification cards.
  * @typedef {Object} NotificationCardThemeProps
- * @property {DimensionValue} [height] - Height of the card.
  * @property {number} [padding] - Padding inside the card.
  * @property {number} [borderWidth] - Width of the card's border.
  * @property {string} [borderColor] - Color of the card's border.
  * @property {string} [background] - Background color of the card.
- * @property {string} [hoverBackground] - Background color of the card on hover.
  * @property {number} [avatarSize] - Size of the avatar displayed on the card.
  * @property {string} [titleColor] - Color of the card's title text.
  * @property {TextStyle['fontWeight']} [titleFontWeight] - Font weight of the card's title.
@@ -183,21 +173,14 @@ type WindowContainerProps = {
  * @property {string} [descriptionColor] - Color of the card's description text.
  * @property {number} [descriptionSize] - Font size of the card's description.
  * @property {number} [descriptionPadding] - Padding around the card's description.
- * @property {DimensionValue} [mediaWidth] - Width of the media content in the card.
- * @property {DimensionValue} [mediaHeight] - Height of the media content in the card.
- * @property {string} [mediaObjectFit] - CSS object-fit value applied to the media content.
- * @property {number} [mediaRadius] - Border radius of the media content.
- * @property {string} [mediaPlaceholder] - Placeholder image URL for the media content.
  * @property {string} [dateColor] - Color of the date text on the card.
  * @property {number} [dateSize] - Font size of the date text on the card.
  */
 type NotificationCardThemeProps = {
-  height?: DimensionValue;
   padding?: number;
   borderWidth?: number;
   borderColor?: string;
   background?: string;
-  hoverBackground?: string;
   avatarSize?: number;
   titleColor?: string;
   titleFontWeight?: TextStyle['fontWeight'];
@@ -206,11 +189,6 @@ type NotificationCardThemeProps = {
   descriptionColor?: string;
   descriptionSize?: number;
   descriptionPadding?: number;
-  mediaWidth?: DimensionValue;
-  mediaHeight?: DimensionValue;
-  mediaObjectFit?: string;
-  mediaRadius?: number;
-  mediaPlaceholder?: string;
   dateColor?: string;
   dateSize?: number;
 };
@@ -247,11 +225,11 @@ export type SirenStyleProps = {
   headerContainer: ViewStyle;
   headerTitle: TextStyle | object;
   headerAction: TextStyle;
+  clearIcon: ViewStyle;
   cardContainer: ViewStyle;
   cardIconRound: ViewStyle;
   cardTitle: TextStyle | object;
   cardDescription: TextStyle;
-  cardImageStyle: ImageStyle | object;
   dateStyle: TextStyle;
   emptyText: TextStyle;
   errorText: TextStyle;

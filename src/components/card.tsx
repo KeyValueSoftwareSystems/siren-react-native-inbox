@@ -81,13 +81,6 @@ const Card = (props: NotificationCardProps): ReactElement => {
         <Text numberOfLines={3} style={[style.cardDescription, styles.cardDescription]}>
           {notification.message?.body}
         </Text>
-        {/* {cardProps?.showMedia && Boolean(notification.message?.media?.thumbnail) && (
-          <Image
-            source={{ uri: notification.message?.media?.thumbnail }}
-            resizeMode='cover'
-            style={[style.cardImageStyle, styles.cardImageStyle]}
-          />
-        )} */}
         <View style={style.cardFooterRow}>
           <Text style={[style.dateStyle, styles.dateStyle]}>
             {CommonUtils.generateElapsedTimeText(notification.createdAt)}
@@ -138,10 +131,6 @@ const style = StyleSheet.create({
   cardDescription: {
     fontWeight: '400',
     paddingBottom: 10
-  },
-  cardImageStyle: {
-    overflow: 'hidden',
-    marginBottom: 10
   },
   cardFooterRow: {
     flexDirection: 'row',

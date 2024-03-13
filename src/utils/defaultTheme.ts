@@ -7,7 +7,6 @@ const defaultTheme = {
       textColor: COLORS[ThemeMode.LIGHT].textColor,
       neutralColor: COLORS[ThemeMode.LIGHT].neutralColor,
       borderColor: COLORS[ThemeMode.LIGHT].borderColor,
-      primaryTextColor: COLORS[ThemeMode.DARK].primaryTextColor
     },
     notificationIcon: {
       size: 30,
@@ -15,31 +14,26 @@ const defaultTheme = {
     window: {
       width: '100%',
       height: '100%',
-      borderColor: COLORS[ThemeMode.LIGHT].borderColor,
-      borderRadius: 0,
-      shadowDepth: 0,
-      shadowColor: COLORS[ThemeMode.LIGHT].borderColor
     },
     windowHeader: {
-      background: COLORS[ThemeMode.LIGHT].primaryColor,
+      background: COLORS[ThemeMode.LIGHT].neutralColor,
       height: 50,
-      titleColor: COLORS[ThemeMode.LIGHT].neutralColor,
+      titleColor: COLORS[ThemeMode.LIGHT].textColor,
       titleFontWeight: '500',
       titleSize: 20,
-      closeIconColor: COLORS[ThemeMode.LIGHT].neutralColor,
-      closeIconSize: 20
+      headerActionColor: COLORS[ThemeMode.LIGHT].borderColor,
+      closeIconSize: 20,
+      titlePadding: 0,
     },
     windowContainer: {
       background: COLORS[ThemeMode.LIGHT].neutralColor,
       padding: 0
     },
     notificationCard: {
-      height: '100%',
       padding: 10,
-      borderWidth: 1,
+      borderWidth: 0.6,
       borderColor: COLORS[ThemeMode.LIGHT].borderColor,
       background: COLORS[ThemeMode.LIGHT].activeCardColor,
-      hoverBackground: COLORS[ThemeMode.LIGHT].neutralColor,
       avatarSize: 40,
       titleColor: COLORS[ThemeMode.LIGHT].textColor,
       titleFontWeight: '500',
@@ -48,11 +42,6 @@ const defaultTheme = {
       descriptionColor: COLORS[ThemeMode.LIGHT].textColor,
       descriptionSize: 14,
       descriptionPadding: 0,
-      mediaWidth: '100%',
-      mediaHeight: 150,
-      mediaObjectFit: 'cover',
-      mediaRadius: 8,
-      mediaPlaceholder: COLORS[ThemeMode.LIGHT].borderColor,
       dateColor: COLORS[ThemeMode.LIGHT].textColor,
       dateSize: 12
     }
@@ -63,7 +52,6 @@ const defaultTheme = {
       textColor: COLORS[ThemeMode.DARK].textColor,
       neutralColor: COLORS[ThemeMode.DARK].neutralColor,
       borderColor: COLORS[ThemeMode.DARK].borderColor,
-      primaryTextColor: COLORS[ThemeMode.DARK].primaryTextColor
     },
     notificationIcon: {
       size: 30,
@@ -71,31 +59,26 @@ const defaultTheme = {
     window: {
       width: '100%',
       height: '100%',
-      borderColor: COLORS[ThemeMode.DARK].borderColor,
-      borderRadius: 0,
-      shadowDepth: 0,
-      shadowColor: COLORS[ThemeMode.DARK].borderColor
     },
     windowHeader: {
-      background: COLORS[ThemeMode.DARK].primaryColor,
+      background: COLORS[ThemeMode.DARK].neutralColor,
       height: 50,
-      titleColor: COLORS[ThemeMode.DARK].primaryTextColor,
+      titleColor: COLORS[ThemeMode.DARK].textColor,
       titleFontWeight: '500',
       titleSize: 20,
-      closeIconColor: COLORS[ThemeMode.DARK].neutralColor,
-      closeIconSize: 20
+      headerActionColor: COLORS[ThemeMode.DARK].borderColor,
+      closeIconSize: 20,
+      titlePadding: 0
     },
     windowContainer: {
       background: COLORS[ThemeMode.DARK].neutralColor,
       padding: 0
     },
     notificationCard: {
-      height: '100%',
       padding: 10,
-      borderWidth: 1,
+      borderWidth: 0.6,
       borderColor: COLORS[ThemeMode.DARK].borderColor,
       background: COLORS[ThemeMode.DARK].activeCardColor,
-      hoverBackground: COLORS[ThemeMode.DARK].neutralColor,
       avatarSize: 40,
       titleColor: COLORS[ThemeMode.DARK].textColor,
       titleFontWeight: '500',
@@ -104,11 +87,6 @@ const defaultTheme = {
       descriptionColor: COLORS[ThemeMode.DARK].textColor,
       descriptionSize: 14,
       descriptionPadding: 0,
-      mediaWidth: '100%',
-      mediaHeight: 150,
-      mediaObjectFit: 'cover',
-      mediaRadius: 8,
-      mediaPlaceholder: COLORS[ThemeMode.DARK].borderColor,
       dateColor: COLORS[ThemeMode.DARK].textColor,
       dateSize: 12
     }

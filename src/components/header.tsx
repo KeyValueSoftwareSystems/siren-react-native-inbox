@@ -22,6 +22,15 @@ import { Constants } from '../utils';
  * @param {Function} props.onClearAllNotifications - A callback function that is called when the "Clear All" action is triggered.
  * @param {boolean} props.clearAllDisabled - Disables the clear all button.
  */
+const renderClearIcon = (styles: Partial<SirenStyleProps>): JSX.Element => {
+  const icon: JSX.Element[] = [];
+
+  for (let i = 0; i < 3; i++)
+    icon.push(<View style={[style.clearIcon, styles.clearIcon, {marginLeft: (3-i)*2}]} />);
+  
+  return (<View>{icon}</View>);
+};
+
 const Header = (props: {
   title: string;
   styles: Partial<SirenStyleProps>;
@@ -35,9 +44,12 @@ const Header = (props: {
       <Text numberOfLines={1} style={[style.headerTitle, styles.headerTitle]}>
         {title}
       </Text>
-      <TouchableOpacity disabled={clearAllDisabled} onPress={onPressClearAll}>
-        <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
-      </TouchableOpacity>
+      <View style={style.clearIconContainer}>
+        {renderClearIcon(styles)}
+        <TouchableOpacity disabled={clearAllDisabled} onPress={onPressClearAll}>
+          <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -50,6 +62,18 @@ const style = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 15
+  },
+  clearIcon: {
+    height: 2.4,
+    width: 14,
+    borderRadius: 1.2,
+    margin: 1,
+    marginRight: 5,
+  },
+  clearIconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerTitle: {
     width: '70%'

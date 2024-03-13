@@ -95,8 +95,6 @@ export const applyTheme = (
       DefaultTheme[mode].windowContainer.background,
     width: theme.window?.width || DefaultTheme[mode].window.width,
     height: theme.window?.height || DefaultTheme[mode].window.height,
-    borderColor: theme.window?.borderColor || DefaultTheme[mode].window.borderColor,
-    borderRadius: theme.window?.borderRadius || DefaultTheme[mode].window.borderRadius
   },
   contentContainer: {
     backgroundColor:
@@ -108,7 +106,7 @@ export const applyTheme = (
   headerContainer: {
     backgroundColor:
       theme.windowHeader?.background ||
-      theme.colors?.primaryColor ||
+      theme.colors?.neutralColor ||
       DefaultTheme[mode].windowHeader.background,
     height: theme.windowHeader?.height || DefaultTheme[mode].windowHeader.height
   },
@@ -119,13 +117,20 @@ export const applyTheme = (
       DefaultTheme[mode].windowHeader.titleColor,
     fontSize: theme.windowHeader?.titleSize || DefaultTheme[mode].windowHeader.titleSize,
     fontWeight:
-      theme.windowHeader?.titleFontWeight || DefaultTheme[mode].windowHeader.titleFontWeight
+      theme.windowHeader?.titleFontWeight || DefaultTheme[mode].windowHeader.titleFontWeight,
+    paddingLeft: theme.windowHeader?.titlePadding || DefaultTheme[mode].windowHeader.titlePadding
   },
   headerAction: {
     color:
-      theme.windowHeader?.titleColor ||
+      theme.windowHeader?.headerActionColor ||
       theme.colors?.neutralColor ||
-      DefaultTheme[mode].windowHeader.titleColor
+      DefaultTheme[mode].windowHeader.headerActionColor
+  },
+  clearIcon: {
+    backgroundColor:
+      theme.windowHeader?.headerActionColor ||
+      theme.colors?.neutralColor ||
+      DefaultTheme[mode].windowHeader.headerActionColor
   },
   cardContainer: {
     backgroundColor:
@@ -172,15 +177,6 @@ export const applyTheme = (
       theme.notificationCard?.descriptionPadding ||
       DefaultTheme[mode].notificationCard.descriptionPadding
   },
-  cardImageStyle: {
-    width: theme.notificationCard?.mediaWidth || DefaultTheme[mode].notificationCard.mediaWidth,
-    height: theme.notificationCard?.mediaHeight || DefaultTheme[mode].notificationCard.mediaHeight,
-    borderRadius:
-      theme.notificationCard?.mediaRadius || DefaultTheme[mode].notificationCard.mediaRadius,
-    backgroundColor:
-      theme.notificationCard?.mediaPlaceholder ||
-      DefaultTheme[mode].notificationCard.mediaPlaceholder
-  },
   dateStyle: {
     color:
       theme.notificationCard?.dateColor ||
@@ -198,6 +194,6 @@ export const applyTheme = (
     backgroundColor: theme.colors?.primaryColor || DefaultTheme[mode].colors.primaryColor
   },
   errorButtonText: {
-    color: theme.colors?.primaryTextColor || DefaultTheme[mode].colors.primaryTextColor
+    color: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
   }
 });
