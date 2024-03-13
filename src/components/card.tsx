@@ -133,7 +133,8 @@ const style = StyleSheet.create({
     height: '100%'
   },
   cardIconRound: {
-    overflow: 'hidden'
+    overflow: 'hidden',
+    backgroundColor: '#D3D3D3'
   },
   cardAvatarStyle: {
     width: '100%',

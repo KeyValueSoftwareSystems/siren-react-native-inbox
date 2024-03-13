@@ -165,7 +165,6 @@ export const applyTheme = (
     height: theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize,
     borderRadius:
       (theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize) / 2,
-    backgroundColor: theme.colors?.borderColor || DefaultTheme[mode].colors.borderColor
   },
   closeIcon: {
     backgroundColor: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
