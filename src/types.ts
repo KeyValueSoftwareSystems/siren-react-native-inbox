@@ -97,7 +97,7 @@ export type ThemeProps = {
     textColor?: string;
     neutralColor?: string;
     borderColor?: string;
-    activeCardColor?: string;
+    highlightedCardColor?: string;
   };
   notificationIcon?: {
     size?: number,
@@ -235,4 +235,9 @@ export type SirenStyleProps = {
   errorText: TextStyle;
   errorButton: ViewStyle;
   errorButtonText: TextStyle;
+  closeIcon: ViewStyle;
+  cardWrapper: ViewStyle;
+  activeCardMarker: ViewStyle;
+  timerIcon: ViewStyle;
+  timerIconLine: ViewStyle;
 };

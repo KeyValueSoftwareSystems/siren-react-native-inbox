@@ -58,6 +58,46 @@ const renderAvatar = (
   );
 };
 
+const renderCloseIcon = (
+  onDelete: (id: string) => void,
+  notification: NotificationDataType,
+  styles: Partial<SirenStyleProps>
+) => {
+  const icon: JSX.Element[] = [];
+
+  for (let i = 0; i < 2; i++)
+    icon.push(
+      <View
+        key={i}
+        style={[
+          style.closeIconLine,
+          styles.closeIcon,
+          { transform: [{ rotate: `${45 + i * 90}deg` }] }
+        ]}
+      />
+    );
+
+  return (
+    <TouchableOpacity
+      hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
+      onPress={() => onDelete(notification.id)}
+      style={style.deleteButton}
+      testID='delete-button'
+    >
+      <>{icon}</>
+    </TouchableOpacity>
+  );
+};
+
+const renderTimerIcon = (styles: Partial<SirenStyleProps>) => {
+  return (
+    <View style={[style.timerIcon, styles.timerIcon]}>
+      <View style={[style.timerIconLine1, styles.timerIconLine]} />
+      <View style={[style.timerIconLine2, styles.timerIconLine]} />
+    </View>
+  );
+};
+
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps, styles, onDelete } = props;
 
@@ -66,37 +106,45 @@ const Card = (props: NotificationCardProps): ReactElement => {
       onPress={() => onCardClick(notification)}
       activeOpacity={0.6}
       testID='card-touchable'
-      style={[style.cardContainer, styles.cardContainer, notification?.isRead && style.transparent]}
+      style={[style.cardWrapper, styles.cardWrapper]}
     >
-      {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
-      <View style={style.cardContentContainer}>
-        <Text numberOfLines={1} style={styles.cardTitle}>
-          {notification.message?.header}
-        </Text>
-        {Boolean(notification.message?.subHeader) && (
-          <Text numberOfLines={1} style={[style.cardDescription, styles.cardDescription]}>
-            {notification.message?.subHeader}
+      <View
+        style={[
+          style.activeCardMarker,
+          styles.activeCardMarker,
+          notification?.isRead && style.transparent
+        ]}
+      />
+      <View
+        style={[
+          style.cardContainer,
+          styles.cardContainer,
+          notification?.isRead && style.transparent
+        ]}
+      >
+        {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
+        <View style={style.cardContentContainer}>
+          <View style={style.cardFooterRow}>
+            <Text numberOfLines={1} style={[styles.cardTitle, style.cardTitle]}>
+              {notification.message?.header}
+            </Text>
+
+            {renderCloseIcon(onDelete, notification, styles)}
+          </View>
+          {Boolean(notification.message?.subHeader) && (
+            <Text numberOfLines={1} style={[style.cardDescription, styles.cardDescription]}>
+              {notification.message?.subHeader}
+            </Text>
+          )}
+          <Text numberOfLines={3} style={[style.cardDescription, styles.cardDescription]}>
+            {notification.message?.body}
           </Text>
-        )}
-        <Text numberOfLines={3} style={[style.cardDescription, styles.cardDescription]}>
-          {notification.message?.body}
-        </Text>
-        <View style={style.cardFooterRow}>
-          <Text style={[style.dateStyle, styles.dateStyle]}>
-            {CommonUtils.generateElapsedTimeText(notification.createdAt)}
-          </Text>
-          <TouchableOpacity
-            hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
-            onPress={() => onDelete(notification.id)}
-            style={style.deleteButton}
-            testID='delete-button'
-          >
-            <Image
-              source={require('../assets/trash.png')}
-              resizeMode='contain'
-              style={style.icon}
-            />
-          </TouchableOpacity>
+          <View style={style.dateContainer}>
+            {renderTimerIcon(styles)}
+            <Text style={[style.dateStyle, styles.dateStyle]}>
+              {CommonUtils.generateElapsedTimeText(notification.createdAt)}
+            </Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -104,6 +152,10 @@ const Card = (props: NotificationCardProps): ReactElement => {
 };
 
 const style = StyleSheet.create({
+  cardWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   cardContainer: {
     width: '100%',
     flexDirection: 'row'
@@ -111,6 +163,9 @@ const style = StyleSheet.create({
   cardIconContainer: {
     paddingHorizontal: 10,
     paddingTop: 4
+  },
+  cardTitle: {
+    paddingBottom: 4
   },
   icon: {
     width: '100%',
@@ -126,7 +181,8 @@ const style = StyleSheet.create({
   },
   cardContentContainer: {
     flex: 1,
-    width: '100%'
+    width: '100%',
+    paddingRight: 6
   },
   cardDescription: {
     fontWeight: '400',
@@ -135,19 +191,56 @@ const style = StyleSheet.create({
   cardFooterRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end'
+    alignItems: 'center'
   },
   deleteButton: {
-    width: 15,
-    height: 15,
+    width: 14,
+    height: 14,
     overflow: 'hidden',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    opacity: 0.8
   },
   dateStyle: {
-    opacity: 0.6
+    paddingLeft: 3
   },
   transparent: {
     backgroundColor: 'transparent'
+  },
+  closeIconLine: {
+    height: 1.6,
+    marginVertical: 2,
+    width: '100%',
+    borderRadius: 1,
+    position: 'absolute'
+  },
+  dateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    opacity: 0.8
+  },
+  timerIcon: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    overflow: 'hidden',
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  timerIconLine1: {
+    height: 4,
+    width: 1
+  },
+  timerIconLine2: {
+    height: 4,
+    marginLeft: 2,
+    marginTop: -1,
+    width: 1.1,
+    transform: [{ rotate: '120deg' }]
+  },
+  activeCardMarker: {
+    width: 6,
+    height: '100%'
   }
 });
 

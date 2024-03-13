@@ -26,9 +26,11 @@ const renderClearIcon = (styles: Partial<SirenStyleProps>): JSX.Element => {
   const icon: JSX.Element[] = [];
 
   for (let i = 0; i < 3; i++)
-    icon.push(<View style={[style.clearIcon, styles.clearIcon, {marginLeft: (3-i)*2}]} />);
-  
-  return (<View>{icon}</View>);
+    icon.push(
+      <View key={i} style={[style.clearIcon, styles.clearIcon, { marginLeft: (3 - i) * 2 }]} />
+    );
+
+  return <View>{icon}</View>;
 };
 
 const Header = (props: {
@@ -61,19 +63,21 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    borderBottomWidth: 0.5
   },
   clearIcon: {
     height: 2.4,
     width: 14,
     borderRadius: 1.2,
     margin: 1,
-    marginRight: 5,
+    marginRight: 5
   },
   clearIconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    opacity: 0.8
   },
   headerTitle: {
     width: '70%'

@@ -165,7 +165,7 @@ Customizable UI option for notification window, with dark and light theme option
             textColor?: string;
             neutralColor?: string;
             borderColor?: string;
-            activeCardColor?: string;
+            highlightedCardColor?: string;
         };
         window?: {
             width?: DimensionValue;

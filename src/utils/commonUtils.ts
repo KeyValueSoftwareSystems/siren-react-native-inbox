@@ -108,7 +108,8 @@ export const applyTheme = (
       theme.windowHeader?.background ||
       theme.colors?.neutralColor ||
       DefaultTheme[mode].windowHeader.background,
-    height: theme.windowHeader?.height || DefaultTheme[mode].windowHeader.height
+    height: theme.windowHeader?.height || DefaultTheme[mode].windowHeader.height,
+    borderBottomColor: theme.colors?.borderColor ||  DefaultTheme[mode].colors.borderColor
   },
   headerTitle: {
     color:
@@ -123,21 +124,33 @@ export const applyTheme = (
   headerAction: {
     color:
       theme.windowHeader?.headerActionColor ||
-      theme.colors?.neutralColor ||
+      theme.colors?.textColor ||
       DefaultTheme[mode].windowHeader.headerActionColor
   },
   clearIcon: {
     backgroundColor:
       theme.windowHeader?.headerActionColor ||
-      theme.colors?.neutralColor ||
+      theme.colors?.textColor ||
       DefaultTheme[mode].windowHeader.headerActionColor
+  },
+  timerIcon: {
+    borderColor:
+      theme.colors?.textColor ||
+      DefaultTheme[mode].colors.textColor
+  },
+  timerIconLine: {
+    backgroundColor:
+      theme.colors?.textColor ||
+      DefaultTheme[mode].colors.textColor
   },
   cardContainer: {
     backgroundColor:
       theme.notificationCard?.background ||
-      theme.colors?.activeCardColor ||
+      theme.colors?.highlightedCardColor ||
       DefaultTheme[mode].notificationCard.background,
     padding: theme.notificationCard?.padding || DefaultTheme[mode].notificationCard.padding,
+  },
+  cardWrapper: {
     borderBottomWidth:
       theme.notificationCard?.borderWidth || DefaultTheme[mode].notificationCard.borderWidth,
     borderBottomColor:
@@ -145,12 +158,22 @@ export const applyTheme = (
       theme.colors?.borderColor ||
       DefaultTheme[mode].notificationCard.borderColor
   },
+  activeCardMarker: {
+    backgroundColor:
+      theme.colors?.primaryColor ||
+      DefaultTheme[mode].colors?.primaryColor,
+  },
   cardIconRound: {
     width: theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize,
     height: theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize,
     borderRadius:
       (theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize) / 2,
     backgroundColor: theme.colors?.borderColor || DefaultTheme[mode].colors.borderColor
+  },
+  closeIcon: {
+    backgroundColor:
+      theme.colors?.textColor ||
+      DefaultTheme[mode].colors.textColor
   },
   cardTitle: {
     color:
@@ -161,7 +184,6 @@ export const applyTheme = (
     fontWeight:
       theme.notificationCard?.titleFontWeight ||
       DefaultTheme[mode].notificationCard.titleFontWeight,
-    paddingBottom: 4,
     paddingHorizontal:
       theme.notificationCard?.padding || DefaultTheme[mode].notificationCard.titlePadding
   },
@@ -180,7 +202,7 @@ export const applyTheme = (
   dateStyle: {
     color:
       theme.notificationCard?.dateColor ||
-      theme.colors?.borderColor ||
+      theme.colors?.textColor ||
       DefaultTheme[mode].notificationCard.dateColor,
     fontSize: theme.notificationCard?.dateSize || DefaultTheme[mode].notificationCard.dateSize
   },
