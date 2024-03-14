@@ -29,20 +29,21 @@ const Header = (props: {
   styles: Partial<SirenStyleProps>;
   onPressClearAll: () => void;
   clearAllDisabled: boolean;
+  hideClearAll?: boolean;
 }): ReactElement => {
-  const { title = '', styles, onPressClearAll, clearAllDisabled = false } = props;
+  const { title = '', styles, onPressClearAll, clearAllDisabled = false, hideClearAll } = props;
 
   return (
     <View style={[style.headerContainer, styles.headerContainer]}>
       <Text numberOfLines={1} style={[style.headerTitle, styles.headerTitle]}>
         {title}
       </Text>
-      <View style={style.clearIconContainer}>
+      {!hideClearAll && <View style={style.clearIconContainer}>
         <ClearIcon styles={styles} />
         <TouchableOpacity disabled={clearAllDisabled} onPress={onPressClearAll}>
           <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
         </TouchableOpacity>
-      </View>
+      </View>}
     </View>
   );
 };

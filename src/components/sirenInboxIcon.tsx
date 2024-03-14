@@ -113,7 +113,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     if (notificationIcon) return notificationIcon;
 
     return (
-      <Image source={require('../assets/icon.png')} resizeMode='contain' style={styles.iconStyle} />
+      <Image source={require('../assets/notificationIcon.png')} resizeMode='contain' style={styles.iconStyle} />
     );
   };
 

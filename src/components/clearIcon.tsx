@@ -16,10 +16,11 @@ const ClearIcon = ({ styles }: { styles: Partial<SirenStyleProps> }): ReactEleme
 
 const style = StyleSheet.create({
   clearIcon: {
-    height: 2.4,
+    height: 2,
     width: 14,
     borderRadius: 1.2,
-    margin: 1,
+    marginTop: 1.5,
+    marginBottom: 0.5,
     marginRight: 5
   },
 });

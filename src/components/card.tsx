@@ -81,7 +81,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
         style={[
           style.cardContainer,
           styles.cardContainer,
-          notification?.isRead && style.transparent
+          !notification?.isRead && styles.highlighted
         ]}
       >
         {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
@@ -90,7 +90,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             <Text numberOfLines={1} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
-            <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
+            <CloseIcon onDelete={onDelete} notification={notification}/>
           </View>
           {Boolean(notification.message?.subHeader) && (
             <Text numberOfLines={1} style={[style.cardDescription, styles.cardDescription]}>
@@ -119,7 +119,8 @@ const style = StyleSheet.create({
   },
   cardContainer: {
     width: '100%',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingRight: 16
   },
   cardIconContainer: {
     paddingHorizontal: 10,
@@ -158,18 +159,18 @@ const style = StyleSheet.create({
   dateStyle: {
     paddingLeft: 3
   },
-  transparent: {
-    backgroundColor: 'transparent'
-  },
   dateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     opacity: 0.8
   },
   activeCardMarker: {
-    width: 6,
+    width: 4,
     height: '100%'
-  }
+  },
+  transparent: {
+    backgroundColor: 'transparent'
+  },
 });
 
 export default Card;

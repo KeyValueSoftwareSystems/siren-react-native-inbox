@@ -1,10 +1,11 @@
 import React, { type ReactElement } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, Image, View } from 'react-native';
 
 import type { SirenStyleProps } from '../types';
 import { Constants } from '../utils';
+import { ERROR_DESCRIPTION } from '../utils/constants';
 
-const { ERROR_TEXT, RETRY_BUTTON_LABEL } = Constants;
+const { ERROR_TEXT } = Constants;
 
 /**
  * `ErrorWindow` is a React component that displays an error message and provides a retry button.
@@ -19,18 +20,20 @@ const { ERROR_TEXT, RETRY_BUTTON_LABEL } = Constants;
  * @param {Object} props.styles - Custom styles applied to the error window
  * @param {Function} props.onRetry - A callback function that is invoked when the user presses the refresh button.
  */
-const ErrorWindow = (props: {
-  styles: Partial<SirenStyleProps>;
-  onRetry: () => void;
-}): ReactElement => {
-  const { styles, onRetry } = props;
+const ErrorWindow = (props: { styles: Partial<SirenStyleProps> }): ReactElement => {
+  const { styles } = props;
 
   return (
     <View style={style.container}>
+      <View style={style.iconContainer}>
+        <Image
+          source={require('../assets/errorIcon.png')}
+          resizeMode='contain'
+          style={style.iconStyle}
+        />
+      </View>
       <Text style={[style.errorText, styles.errorText]}>{ERROR_TEXT}</Text>
-      <TouchableOpacity onPress={onRetry} style={[style.errorButton, styles.errorButton]}>
-        <Text style={[style.errorButtonText, styles.errorButtonText]}>{RETRY_BUTTON_LABEL}</Text>
-      </TouchableOpacity>
+      <Text style={[style.errorDescription, styles.errorText]}>{ERROR_DESCRIPTION}</Text>
     </View>
   );
 };
@@ -40,25 +43,34 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    minHeight: 100,
-    width: '100%'
+    minHeight: 400,
+    width: '100%',
   },
   errorText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '400',
-    padding: 20
+    paddingBottom: 5,
+    textAlign: 'center',
+    paddingTop: 20
   },
-  errorButton: {
-    paddingVertical: 6,
-    paddingHorizontal: 20,
+  errorDescription: {
+    fontSize: 12,
+    fontWeight: '400',
+    textAlign: 'center',
+    opacity: 0.8
+  },
+  iconContainer: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    overflow: 'hidden',
+    backgroundColor: '#F7F9FC',
     justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    overflow: 'hidden'
+    alignItems: 'center'
   },
-  errorButtonText: {
-    fontSize: 16,
-    fontWeight: '500'
+  iconStyle: {
+    width: 62,
+    height: 62
   }
 });
 

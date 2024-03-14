@@ -10,6 +10,7 @@ import EmptyWindow from './emptyWindow';
 import ErrorWindow from './errorWindow';
 import Header from './header';
 import LoadingWindow from './loadingWindow';
+import Spinner from './spinner';
 import { useSirenContext } from './sirenProvider';
 import type { SirenInboxProps } from '../types';
 import { CommonUtils, Constants, useSiren } from '../utils';
@@ -72,7 +73,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     customFooter = null,
     customNotificationCard = null,
     onNotificationCardClick = () => null,
-    onError = () => {}
+    onError = () => {},
+    hideClearAll = false
   } = props;
 
   const notificationsPerPage = 10;
@@ -235,12 +237,16 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   // Render empty window, error window, or custom empty component
   const renderListEmpty = (): JSX.Element | null => {
     if (!isLoading) {
-      if (isError) return <ErrorWindow onRetry={onRefresh} styles={styles} />;
+      if (isError) return <ErrorWindow styles={styles} />;
 
       return listEmptyComponent || <EmptyWindow styles={styles} />;
     }
 
-    return null;
+    return (
+      <LoadingWindow
+        styles={styles}
+      />
+    );
   };
 
   const onDelete = async (id: string): Promise<void> => {
@@ -284,9 +290,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   // Render loading window
   const renderListFooter = (): JSX.Element | null => {
-    if (isLoading)
+    if (isLoading && isNonEmptyArray(notifications))
       return (
-        <LoadingWindow
+        <Spinner
           theme={darkMode ? theme?.dark : theme?.light}
           mode={darkMode ? ThemeMode.DARK : ThemeMode.LIGHT}
         />
@@ -303,6 +309,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           title={title}
           styles={styles}
           onPressClearAll={onPressClearAll}
+          hideClearAll={hideClearAll}
           clearAllDisabled={!isNonEmptyArray(notifications)}
         />
       );
@@ -315,7 +322,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       <FlatList
         data={notifications}
         renderItem={renderCard}
-        ListEmptyComponent={renderListEmpty}
         keyExtractor={(item) => item.id}
         onRefresh={onRefresh}
         refreshing={false}
@@ -329,7 +335,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   return (
     <View style={[style.container, styles.container]}>
       {renderHeader()}
-      {renderList()}
+      {isNonEmptyArray(notifications) ? renderList(): renderListEmpty()}
       {customFooter || null}
     </View>
   );
@@ -338,7 +344,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 const style = StyleSheet.create({
   container: {
     minWidth: 300,
-    flex: 1,
+    flex: 1
   }
 });
 

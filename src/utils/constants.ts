@@ -57,8 +57,10 @@ export enum events {
   NOTIFICATION_COUNT_EVENT = 'NOTIFICATION_COUNT_EVENT'
 }
 
-export const LIST_EMPTY_TEXT = "You don't have any notifications!";
-export const ERROR_TEXT = 'Something went wrong!';
+export const LIST_EMPTY_TEXT = "No new notifications";
+export const LIST_EMPTY_DESCRIPTION = "Check back later for updates and alerts";
+export const ERROR_TEXT = 'Oops! Something went wrong.';
+export const ERROR_DESCRIPTION = 'Could not load the notifications. Please refresh the page.';
 export const DEFAULT_WINDOW_TITLE = 'Notifications';
 export const RETRY_BUTTON_LABEL = 'Retry';
 export const CLEAR_ALL_LABEL = 'Clear All';

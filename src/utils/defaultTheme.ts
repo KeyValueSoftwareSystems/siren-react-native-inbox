@@ -6,6 +6,7 @@ const defaultTheme = {
       primaryColor: COLORS[ThemeMode.LIGHT].primaryColor,
       textColor: COLORS[ThemeMode.LIGHT].textColor,
       neutralColor: COLORS[ThemeMode.LIGHT].neutralColor,
+      highlightedCardColor: COLORS[ThemeMode.LIGHT].highlightedCardColor,
       borderColor: COLORS[ThemeMode.LIGHT].borderColor
     },
     notificationIcon: {
@@ -34,7 +35,7 @@ const defaultTheme = {
       padding: 10,
       borderWidth: 0.6,
       borderColor: COLORS[ThemeMode.LIGHT].borderColor,
-      background: COLORS[ThemeMode.LIGHT].highlightedCardColor,
+      background: COLORS[ThemeMode.LIGHT].neutralColor,
       avatarSize: 40,
       titleColor: COLORS[ThemeMode.LIGHT].textColor,
       titleFontWeight: '500',
@@ -52,6 +53,7 @@ const defaultTheme = {
       primaryColor: COLORS[ThemeMode.DARK].primaryColor,
       textColor: COLORS[ThemeMode.DARK].textColor,
       neutralColor: COLORS[ThemeMode.DARK].neutralColor,
+      highlightedCardColor: COLORS[ThemeMode.DARK].highlightedCardColor,
       borderColor: COLORS[ThemeMode.DARK].borderColor
     },
     notificationIcon: {
@@ -80,7 +82,7 @@ const defaultTheme = {
       padding: 10,
       borderWidth: 0.6,
       borderColor: COLORS[ThemeMode.DARK].borderColor,
-      background: COLORS[ThemeMode.DARK].highlightedCardColor,
+      background: COLORS[ThemeMode.DARK].neutralColor,
       avatarSize: 40,
       titleColor: COLORS[ThemeMode.DARK].textColor,
       titleFontWeight: '500',
@@ -91,7 +93,7 @@ const defaultTheme = {
       descriptionPadding: 0,
       dateColor: COLORS[ThemeMode.DARK].textColor,
       dateSize: 12
-    }
+    },
   }
 };
 

@@ -25,6 +25,7 @@ export type SirenInboxProps = {
   listEmptyComponent?: JSX.Element;
   customFooter?: JSX.Element;
   customHeader?: JSX.Element;
+  hideClearAll?: boolean;
   customNotificationCard?: (notification: NotificationDataType) => JSX.Element;
   onNotificationCardClick?: (notification: NotificationDataType) => void;
   onError?: (error: SirenErrorType) => void;
@@ -241,4 +242,6 @@ export type SirenStyleProps = {
   activeCardMarker: ViewStyle;
   timerIcon: ViewStyle;
   timerIconLine: ViewStyle;
+  skeltonLoaderColor: ViewStyle;
+  highlighted: ViewStyle;
 };

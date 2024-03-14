@@ -144,9 +144,7 @@ export const applyTheme = (
   },
   cardContainer: {
     backgroundColor:
-      theme.notificationCard?.background ||
-      theme.colors?.highlightedCardColor ||
-      DefaultTheme[mode].notificationCard.background,
+      theme.notificationCard?.background || DefaultTheme[mode].notificationCard.background,
     padding: theme.notificationCard?.padding || DefaultTheme[mode].notificationCard.padding
   },
   cardWrapper: {
@@ -164,7 +162,7 @@ export const applyTheme = (
     width: theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize,
     height: theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize,
     borderRadius:
-      (theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize) / 2,
+      (theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize) / 2
   },
   closeIcon: {
     backgroundColor: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
@@ -204,12 +202,18 @@ export const applyTheme = (
     color: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
   },
   errorText: {
-    color: theme.colors?.primaryColor || DefaultTheme[mode].colors.primaryColor
+    color: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
   },
   errorButton: {
     backgroundColor: theme.colors?.primaryColor || DefaultTheme[mode].colors.primaryColor
   },
   errorButtonText: {
     color: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
+  },
+  skeltonLoaderColor: {
+    backgroundColor: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
+  },
+  highlighted: {
+    backgroundColor: DefaultTheme[mode].colors.highlightedCardColor
   }
 });

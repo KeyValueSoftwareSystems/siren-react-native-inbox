@@ -1,33 +1,16 @@
 import React, { type ReactElement } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import type { NotificationDataType } from 'test_notification/dist/esm/types';
 
-import type { SirenStyleProps } from '../types';
 
 const CloseIcon = ({
   notification,
-  styles,
   onDelete
 }: {
   notification: NotificationDataType;
-  styles: Partial<SirenStyleProps>;
   onDelete: (id: string) => void;
 }): ReactElement => {
-  const icon: JSX.Element[] = [];
-
-  for (let i = 0; i < 2; i++)
-    icon.push(
-      <View
-        key={i}
-        style={[
-          style.closeIconLine,
-          styles.closeIcon,
-          { transform: [{ rotate: `${45 + i * 90}deg` }] }
-        ]}
-      />
-    );
-
   return (
     <TouchableOpacity
       hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
@@ -35,7 +18,11 @@ const CloseIcon = ({
       style={style.closeButton}
       testID='delete-button'
     >
-      <>{icon}</>
+      <Image
+        source={require('../assets/closeIcon.png')}
+        resizeMode='contain'
+        style={style.iconStyle}
+      />
     </TouchableOpacity>
   );
 };
@@ -49,11 +36,12 @@ const style = StyleSheet.create({
     position: 'absolute'
   },
   closeButton: {
-    width: 14,
-    height: 14,
-    overflow: 'hidden',
-    justifyContent: 'center',
-    opacity: 0.8
+    width: 12,
+    height: 12
+  },
+  iconStyle: {
+    width: '100%',
+    height: '100%'
   }
 });
 
