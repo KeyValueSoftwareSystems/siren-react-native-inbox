@@ -69,29 +69,8 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   const [siren, setSiren] = useState<Siren | null>(null);
 
   useEffect(() => {
-    if (config?.recipientId && config?.userToken) {
-      stopRealTimeFetch();
-      sendResetDataEvents();
-      initialize();
-    }
-  }, [config]);
-
-  const stopRealTimeFetch = (): void => {
-    siren?.stopRealTimeNotificationFetch();
-    siren?.stopRealTimeUnviewedCountFetch();
-  };
-
-  const sendResetDataEvents = () => {
-    const updateCountPayload = {
-      action: eventTypes.RESET_NOTIFICATIONS_COUNT
-    };
-    const updateNotificationPayload = {
-      action: eventTypes.RESET_NOTIFICATIONS
-    };
-
-    PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(updateCountPayload));
-    PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(updateNotificationPayload));
-  };
+    initialize();
+  }, []);
 
   const onUnViewedCountReceived = (response: UnviewedCountApiResponse): void => {
     const totalUnviewed = response?.data?.totalUnviewed;

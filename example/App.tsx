@@ -24,7 +24,6 @@ function MyStack() {
 }
 
 function App(): React.JSX.Element {
-
   const [config, setConfig] = React.useState({
     userToken: 'fb928b226c5b47b7810171acbe2dbad2',
     recipientId: '6b6027be-7882-4eca-9cc7-080a06798c71'
@@ -40,4 +39,5 @@ function App(): React.JSX.Element {
     </NavigationContainer>
   );
 }
+
 export default App;
