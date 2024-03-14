@@ -153,13 +153,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     const readyForInitialize = siren && !isError;
 
     if (readyForInitialize) {
-      const allNotifications = await fetchNotifications(siren, true);
+      await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
 
-      if (isNonEmptyArray(allNotifications)) {
-        console.log('last notification id:', allNotifications[0].id);
-        notificationParams.start = allNotifications[0].createdAt;
-      }
       siren?.startRealTimeNotificationFetch(notificationParams);
     }
   };
@@ -234,11 +230,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         setNotifications([]);
         setIsLoading(true);
         siren?.stopRealTimeNotificationFetch();
-        const allNotifications = (await fetchNotifications(siren, true)) || [];
+        await fetchNotifications(siren, true);
         const notificationParams: fetchProps = { size: notificationsPerPage };
-
-        if (isNonEmptyArray(allNotifications))
-          notificationParams.start = allNotifications[0].createdAt;
 
         siren?.startRealTimeNotificationFetch(notificationParams);
       } catch (err) {
