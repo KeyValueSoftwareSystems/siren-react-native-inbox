@@ -115,7 +115,8 @@ const Card = (props: NotificationCardProps): ReactElement => {
 const style = StyleSheet.create({
   cardWrapper: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingRight: 12
   },
   cardContainer: {
     width: '100%',
