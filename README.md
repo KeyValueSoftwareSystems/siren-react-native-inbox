@@ -140,6 +140,7 @@ Prop | Description | Type | Default value |
 theme | Theme object for custom styling |  Theme | {} |
 title |  Title of the notification window |  string | "Notifications" |
 hideHeader | Flag to hide or show the header |  boolean | false |
+hideClearAll | Flag to hide or show the clear all button in header |  boolean | false |
 darkMode | Flag to enable dark mode |  boolean | false |
 cardProps | Props for customizing the notification cards | CardProps | null |
 customNotificationCard | Custom function for rendering notification cards | (notification)=> JSX Element | null |
