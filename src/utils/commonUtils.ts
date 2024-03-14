@@ -43,6 +43,10 @@ export const updateNotifications = (
       updatedNotifications = [...newNotifications, ...notifications];
       break;
     }
+    case eventTypes.RESET_NOTIFICATIONS: {
+      updatedNotifications = [];
+      break;
+    }
     default:
       break;
   }
