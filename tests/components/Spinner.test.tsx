@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import LoadingWindow from '../../src/components/loadingWindow';
+import Spinner from '../../src/components/spinner';
 import { ThemeMode } from '../../src/utils/constants';
 
-describe('LoadingWindow', () => {
+describe('spinner', () => {
   const customTheme = {
     colors: {
       textColor: '#000'
@@ -12,12 +12,12 @@ describe('LoadingWindow', () => {
   const mode = ThemeMode.LIGHT;
 
   it('renders without crashing', () => {
-    render(<LoadingWindow mode={mode} theme={customTheme} />);
+    render(<Spinner mode={mode} theme={customTheme} />);
   });
 
   it('renders ActivityIndicator', () => {
     const { getByTestId } = render(
-      <LoadingWindow  mode={mode} theme={customTheme} />
+      <Spinner  mode={mode} theme={customTheme} />
     );
 
     expect(getByTestId('activity-indicator')).toBeTruthy();
@@ -25,7 +25,7 @@ describe('LoadingWindow', () => {
 
   it('sets color based on theme and mode', () => {
     const { getByTestId } = render(
-      <LoadingWindow mode={mode} theme={customTheme} />
+      <Spinner mode={mode} theme={customTheme} />
     );
 
     const activityIndicator = getByTestId('activity-indicator');

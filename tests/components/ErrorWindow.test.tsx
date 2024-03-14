@@ -1,8 +1,10 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import ErrorWindow from '../../src/components/errorWindow';
 import { Constants } from '../../src/utils';
 import type { SirenStyleProps } from '../../src/types';
+
+const { ERROR_TEXT, ERROR_DESCRIPTION } = Constants;
 
 describe('ErrorWindow', () => {
   it('renders correctly', () => {
@@ -29,16 +31,11 @@ describe('ErrorWindow', () => {
     const retryCallback = jest.fn();
 
     const { getByText } = render(
-      <ErrorWindow styles={customErrorStyles} onRetry={retryCallback} />
+      <ErrorWindow styles={customErrorStyles} />
     );
 
-    expect(getByText(Constants.ERROR_TEXT)).toBeTruthy();
+    expect(getByText(ERROR_TEXT)).toBeTruthy();
+    expect(getByText(ERROR_DESCRIPTION)).toBeTruthy();
 
-    const retryButton = getByText(Constants.RETRY_BUTTON_LABEL);
-
-    expect(retryButton).toBeTruthy();
-
-    fireEvent.press(retryButton);
-    expect(retryCallback).toHaveBeenCalled();
   });
 });
