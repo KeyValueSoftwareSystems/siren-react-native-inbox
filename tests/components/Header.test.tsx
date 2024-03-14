@@ -16,7 +16,6 @@ describe('Header', () => {
       cardIconRound: undefined,
       cardTitle: undefined,
       cardDescription: undefined,
-      cardImageStyle: undefined,
       dateStyle: undefined,
       emptyText: undefined,
       errorText: undefined,

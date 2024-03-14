@@ -107,14 +107,6 @@ Customize the unread badge of the notification icon, and choose between dark and
         notificationIcon?: {
           size?: number,
         };
-        unreadBadgeCount?: {
-            background?: string;
-            color?: string;
-            borderRadius?: number;
-            fontSize?: number;
-            inset?: number;
-            size?: number;
-        };
         badgeStyle?: {
             size?: number;
             color?: string;
@@ -173,16 +165,11 @@ Customizable UI option for notification window, with dark and light theme option
             textColor?: string;
             neutralColor?: string;
             borderColor?: string;
-            primaryTextColor?: string;
-            activeCardColor?: string;
+            highlightedCardColor?: string;
         };
         window?: {
             width?: DimensionValue;
             height?: DimensionValue;
-            borderColor?: string;
-            borderRadius?: number;
-            shadowDepth?: number;
-            shadowColor?: string;
         };
         windowHeader?: {
             background?: string;
@@ -190,20 +177,19 @@ Customizable UI option for notification window, with dark and light theme option
             titleColor?: string;
             titleFontWeight?: TextStyle['fontWeight'];
             titleSize?: number;
-            closeIconColor?: string;
+            headerActionColor?: string;
             closeIconSize?: number;
+            titlePadding?: number;
         };
         windowContainer?: {
             background?: string;
             padding?: number;
         };
         notificationCard?: {
-            height?: DimensionValue;
             padding?: number;
             borderWidth?: number;
             borderColor?: string;
             background?: string;
-            hoverBackground?: string;
             avatarSize?: number;
             titleColor?: string;
             titleFontWeight?: TextStyle['fontWeight'];
@@ -212,11 +198,6 @@ Customizable UI option for notification window, with dark and light theme option
             descriptionColor?: string;
             descriptionSize?: number;
             descriptionPadding?: number;
-            mediaWidth?: DimensionValue;
-            mediaHeight?: DimensionValue;
-            mediaObjectFit?: string;
-            mediaRadius?: number;
-            mediaPlaceholder?: string;
             dateColor?: string;
             dateSize?: number;
         };

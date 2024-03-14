@@ -81,7 +81,7 @@ const useSiren = () => {
       const response = await siren?.markNotificationsAsViewed(untilDate);
 
       if (response.data) {
-        const payload = { notificationsCount: 0, action: eventTypes.UPDATE_NOTIFICATIONS_COUNT };
+        const payload = { unviewedCount: 0, action: eventTypes.UPDATE_NOTIFICATIONS_COUNT };
 
         PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(payload));
       }
