@@ -4,7 +4,7 @@ export const COLORS = {
     highlightedCardColor: '#FFECE5',
     textColor: '#344054',
     neutralColor: '#FFFFFF',
-    borderColor: '#98A2B3'
+    borderColor: '#D0D5DD'
   },
   dark: {
     primaryColor: '#F56630',
