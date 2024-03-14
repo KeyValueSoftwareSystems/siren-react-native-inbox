@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SirenProvider } from './src';
+import { SirenProvider } from '@siren/react-native-inbox';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
