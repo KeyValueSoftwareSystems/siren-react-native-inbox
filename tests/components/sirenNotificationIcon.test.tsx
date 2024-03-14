@@ -41,7 +41,7 @@ describe('SirenInboxIcon', () => {
     }
   };
 
-  const notificationIcon = <Image source={require('../../src/assets/icon.png')} />;
+  const notificationIcon = <Image source={require('../../src/assets/notificationIcon.png')} />;
   const mockSiren:Pick<Siren, keyof Siren> = {
     markNotificationAsReadById: jest.fn(),
     markNotificationsAsReadByDate: jest.fn(),

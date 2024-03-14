@@ -31,7 +31,11 @@ function App(): React.JSX.Element {
 
   return (
     <NavigationContainer>
-      <SirenProvider config={config}>{MyStack()}</SirenProvider>
+      <SirenProvider
+        config={config}
+      >
+        {MyStack()}
+      </SirenProvider>
     </NavigationContainer>
   );
 }

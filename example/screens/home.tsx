@@ -134,9 +134,7 @@ function Home(): React.JSX.Element {
         <SirenInboxIcon
           theme={badgeThemes[badgeThemeIndex]}
           notificationIcon={showCustomNotification ? renderNotificationIcon() : undefined}
-          onPress={()=> {
-            navigation.navigate('Notifications')
-          }}
+          onPress={() => navigation.navigate('Notifications')}
         />
         <Text>Siren Notification Icon Theme Testing</Text>
         {showNetwork && <NetworkLogDebugModal />}

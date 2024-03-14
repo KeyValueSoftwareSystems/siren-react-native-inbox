@@ -54,9 +54,9 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
     outputRange: [0.05, 0.15]
   });
 
-  const renderSkeltonCard = ({ index }: { index: number }) => {
+  const renderSkeltonCard = () => {
     return (
-      <View key={index} style={[styles.cardContainer, style.cardContainer]}>
+      <View style={[styles.cardContainer, style.cardContainer]}>
         <Animated.View
           style={[styles.skeltonLoaderColor, style.loadingCircle, { opacity: opacityAnim }]}
         />
