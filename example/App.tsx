@@ -1,57 +1,48 @@
-import React from 'react';
-import { Image } from 'react-native';
-import { SirenInboxIcon, SirenProvider } from '@siren/react-native-inbox';
+import React, { useEffect } from 'react';
+import { SirenProvider } from '@siren/react-native-inbox';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from './screens/home';
 import Notifications from './screens/notifications';
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-function MyTabs() {
+function MyStack() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name='Home'
-        component={Home}
-        options={{
-          headerShown: false,
-          tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <Image
-              source={require('./assets/icon.png')}
-              resizeMode='contain'
-              style={{ width: 30, height: 30 }}
-            />
-          )
-        }}
-      />
-      <Tab.Screen
+    <Stack.Navigator>
+      <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen
         name='Notifications'
-        component={Notifications}
         options={{
-          headerShown: false,
-          tabBarShowLabel: false,
-          tabBarIcon: () => <SirenInboxIcon disabled />
+          headerShown: false
         }}
+        component={Notifications}
       />
-    </Tab.Navigator>
+    </Stack.Navigator>
   );
 }
 
 function App(): React.JSX.Element {
+  const [config, setConfig] = React.useState({
+    userToken: 'fb928b226c5b47b7810171acbe2dbad2',
+    recipientId: '6b6027be-7882-4eca-9cc7-080a06798c71'
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setConfig({
+        userToken: '227047349b3044fbac7c24fdf5537c44',
+        recipientId: '551cd601-65b3-41b2-bbce-bbd15908992f'
+      })
+    }, 3000);
+  }, []);
+
   return (
     <NavigationContainer>
-      <SirenProvider
-        config={{
-          userToken: '1b961622e24c4a118a4108123d645c28',
-          recipientId: '6018ebd1-683c-4397-a903-5ce9ea94bcd7'
-        }}
-      >
-        {MyTabs()}
-      </SirenProvider>
+      <SirenProvider config={config}>{MyStack()}</SirenProvider>
     </NavigationContainer>
   );
 }
+
 export default App;

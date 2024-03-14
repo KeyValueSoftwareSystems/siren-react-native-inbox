@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import PubSub from 'pubsub-js';
-import { Siren } from 'test_notification';
 import type { UnviewedCountReturnResponse } from 'test_notification/dist/esm/types';
 
 import { useSirenContext } from './sirenProvider';
@@ -37,7 +36,8 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     notificationIcon,
     darkMode = false,
     onPress = () => null,
-    disabled = false
+    disabled = false,
+    onError = () => null
   } = props;
 
   const { siren } = useSirenContext();
@@ -54,32 +54,40 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   // Clean up - stop polling when component unmounts
   const cleanUp = () => () => {
     siren?.stopRealTimeUnviewedCountFetch();
+    PubSub.unsubscribe(events.NOTIFICATION_COUNT_EVENT);
+    seUnviewedCount(0);
   };
 
   const notificationSubscriber = async (type: string, dataString: string) => {
     const data = await JSON.parse(dataString);
 
-    if (data.action === eventTypes.UPDATE_NOTIFICATIONS_COUNT) seUnviewedCount(data.unviewedCount);
+    if (data.action === eventTypes.RESET_NOTIFICATIONS_COUNT) seUnviewedCount(0);
+    else if (data.action === eventTypes.UPDATE_NOTIFICATIONS_COUNT)
+      seUnviewedCount(data.unviewedCount);
   };
 
   useEffect(() => {
-    initialize();
+    PubSub.subscribe(events.NOTIFICATION_COUNT_EVENT, notificationSubscriber);
 
     return cleanUp();
+  }, []);
+
+  useEffect(() => {
+    initialize();
   }, [siren]);
 
   useEffect(() => {
-    if(unviewedCount >0) logger.info(`unviewed notification count : ${unviewedCount}`);
-  }, [unviewedCount])
+    if (unviewedCount > 0) logger.info(`unviewed notification count : ${unviewedCount}`);
+  }, [unviewedCount]);
 
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
-    if (Siren && siren) {
-      PubSub.subscribe(events.NOTIFICATION_COUNT_EVENT, notificationSubscriber);
+    if (siren) {
       const unViewed: UnviewedCountReturnResponse = await siren.fetchUnviewedNotificationsCount();
 
       siren.startRealTimeUnviewedCountFetch();
       if (unViewed?.data) seUnviewedCount(unViewed.data?.unviewedCount || 0);
+      if (unViewed?.error) onError(unViewed?.error);
     }
   };
 
