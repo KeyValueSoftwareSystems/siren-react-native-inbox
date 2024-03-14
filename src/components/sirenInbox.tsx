@@ -14,7 +14,7 @@ import { useSirenContext } from './sirenProvider';
 import type { SirenInboxProps } from '../types';
 import { CommonUtils, Constants, useSiren } from '../utils';
 
-const { DEFAULT_WINDOW_TITLE, ThemeMode, events, eventTypes } = Constants;
+const { DEFAULT_WINDOW_TITLE, ThemeMode, events } = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
 
 type fetchProps = {
@@ -92,6 +92,29 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     unreadCount?: number;
   } | null>(null);
 
+  useEffect(() => {
+    PubSub.subscribe(events.NOTIFICATION_LIST_EVENT, notificationSubscriber);
+
+    return cleanUp();
+  }, []);
+
+  useEffect(() => {
+    // Initialize Siren SDK and start polling notifications
+    initialize();
+  }, [siren]);
+
+  useEffect(() => {
+    if (eventListenerData) {
+      const updatedNotifications: NotificationDataType[] = updateNotifications(
+        eventListenerData,
+        notifications
+      );
+
+      setNotifications(updatedNotifications);
+      setEventListenerData(null);
+    }
+  }, [eventListenerData]);
+
   const handleMarkNotificationsAsViewed = async (newNotifications = notifications) => {
     if (isNonEmptyArray(newNotifications)) {
       const response = await markNotificationsAsViewed(newNotifications[0].createdAt);
@@ -111,6 +134,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const cleanUp = () => () => {
     siren?.stopRealTimeNotificationFetch();
     setNotifications([]);
+    PubSub.unsubscribe(events.NOTIFICATION_LIST_EVENT);
     handleMarkNotificationsAsViewed();
   };
 
@@ -119,34 +143,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
     setEventListenerData(data);
   };
-
-  useEffect(() => {
-    PubSub.subscribe(events.NOTIFICATION_LIST_EVENT, notificationSubscriber);
-
-    return cleanUp();
-  }, []);
-
-  useEffect(() => {
-    // Initialize Siren SDK and start polling notifications
-    initialize();
-  }, [siren]);
-
-  useEffect(() => {
-    if (eventListenerData) {
-      if (eventListenerData.action === eventTypes.RESET_NOTIFICATIONS) {
-        setNotifications([]);
-        siren?.stopRealTimeNotificationFetch();
-      } else {
-        const updatedNotifications: NotificationDataType[] = updateNotifications(
-          eventListenerData,
-          notifications
-        );
-
-        setNotifications(updatedNotifications);
-      }
-      setEventListenerData(null);
-    }
-  }, [eventListenerData]);
 
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {

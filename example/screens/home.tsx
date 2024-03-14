@@ -10,6 +10,8 @@ import {
   Image
 } from 'react-native';
 import { SirenInboxIcon } from '@siren/react-native-inbox';
+import { useNavigation } from '@react-navigation/native';
+
 import NetworkLogDebugModal from './networkLogDebugModal';
 
 const badgeThemes = [
@@ -52,6 +54,7 @@ const badgeThemes = [
 ];
 
 function Home(): React.JSX.Element {
+  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
   const [showTestingWindow, setShowTestingWindow] = useState(false);
   const [showCustomNotification, setShowCustomNotification] = useState(false);
@@ -131,6 +134,9 @@ function Home(): React.JSX.Element {
         <SirenInboxIcon
           theme={badgeThemes[badgeThemeIndex]}
           notificationIcon={showCustomNotification ? renderNotificationIcon() : undefined}
+          onPress={()=> {
+            navigation.navigate('Notifications')
+          }}
         />
         <Text>Siren Notification Icon Theme Testing</Text>
         {showNetwork && <NetworkLogDebugModal />}

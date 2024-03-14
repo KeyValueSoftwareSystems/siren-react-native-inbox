@@ -69,8 +69,29 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   const [siren, setSiren] = useState<Siren | null>(null);
 
   useEffect(() => {
-    if (config?.recipientId && config?.userToken) initialize();
+    if (config?.recipientId && config?.userToken) {
+      stopRealTimeFetch();
+      sendResetDataEvents();
+      initialize();
+    }
   }, [config]);
+
+  const stopRealTimeFetch = (): void => {
+    siren?.stopRealTimeNotificationFetch();
+    siren?.stopRealTimeUnviewedCountFetch();
+  };
+
+  const sendResetDataEvents = () => {
+    const updateCountPayload = {
+      action: eventTypes.RESET_NOTIFICATIONS_COUNT
+    };
+    const updateNotificationPayload = {
+      action: eventTypes.RESET_NOTIFICATIONS
+    };
+
+    PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(updateCountPayload));
+    PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(updateNotificationPayload));
+  };
 
   const onUnViewedCountReceived = (response: UnviewedCountApiResponse): void => {
     const totalUnviewed = response?.data?.totalUnviewed;
@@ -107,16 +128,6 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
   // Function to initialize the Siren SDK and fetch notifications
   const initialize = (): void => {
-    const updateCountPayload = {
-      action: eventTypes.RESET_NOTIFICATIONS_COUNT
-    };
-    const updateNotificationPayload = {
-      action: eventTypes.RESET_NOTIFICATIONS
-    };
-
-    PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(updateCountPayload));
-    PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(updateNotificationPayload));
-
     const dataParams: InitConfigType = getDataParams();
     const siren = new Siren(dataParams);
 

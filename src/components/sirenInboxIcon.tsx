@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import PubSub from 'pubsub-js';
-import { Siren } from 'test_notification';
 import type { UnviewedCountReturnResponse } from 'test_notification/dist/esm/types';
 
 import { useSirenContext } from './sirenProvider';
@@ -55,24 +54,27 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   // Clean up - stop polling when component unmounts
   const cleanUp = () => () => {
     siren?.stopRealTimeUnviewedCountFetch();
+    PubSub.unsubscribe(events.NOTIFICATION_COUNT_EVENT);
     seUnviewedCount(0);
   };
 
   const notificationSubscriber = async (type: string, dataString: string) => {
     const data = await JSON.parse(dataString);
 
-    if (data.action === eventTypes.RESET_NOTIFICATIONS_COUNT) {
+    if (data.action === eventTypes.RESET_NOTIFICATIONS_COUNT) 
       seUnviewedCount(0);
-      siren?.stopRealTimeUnviewedCountFetch();
-    } else if (data.action === eventTypes.UPDATE_NOTIFICATIONS_COUNT) {
+    else if (data.action === eventTypes.UPDATE_NOTIFICATIONS_COUNT) 
       seUnviewedCount(data.unviewedCount);
-    }
   };
 
   useEffect(() => {
-    initialize();
-
+    PubSub.subscribe(events.NOTIFICATION_COUNT_EVENT, notificationSubscriber);
+    
     return cleanUp();
+  }, []);
+
+  useEffect(() => {
+    initialize();
   }, [siren]);
 
   useEffect(() => {
@@ -81,8 +83,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
 
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
-    if (Siren && siren) {
-      PubSub.subscribe(events.NOTIFICATION_COUNT_EVENT, notificationSubscriber);
+    if (siren) {
       const unViewed: UnviewedCountReturnResponse = await siren.fetchUnviewedNotificationsCount();
 
       siren.startRealTimeUnviewedCountFetch();
