@@ -25,8 +25,7 @@ const windowThemes = [
     light: {
       colors: {
         primaryColor: '#800000',
-        activeCardColor: '#FFDADA',
-        primaryTextColor: '#FFFFFF',
+        highlightedCardColor: '#FFDADA',
         textColor: '#000000',
         neutralColor: '#FFFFFF',
         borderColor: '#560000'
@@ -110,7 +109,7 @@ function Notifications(): React.JSX.Element {
         {showTestingWindow && (
           <View style={styles.testingWindowInnerContainer}>
             {renderButton(
-              `${showNetwork ? 'hide' : 'show'} network`,
+              `${showNetwork ? 'Hide' : 'Show'} network`,
               () => {
                 setShowNetwork((showNetwork) => !showNetwork);
               }
