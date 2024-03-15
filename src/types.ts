@@ -42,7 +42,7 @@ export type SirenInboxProps = {
  */
 export type SirenInboxIconProps = {
   theme?: Theme;
-  customStyles?: StyleProps,
+  customStyles?: StyleProps;
   notificationIcon?: JSX.Element;
   onError?: (error: SirenErrorType) => void;
   darkMode?: boolean;
@@ -100,6 +100,10 @@ export type ThemeProps = {
     neutralColor?: string;
     borderColor?: string;
     highlightedCardColor?: string;
+    dateColor?: string;
+    deleteIcon?: string;
+    timerIcon?: string;
+    clearAllIcon?: string;
   };
   badgeStyle?: {
     color?: string;
@@ -110,6 +114,7 @@ export type ThemeProps = {
     titleColor?: string;
     headerActionColor?: string;
     borderColor?: string;
+    borderWidth?: string;
   };
   windowContainer?: {
     background?: string;
@@ -122,7 +127,6 @@ export type ThemeProps = {
     dateColor?: string;
   };
 };
-
 
 export type StyleProps = {
   notificationIcon?: {
@@ -138,7 +142,8 @@ export type StyleProps = {
     titleSize?: number;
     closeIconSize?: number;
     titlePadding?: number;
-  }
+    borderWidth?: number;
+  };
   windowContainer?: {
     padding?: number;
   };
@@ -159,7 +164,7 @@ export type StyleProps = {
   };
   badgeTextStyle?: {
     textSize?: number;
-  }
+  };
 };
 
 /**

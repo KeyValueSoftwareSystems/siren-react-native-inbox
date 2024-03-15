@@ -4,14 +4,22 @@ export const COLORS = {
     highlightedCardColor: '#FFECE5',
     textColor: '#344054',
     neutralColor: '#FFFFFF',
-    borderColor: '#D0D5DD'
+    borderColor: '#D0D5DD',
+    dateColor: "#34405499",
+    deleteIcon: "#34405499",
+    timerIcon: "#667185",
+    clearAllIcon: "#667185",
   },
   dark: {
     primaryColor: '#F56630',
     highlightedCardColor: '#2E2D30',
     textColor: '#FFFFFF',
     neutralColor: '#232326',
-    borderColor: '#344054'
+    borderColor: '#344054',
+    dateColor: "#98A2B3",
+    deleteIcon: "#98A2B3",
+    timerIcon: "#98A2B3",
+    clearAllIcon: "#D0D5DD",
   }
 };
 
@@ -94,6 +102,7 @@ export const defaultStyles = {
     titleSize: 20,
     closeIconSize: 20,
     titlePadding: 0,
+    borderWidth: 0.6,
   },
   windowContainer: {
     padding: 0

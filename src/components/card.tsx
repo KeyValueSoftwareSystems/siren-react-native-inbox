@@ -90,7 +90,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             <Text numberOfLines={1} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
-            <CloseIcon onDelete={onDelete} notification={notification}/>
+            <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
           </View>
           {Boolean(notification.message?.subHeader) && (
             <Text numberOfLines={1} style={[style.cardDescription, styles.cardDescription]}>
@@ -171,7 +171,7 @@ const style = StyleSheet.create({
   },
   transparent: {
     backgroundColor: 'transparent'
-  },
+  }
 });
 
 export default Card;

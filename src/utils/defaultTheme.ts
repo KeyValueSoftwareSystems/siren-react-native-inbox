@@ -7,23 +7,27 @@ const defaultTheme = {
       textColor: COLORS[ThemeMode.LIGHT].textColor,
       neutralColor: COLORS[ThemeMode.LIGHT].neutralColor,
       highlightedCardColor: COLORS[ThemeMode.LIGHT].highlightedCardColor,
-      borderColor: COLORS[ThemeMode.LIGHT].borderColor
+      borderColor: COLORS[ThemeMode.LIGHT].borderColor,
+      dateColor: COLORS[ThemeMode.LIGHT].dateColor,
+      deleteIcon: COLORS[ThemeMode.LIGHT].deleteIcon,
+      timerIcon: COLORS[ThemeMode.LIGHT].timerIcon,
+      clearAllIcon: COLORS[ThemeMode.LIGHT].clearAllIcon
     },
     windowHeader: {
       background: COLORS[ThemeMode.LIGHT].neutralColor,
       titleColor: COLORS[ThemeMode.LIGHT].textColor,
-      headerActionColor: COLORS[ThemeMode.LIGHT].textColor,
+      headerActionColor: COLORS[ThemeMode.LIGHT].clearAllIcon,
       borderColor: COLORS[ThemeMode.LIGHT].borderColor
     },
     windowContainer: {
-      background: COLORS[ThemeMode.LIGHT].neutralColor,
+      background: COLORS[ThemeMode.LIGHT].neutralColor
     },
     notificationCard: {
       borderColor: COLORS[ThemeMode.LIGHT].borderColor,
       background: COLORS[ThemeMode.LIGHT].neutralColor,
       titleColor: COLORS[ThemeMode.LIGHT].textColor,
       descriptionColor: COLORS[ThemeMode.LIGHT].textColor,
-      dateColor: COLORS[ThemeMode.LIGHT].textColor,
+      dateColor: COLORS[ThemeMode.LIGHT].textColor
     }
   },
   dark: {
@@ -32,24 +36,28 @@ const defaultTheme = {
       textColor: COLORS[ThemeMode.DARK].textColor,
       neutralColor: COLORS[ThemeMode.DARK].neutralColor,
       highlightedCardColor: COLORS[ThemeMode.DARK].highlightedCardColor,
-      borderColor: COLORS[ThemeMode.DARK].borderColor
+      borderColor: COLORS[ThemeMode.DARK].borderColor,
+      dateColor: COLORS[ThemeMode.DARK].dateColor,
+      deleteIcon: COLORS[ThemeMode.DARK].deleteIcon,
+      timerIcon: COLORS[ThemeMode.DARK].timerIcon,
+      clearAllIcon: COLORS[ThemeMode.DARK].clearAllIcon
     },
     windowHeader: {
       background: COLORS[ThemeMode.DARK].neutralColor,
       titleColor: COLORS[ThemeMode.DARK].textColor,
-      headerActionColor: COLORS[ThemeMode.DARK].textColor,
+      headerActionColor: COLORS[ThemeMode.DARK].clearAllIcon,
       borderColor: COLORS[ThemeMode.DARK].borderColor
     },
     windowContainer: {
-      background: COLORS[ThemeMode.DARK].neutralColor,
+      background: COLORS[ThemeMode.DARK].neutralColor
     },
     notificationCard: {
       borderColor: COLORS[ThemeMode.DARK].borderColor,
       background: COLORS[ThemeMode.DARK].neutralColor,
       titleColor: COLORS[ThemeMode.DARK].textColor,
       descriptionColor: COLORS[ThemeMode.DARK].textColor,
-      dateColor: COLORS[ThemeMode.DARK].textColor,
-    },
+      dateColor: COLORS[ThemeMode.DARK].dateColor
+    }
   }
 };
 

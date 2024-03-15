@@ -180,11 +180,17 @@ Customizable UI option for notification window, with dark and light theme option
             neutralColor?: string;
             borderColor?: string;
             highlightedCardColor?: string;
+            dateColor?: string;
+            deleteIcon?: string;
+            timerIcon?: string;
+            clearAllIcon?: string;
         };
         windowHeader?: {
             background?: string;
             titleColor?: string;
             headerActionColor?: string;
+            borderColor?: string;
+            borderWidth?: string;
         };
         windowContainer?: {
             background?: string;
