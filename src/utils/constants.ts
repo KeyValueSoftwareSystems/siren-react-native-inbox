@@ -102,7 +102,7 @@ export const defaultStyles = {
     titleSize: 20,
     closeIconSize: 20,
     titlePadding: 0,
-    borderWidth: 0.6,
+    borderWidth: 0.6
   },
   windowContainer: {
     padding: 0

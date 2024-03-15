@@ -68,7 +68,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
       onPress={() => onCardClick(notification)}
       activeOpacity={0.6}
       testID='card-touchable'
-      style={[style.cardWrapper, styles.cardWrapper]}
+      style={[style.cardWrapper, styles.cardWrapper, !notification?.isRead && styles.highlighted]}
     >
       <View
         style={[
@@ -77,13 +77,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
           notification?.isRead && style.transparent
         ]}
       />
-      <View
-        style={[
-          style.cardContainer,
-          styles.cardContainer,
-          !notification?.isRead && styles.highlighted
-        ]}
-      >
+      <View style={[style.cardContainer, styles.cardContainer]}>
         {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>

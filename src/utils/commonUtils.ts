@@ -150,11 +150,11 @@ export const applyTheme = (
     backgroundColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon
   },
   cardContainer: {
-    backgroundColor:
-      theme.notificationCard?.background || DefaultTheme[mode].notificationCard.background,
     padding: customStyles.notificationCard?.padding || defaultStyles.notificationCard.padding
   },
   cardWrapper: {
+    backgroundColor:
+      theme.notificationCard?.background || DefaultTheme[mode].notificationCard.background,
     borderBottomColor:
       theme.notificationCard?.borderColor ||
       theme.colors?.borderColor ||
@@ -221,6 +221,7 @@ export const applyTheme = (
     backgroundColor: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
   },
   highlighted: {
-    backgroundColor: DefaultTheme[mode].colors.highlightedCardColor
+    backgroundColor:
+      theme.colors?.highlightedCardColor || DefaultTheme[mode].colors.highlightedCardColor
   }
 });
