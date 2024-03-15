@@ -6,9 +6,9 @@ import type { UnviewedCountReturnResponse } from 'test_notification/dist/esm/typ
 
 import { useSirenContext } from './sirenProvider';
 import type { SirenInboxIconProps } from '../types';
-import { CommonUtils, Constants, DefaultTheme } from '../utils';
+import { CommonUtils, Constants } from '../utils';
 
-const { ThemeMode, defaultBadgeStyle, eventTypes, events } = Constants;
+const { ThemeMode, defaultBadgeStyle, eventTypes, events, defaultStyles } = Constants;
 const { logger } = CommonUtils;
 
 /**
@@ -33,6 +33,7 @@ const { logger } = CommonUtils;
 const SirenInboxIcon = (props: SirenInboxIconProps) => {
   const {
     theme = { dark: {}, light: {} },
+    customStyles = {},
     notificationIcon,
     darkMode = false,
     onPress = () => null,
@@ -45,11 +46,12 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   const [unviewedCount, seUnviewedCount] = useState<number>(0);
 
   const mode = darkMode ? ThemeMode.DARK : ThemeMode.LIGHT;
-  const badgeStyle = theme[mode]?.badgeStyle || {};
-  const size = theme[mode]?.notificationIcon?.size || DefaultTheme[mode]?.notificationIcon?.size;
+  const badgeTheme = theme[mode]?.badgeStyle || {};
+  const badgeStyle = customStyles?.badgeStyle || {};
+  const size = customStyles?.notificationIcon?.size || defaultStyles?.notificationIcon?.size;
   const container = { width: size, height: size };
 
-  const badge = { ...defaultBadgeStyle, ...badgeStyle };
+  const badge = { ...defaultBadgeStyle, ...badgeStyle, ...badgeTheme };
 
   // Clean up - stop polling when component unmounts
   const cleanUp = () => () => {

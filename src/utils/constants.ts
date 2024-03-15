@@ -79,3 +79,41 @@ export const errorMap = {
     Message: 'Missing Parameter'
   }
 };
+
+export const defaultStyles = {
+  notificationIcon: {
+    size: 30
+  },
+  window: {
+    width: '100%',
+    height: '100%'
+  },
+  windowHeader: {
+    height: 50,
+    titleFontWeight: '500',
+    titleSize: 20,
+    closeIconSize: 20,
+    titlePadding: 0,
+  },
+  windowContainer: {
+    padding: 0
+  },
+  notificationCard: {
+    padding: 10,
+    borderWidth: 0.6,
+    avatarSize: 40,
+    titleFontWeight: '500',
+    titleSize: 16,
+    titlePadding: 0,
+    descriptionSize: 14,
+    descriptionPadding: 0,
+    dateSize: 12
+  },
+  badgeStyle: {
+    size: 15,
+    textSize: 10,
+  },
+  badgeTextStyle: {
+    textSize: 10,
+  }
+};

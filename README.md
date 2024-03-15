@@ -75,6 +75,7 @@ import { SirenInboxIcon } from '@siren/react-native-inbox';
 
  <SirenInboxIcon
    theme={customTheme}
+   customStyles={customStyles}
    notificationIcon={<CustomIcon />}
    darkMode={true}
    onError={(error) => console.error(error)}
@@ -87,7 +88,8 @@ Given below are all props of Icon component.
 
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
-theme | Theme object for custom styling |  Theme | {} |
+theme | Theme object for custom color theme |  Theme | {} |
+customStyles | Style object for custom styling |  StyleProps | {} |
 notificationIcon | Option to use custom notification Icon |  JSX Element | null |
 darkMode | Flag to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
@@ -104,13 +106,24 @@ Customize the unread badge of the notification icon, and choose between dark and
     };
 
     type ThemeProps = {
+        badgeStyle?: {
+            color?: string;
+            textColor?: string;
+        };
+    }
+```
+
+#### Styling options
+Customize the notification icon style properties includes size of icon, badge, etc. 
+
+```js
+
+    type StyleProps = {
         notificationIcon?: {
           size?: number,
         };
         badgeStyle?: {
             size?: number;
-            color?: string;
-            textColor?: string;
             textSize?: number;
         };
     }
@@ -168,41 +181,66 @@ Customizable UI option for notification window, with dark and light theme option
             borderColor?: string;
             highlightedCardColor?: string;
         };
-        window?: {
-            width?: DimensionValue;
-            height?: DimensionValue;
-        };
         windowHeader?: {
             background?: string;
-            height?: DimensionValue;
             titleColor?: string;
-            titleFontWeight?: TextStyle['fontWeight'];
-            titleSize?: number;
             headerActionColor?: string;
-            closeIconSize?: number;
-            titlePadding?: number;
         };
         windowContainer?: {
             background?: string;
-            padding?: number;
         };
         notificationCard?: {
-            padding?: number;
-            borderWidth?: number;
             borderColor?: string;
             background?: string;
-            avatarSize?: number;
             titleColor?: string;
-            titleFontWeight?: TextStyle['fontWeight'];
-            titleSize?: number;
-            titlePadding?: number;
             descriptionColor?: string;
-            descriptionSize?: number;
-            descriptionPadding?: number;
             dateColor?: string;
-            dateSize?: number;
         };
     }
+```
+
+#### Theming options
+
+Customizable Styling option for notification window.
+
+```js
+    export type StyleProps = {
+      notificationIcon?: {
+        size?: number;
+      };
+      window?: {
+        width?: DimensionValue;
+        height?: DimensionValue;
+      };
+      windowHeader?: {
+        height?: number;
+        titleFontWeight?: TextStyle['fontWeight'];
+        titleSize?: number;
+        closeIconSize?: number;
+        titlePadding?: number;
+      }
+      windowContainer?: {
+        padding?: number;
+      };
+      notificationCard?: {
+        padding?: number;
+        borderWidth?: number;
+        avatarSize?: number;
+        titleFontWeight?: TextStyle['fontWeight'];
+        titleSize?: number;
+        titlePadding?: number;
+        descriptionSize?: number;
+        descriptionPadding?: number;
+        dateSize?: number;
+      };
+      badgeStyle?: {
+        size?: number;
+        textSize?: number;
+      };
+      badgeTextStyle?: {
+        textSize?: number;
+      }
+    };
 ```
 
 ### 5. useSiren

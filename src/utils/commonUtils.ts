@@ -1,7 +1,7 @@
 import type { NotificationDataType } from 'test_notification/dist/esm/types';
 
-import { eventTypes, levelLogFns, LogLevel, ThemeMode } from './constants';
-import type { SirenStyleProps, ThemeProps } from '../types';
+import { defaultStyles, eventTypes, levelLogFns, LogLevel, ThemeMode } from './constants';
+import type { SirenStyleProps, StyleProps, ThemeProps } from '../types';
 
 import { DefaultTheme } from './index';
 
@@ -90,6 +90,7 @@ export const logger = {
 
 export const applyTheme = (
   theme: ThemeProps = {},
+  customStyles: StyleProps = {},
   mode: ThemeMode = ThemeMode.LIGHT
 ): SirenStyleProps => ({
   container: {
@@ -97,36 +98,36 @@ export const applyTheme = (
       theme.windowContainer?.background ||
       theme.colors?.neutralColor ||
       DefaultTheme[mode].windowContainer.background,
-    width: theme.window?.width || DefaultTheme[mode].window.width,
-    height: theme.window?.height || DefaultTheme[mode].window.height
+    width: customStyles.window?.width || defaultStyles.window?.width,
+    height: customStyles.window?.height || defaultStyles.window?.height
   },
   contentContainer: {
     backgroundColor:
       theme.windowContainer?.background ||
       theme.colors?.neutralColor ||
       DefaultTheme[mode].windowContainer.background,
-    padding: theme.windowContainer?.padding || DefaultTheme[mode].windowContainer.padding
+    padding: customStyles.windowContainer?.padding || defaultStyles.windowContainer?.padding
   },
   headerContainer: {
     backgroundColor:
       theme.windowHeader?.background ||
       theme.colors?.neutralColor ||
       DefaultTheme[mode].windowHeader.background,
-    height: theme.windowHeader?.height || DefaultTheme[mode].windowHeader.height,
     borderBottomColor:
       theme.windowHeader?.borderColor ||
       theme.colors?.borderColor ||
-      DefaultTheme[mode].windowHeader?.borderColor
+      DefaultTheme[mode].windowHeader?.borderColor,
+    height: customStyles.windowHeader?.height || defaultStyles.windowHeader?.height
   },
   headerTitle: {
     color:
       theme.windowHeader?.titleColor ||
       theme.colors?.textColor ||
       DefaultTheme[mode].windowHeader.titleColor,
-    fontSize: theme.windowHeader?.titleSize || DefaultTheme[mode].windowHeader.titleSize,
+    fontSize: customStyles.windowHeader?.titleSize || defaultStyles.windowHeader.titleSize,
     fontWeight:
-      theme.windowHeader?.titleFontWeight || DefaultTheme[mode].windowHeader.titleFontWeight,
-    paddingLeft: theme.windowHeader?.titlePadding || DefaultTheme[mode].windowHeader.titlePadding
+      customStyles.windowHeader?.titleFontWeight || defaultStyles.windowHeader.titleFontWeight,
+    paddingLeft: customStyles.windowHeader?.titlePadding || defaultStyles.windowHeader.titlePadding
   },
   headerAction: {
     color:
@@ -149,24 +150,24 @@ export const applyTheme = (
   cardContainer: {
     backgroundColor:
       theme.notificationCard?.background || DefaultTheme[mode].notificationCard.background,
-    padding: theme.notificationCard?.padding || DefaultTheme[mode].notificationCard.padding
+    padding: customStyles.notificationCard?.padding || defaultStyles.notificationCard.padding
   },
   cardWrapper: {
-    borderBottomWidth:
-      theme.notificationCard?.borderWidth || DefaultTheme[mode].notificationCard.borderWidth,
     borderBottomColor:
       theme.notificationCard?.borderColor ||
       theme.colors?.borderColor ||
-      DefaultTheme[mode].notificationCard.borderColor
+      DefaultTheme[mode].notificationCard.borderColor,
+    borderBottomWidth:
+      customStyles.notificationCard?.borderWidth || defaultStyles.notificationCard.borderWidth
   },
   activeCardMarker: {
     backgroundColor: theme.colors?.primaryColor || DefaultTheme[mode].colors?.primaryColor
   },
   cardIconRound: {
-    width: theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize,
-    height: theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize,
+    width: customStyles.notificationCard?.avatarSize || defaultStyles.notificationCard.avatarSize,
+    height: customStyles.notificationCard?.avatarSize || defaultStyles.notificationCard.avatarSize,
     borderRadius:
-      (theme.notificationCard?.avatarSize || DefaultTheme[mode].notificationCard.avatarSize) / 2
+      (customStyles.notificationCard?.avatarSize || defaultStyles.notificationCard.avatarSize) / 2
   },
   closeIcon: {
     backgroundColor: theme.colors?.textColor || DefaultTheme[mode].colors.textColor
@@ -176,12 +177,12 @@ export const applyTheme = (
       theme.notificationCard?.titleColor ||
       theme.colors?.textColor ||
       DefaultTheme[mode].notificationCard.titleColor,
-    fontSize: theme.notificationCard?.titleSize || DefaultTheme[mode].notificationCard.titleSize,
+    fontSize: customStyles.notificationCard?.titleSize || defaultStyles.notificationCard.titleSize,
     fontWeight:
-      theme.notificationCard?.titleFontWeight ||
-      DefaultTheme[mode].notificationCard.titleFontWeight,
+    customStyles.notificationCard?.titleFontWeight ||
+      defaultStyles.notificationCard.titleFontWeight,
     paddingHorizontal:
-      theme.notificationCard?.padding || DefaultTheme[mode].notificationCard.titlePadding
+    customStyles.notificationCard?.padding || defaultStyles.notificationCard.titlePadding
   },
   cardDescription: {
     color:
@@ -189,18 +190,18 @@ export const applyTheme = (
       theme.colors?.textColor ||
       DefaultTheme[mode].notificationCard.descriptionColor,
     fontSize:
-      theme.notificationCard?.descriptionSize ||
-      DefaultTheme[mode].notificationCard.descriptionSize,
+    customStyles.notificationCard?.descriptionSize ||
+      defaultStyles.notificationCard.descriptionSize,
     paddingHorizontal:
-      theme.notificationCard?.descriptionPadding ||
-      DefaultTheme[mode].notificationCard.descriptionPadding
+    customStyles.notificationCard?.descriptionPadding ||
+      defaultStyles.notificationCard.descriptionPadding
   },
   dateStyle: {
     color:
       theme.notificationCard?.dateColor ||
       theme.colors?.textColor ||
       DefaultTheme[mode].notificationCard.dateColor,
-    fontSize: theme.notificationCard?.dateSize || DefaultTheme[mode].notificationCard.dateSize
+    fontSize: customStyles.notificationCard?.dateSize || defaultStyles.notificationCard.dateSize
   },
   emptyText: {
     color: theme.colors?.textColor || DefaultTheme[mode].colors.textColor

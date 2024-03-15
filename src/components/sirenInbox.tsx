@@ -64,6 +64,7 @@ type NotificationFetchParams = {
 const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const {
     theme = { dark: {}, light: {} },
+    customStyles = {},
     title = DEFAULT_WINDOW_TITLE,
     hideHeader = false,
     darkMode = false,
@@ -214,9 +215,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     () =>
       applyTheme(
         darkMode ? theme?.dark : theme?.light,
+        customStyles,
         darkMode ? ThemeMode.DARK : ThemeMode.LIGHT
       ),
-    [theme, darkMode]
+    [theme, darkMode, customStyles]
   );
 
   // Refresh notifications
