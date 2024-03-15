@@ -250,16 +250,12 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   // Render empty window, error window, or custom empty component
   const renderListEmpty = (): JSX.Element | null => {
     if (!isLoading) {
-      if (isError) return <ErrorWindow styles={styles} />;
+      if (isError) return <ErrorWindow styles={styles} darkMode={darkMode} />;
 
-      return listEmptyComponent || <EmptyWindow styles={styles} />;
+      return listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />;
     }
 
-    return (
-      <LoadingWindow
-        styles={styles}
-      />
-    );
+    return <LoadingWindow styles={styles} />;
   };
 
   const onDelete = async (id: string): Promise<void> => {
@@ -348,7 +344,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   return (
     <View style={[style.container, styles.container]}>
       {renderHeader()}
-      {isNonEmptyArray(notifications) ? renderList(): renderListEmpty()}
+      {isNonEmptyArray(notifications) ? renderList() : renderListEmpty()}
       {customFooter || null}
     </View>
   );
