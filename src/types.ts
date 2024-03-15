@@ -162,9 +162,6 @@ export type StyleProps = {
     size?: number;
     textSize?: number;
   };
-  badgeTextStyle?: {
-    textSize?: number;
-  };
 };
 
 /**

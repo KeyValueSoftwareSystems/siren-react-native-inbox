@@ -243,9 +243,6 @@ Customizable Styling option for notification window.
         size?: number;
         textSize?: number;
       };
-      badgeTextStyle?: {
-        textSize?: number;
-      }
     };
 ```
 

@@ -122,7 +122,4 @@ export const defaultStyles = {
     size: 15,
     textSize: 10,
   },
-  badgeTextStyle: {
-    textSize: 10,
-  }
 };
