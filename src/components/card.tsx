@@ -116,7 +116,7 @@ const style = StyleSheet.create({
   cardWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 12
+    paddingRight: 2
   },
   cardContainer: {
     width: '100%',

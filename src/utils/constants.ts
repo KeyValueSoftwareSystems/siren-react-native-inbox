@@ -8,10 +8,10 @@ export const COLORS = {
   },
   dark: {
     primaryColor: '#F56630',
-    highlightedCardColor: '#292929',
+    highlightedCardColor: '#2E2D30',
     textColor: '#FFFFFF',
-    neutralColor: '#344054',
-    borderColor: '#98A2B3'
+    neutralColor: '#232326',
+    borderColor: '#344054'
   }
 };
 

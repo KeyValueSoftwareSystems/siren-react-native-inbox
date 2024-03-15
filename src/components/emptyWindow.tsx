@@ -3,9 +3,8 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 
 import type { SirenStyleProps } from '../types';
 import { Constants } from '../utils';
-import { LIST_EMPTY_DESCRIPTION } from '../utils/constants';
 
-const { LIST_EMPTY_TEXT } = Constants;
+const { LIST_EMPTY_TEXT, LIST_EMPTY_DESCRIPTION } = Constants;
 
 /**
  * `EmptyWindow` is a React component designed to display a message indicating that a list is currently empty.
