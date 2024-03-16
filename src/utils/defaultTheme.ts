@@ -7,45 +7,27 @@ const defaultTheme = {
       textColor: COLORS[ThemeMode.LIGHT].textColor,
       neutralColor: COLORS[ThemeMode.LIGHT].neutralColor,
       highlightedCardColor: COLORS[ThemeMode.LIGHT].highlightedCardColor,
-      borderColor: COLORS[ThemeMode.LIGHT].borderColor
-    },
-    notificationIcon: {
-      size: 30
-    },
-    window: {
-      width: '100%',
-      height: '100%'
+      borderColor: COLORS[ThemeMode.LIGHT].borderColor,
+      dateColor: COLORS[ThemeMode.LIGHT].dateColor,
+      deleteIcon: COLORS[ThemeMode.LIGHT].deleteIcon,
+      timerIcon: COLORS[ThemeMode.LIGHT].timerIcon,
+      clearAllIcon: COLORS[ThemeMode.LIGHT].clearAllIcon
     },
     windowHeader: {
       background: COLORS[ThemeMode.LIGHT].neutralColor,
-      height: 50,
       titleColor: COLORS[ThemeMode.LIGHT].textColor,
-      titleFontWeight: '500',
-      titleSize: 20,
-      headerActionColor: COLORS[ThemeMode.LIGHT].textColor,
-      closeIconSize: 20,
-      titlePadding: 0,
+      headerActionColor: COLORS[ThemeMode.LIGHT].clearAllIcon,
       borderColor: COLORS[ThemeMode.LIGHT].borderColor
     },
     windowContainer: {
-      background: COLORS[ThemeMode.LIGHT].neutralColor,
-      padding: 0
+      background: COLORS[ThemeMode.LIGHT].neutralColor
     },
     notificationCard: {
-      padding: 10,
-      borderWidth: 0.6,
       borderColor: COLORS[ThemeMode.LIGHT].borderColor,
       background: COLORS[ThemeMode.LIGHT].neutralColor,
-      avatarSize: 40,
       titleColor: COLORS[ThemeMode.LIGHT].textColor,
-      titleFontWeight: '500',
-      titleSize: 16,
-      titlePadding: 0,
       descriptionColor: COLORS[ThemeMode.LIGHT].textColor,
-      descriptionSize: 14,
-      descriptionPadding: 0,
-      dateColor: COLORS[ThemeMode.LIGHT].textColor,
-      dateSize: 12
+      dateColor: COLORS[ThemeMode.LIGHT].textColor
     }
   },
   dark: {
@@ -54,46 +36,28 @@ const defaultTheme = {
       textColor: COLORS[ThemeMode.DARK].textColor,
       neutralColor: COLORS[ThemeMode.DARK].neutralColor,
       highlightedCardColor: COLORS[ThemeMode.DARK].highlightedCardColor,
-      borderColor: COLORS[ThemeMode.DARK].borderColor
-    },
-    notificationIcon: {
-      size: 30
-    },
-    window: {
-      width: '100%',
-      height: '100%'
+      borderColor: COLORS[ThemeMode.DARK].borderColor,
+      dateColor: COLORS[ThemeMode.DARK].dateColor,
+      deleteIcon: COLORS[ThemeMode.DARK].deleteIcon,
+      timerIcon: COLORS[ThemeMode.DARK].timerIcon,
+      clearAllIcon: COLORS[ThemeMode.DARK].clearAllIcon
     },
     windowHeader: {
       background: COLORS[ThemeMode.DARK].neutralColor,
-      height: 50,
       titleColor: COLORS[ThemeMode.DARK].textColor,
-      titleFontWeight: '500',
-      titleSize: 20,
-      headerActionColor: COLORS[ThemeMode.DARK].textColor,
-      closeIconSize: 20,
-      titlePadding: 0,
+      headerActionColor: COLORS[ThemeMode.DARK].clearAllIcon,
       borderColor: COLORS[ThemeMode.DARK].borderColor
     },
     windowContainer: {
-      background: COLORS[ThemeMode.DARK].neutralColor,
-      padding: 0
+      background: COLORS[ThemeMode.DARK].neutralColor
     },
     notificationCard: {
-      padding: 10,
-      borderWidth: 0.6,
       borderColor: COLORS[ThemeMode.DARK].borderColor,
       background: COLORS[ThemeMode.DARK].neutralColor,
-      avatarSize: 40,
       titleColor: COLORS[ThemeMode.DARK].textColor,
-      titleFontWeight: '500',
-      titleSize: 16,
-      titlePadding: 0,
       descriptionColor: COLORS[ThemeMode.DARK].textColor,
-      descriptionSize: 14,
-      descriptionPadding: 0,
-      dateColor: COLORS[ThemeMode.DARK].textColor,
-      dateSize: 12
-    },
+      dateColor: COLORS[ThemeMode.DARK].dateColor
+    }
   }
 };
 

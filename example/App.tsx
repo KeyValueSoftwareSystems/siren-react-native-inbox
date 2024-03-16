@@ -25,8 +25,8 @@ function MyStack() {
 
 function App(): React.JSX.Element {
   const [config, setConfig] = React.useState({
-    userToken: 'fb928b226c5b47b7810171acbe2dbad2',
-    recipientId: '6b6027be-7882-4eca-9cc7-080a06798c71'
+    userToken: '227047349b3044fbac7c24fdf5537c44',
+    recipientId: '551cd601-65b3-41b2-bbce-bbd15908992f'
   });
 
   return (

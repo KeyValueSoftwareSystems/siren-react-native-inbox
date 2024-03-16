@@ -3,9 +3,8 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 
 import type { SirenStyleProps } from '../types';
 import { Constants } from '../utils';
-import { LIST_EMPTY_DESCRIPTION } from '../utils/constants';
 
-const { LIST_EMPTY_TEXT } = Constants;
+const { LIST_EMPTY_TEXT, LIST_EMPTY_DESCRIPTION } = Constants;
 
 /**
  * `EmptyWindow` is a React component designed to display a message indicating that a list is currently empty.
@@ -18,16 +17,22 @@ const { LIST_EMPTY_TEXT } = Constants;
  *
  * @param {Object} props.styles - Custom styles applied to the empty window.
  */
-const EmptyWindow = (props: { styles: Partial<SirenStyleProps> }): ReactElement => {
-  const { styles } = props;
+const EmptyWindow = (props: {
+  styles: Partial<SirenStyleProps>;
+  darkMode: boolean;
+}): ReactElement => {
+  const { styles, darkMode } = props;
+
+  const containerStyle = { backgroundColor: darkMode ? '#38383D' : '#F7F9FC' };
+  const iconStyle = { opacity: darkMode ? 0.6 : 1 };
 
   return (
-    <View style={style.container}>
-      <View style={style.iconContainer}>
+    <View style={[style.container, styles.container]}>
+      <View style={[style.iconContainer, containerStyle]}>
         <Image
           source={require('../assets/emptyNotificationIcon.png')}
           resizeMode='contain'
-          style={style.iconStyle}
+          style={[style.iconStyle, iconStyle]}
         />
       </View>
       <Text style={[style.emptyText, styles.errorText]}>{LIST_EMPTY_TEXT}</Text>
@@ -42,7 +47,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     minHeight: 400,
-    width: '100%',
+    width: '100%'
   },
   emptyText: {
     fontSize: 14,

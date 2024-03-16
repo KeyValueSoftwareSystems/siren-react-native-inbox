@@ -20,18 +20,11 @@ const badgeThemes = [
     light: {
       badgeStyle: {
         color: 'black',
-        size: 24,
-        textSize: 12
       }, 
-      notificationIcon: {
-        size: 60
-      }
     },
     dark: {
       badgeStyle: {
-        color: 'green',
-        size: 24,
-        textSize: 12
+        color: 'green', 
       }
     }
   },
@@ -39,15 +32,11 @@ const badgeThemes = [
     light: {
       badgeStyle: {
         color: 'blue',
-        size: 22,
-        textSize: 11
       }
     },
     dark: {
       badgeStyle: {
         color: 'pink',
-        size: 22,
-        textSize: 11
       }
     }
   }
@@ -133,6 +122,11 @@ function Home(): React.JSX.Element {
       <View style={styles.contentContainer}>
         <SirenInboxIcon
           theme={badgeThemes[badgeThemeIndex]}
+          customStyles={{
+            notificationIcon: {
+              size: 60
+            }
+          }}
           notificationIcon={showCustomNotification ? renderNotificationIcon() : undefined}
           onPress={() => navigation.navigate('Notifications')}
         />

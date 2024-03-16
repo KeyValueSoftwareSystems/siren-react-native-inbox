@@ -56,7 +56,6 @@ const style = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 15,
-    borderBottomWidth: 0.5
   },
   clearIconContainer: {
     flexDirection: 'row',

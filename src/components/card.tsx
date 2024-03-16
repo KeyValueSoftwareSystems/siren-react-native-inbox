@@ -68,7 +68,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
       onPress={() => onCardClick(notification)}
       activeOpacity={0.6}
       testID='card-touchable'
-      style={[style.cardWrapper, styles.cardWrapper]}
+      style={[style.cardWrapper, styles.cardWrapper, !notification?.isRead && styles.highlighted]}
     >
       <View
         style={[
@@ -77,20 +77,14 @@ const Card = (props: NotificationCardProps): ReactElement => {
           notification?.isRead && style.transparent
         ]}
       />
-      <View
-        style={[
-          style.cardContainer,
-          styles.cardContainer,
-          !notification?.isRead && styles.highlighted
-        ]}
-      >
+      <View style={[style.cardContainer, styles.cardContainer]}>
         {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>
             <Text numberOfLines={1} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
-            <CloseIcon onDelete={onDelete} notification={notification}/>
+            <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
           </View>
           {Boolean(notification.message?.subHeader) && (
             <Text numberOfLines={1} style={[style.cardDescription, styles.cardDescription]}>
@@ -115,7 +109,8 @@ const Card = (props: NotificationCardProps): ReactElement => {
 const style = StyleSheet.create({
   cardWrapper: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingRight: 2
   },
   cardContainer: {
     width: '100%',
@@ -170,7 +165,7 @@ const style = StyleSheet.create({
   },
   transparent: {
     backgroundColor: 'transparent'
-  },
+  }
 });
 
 export default Card;
