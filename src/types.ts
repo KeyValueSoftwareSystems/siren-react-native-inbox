@@ -227,6 +227,7 @@ export type SirenStyleProps = {
   activeCardMarker: ViewStyle;
   timerIcon: ViewStyle;
   timerIconLine: ViewStyle;
+  timerIconLine2: ViewStyle;
   skeltonLoaderColor: ViewStyle;
   highlighted: ViewStyle;
 };

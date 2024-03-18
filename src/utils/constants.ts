@@ -5,11 +5,11 @@ export const COLORS = {
     textColor: '#344054',
     neutralColor: '#FFFFFF',
     borderColor: '#D0D5DD',
-    dateColor: "#34405499",
-    deleteIcon: "#34405499",
-    timerIcon: "#667185",
-    clearAllIcon: "#667185",
-    infiniteLoader: '#F56630',
+    dateColor: '#34405499',
+    deleteIcon: '#34405499',
+    timerIcon: '#667185',
+    clearAllIcon: '#667185',
+    infiniteLoader: '#F56630'
   },
   dark: {
     primaryColor: '#F56630',
@@ -17,11 +17,11 @@ export const COLORS = {
     textColor: '#FFFFFF',
     neutralColor: '#232326',
     borderColor: '#344054',
-    dateColor: "#98A2B3",
-    deleteIcon: "#98A2B3",
-    timerIcon: "#98A2B3",
-    clearAllIcon: "#D0D5DD",
-    infiniteLoader: '#F56630',
+    dateColor: '#98A2B3',
+    deleteIcon: '#98A2B3',
+    timerIcon: '#98A2B3',
+    clearAllIcon: '#D0D5DD',
+    infiniteLoader: '#F56630'
   }
 };
 
@@ -61,7 +61,7 @@ export enum eventTypes {
   NEW_NOTIFICATIONS = 'NEW_NOTIFICATIONS',
   UPDATE_NOTIFICATIONS_COUNT = 'UPDATE_NOTIFICATIONS_COUNT',
   RESET_NOTIFICATIONS = 'RESET_NOTIFICATIONS',
-  RESET_NOTIFICATIONS_COUNT = 'RESET_NOTIFICATIONS_COUNT',
+  RESET_NOTIFICATIONS_COUNT = 'RESET_NOTIFICATIONS_COUNT'
 }
 
 export enum events {
@@ -69,8 +69,8 @@ export enum events {
   NOTIFICATION_COUNT_EVENT = 'NOTIFICATION_COUNT_EVENT'
 }
 
-export const LIST_EMPTY_TEXT = "No new notifications";
-export const LIST_EMPTY_DESCRIPTION = "Check back later for updates and alerts";
+export const LIST_EMPTY_TEXT = 'No new notifications';
+export const LIST_EMPTY_DESCRIPTION = 'Check back later for updates and alerts';
 export const ERROR_TEXT = 'Oops! Something went wrong.';
 export const ERROR_DESCRIPTION = 'Could not load the notifications. Please refresh the page.';
 export const DEFAULT_WINDOW_TITLE = 'Notifications';
@@ -120,15 +120,15 @@ export const defaultStyles = {
   },
   badgeStyle: {
     size: 15,
-    textSize: 10,
+    textSize: 10
   },
-  deleteIcon:{
-    size: 14,
+  deleteIcon: {
+    size: 16
   },
-  dateIcon:{
-    size: 12,
+  dateIcon: {
+    size: 14
   },
-  clearAllIcon:{
-    size: 14,
-  },
+  clearAllIcon: {
+    size: 18
+  }
 };
