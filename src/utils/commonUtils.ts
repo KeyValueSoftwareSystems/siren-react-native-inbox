@@ -197,7 +197,7 @@ export const applyTheme = (
   },
   closeIcon: {
     backgroundColor: theme.colors?.deleteIcon || DefaultTheme[mode].colors.deleteIcon,
-    height: (customStyles.deleteIcon?.size || defaultStyles.deleteIcon.size) * 0.1
+    height: (customStyles.deleteIcon?.size || defaultStyles.deleteIcon.size) * 0.14
   },
   closeButton: {
     width: customStyles.deleteIcon?.size || defaultStyles.deleteIcon.size,
