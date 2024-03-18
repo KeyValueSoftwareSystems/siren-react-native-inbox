@@ -1,10 +1,11 @@
 import React, { useEffect, type ReactElement, useRef } from 'react';
-import { Animated, Easing, FlatList, StyleSheet, View } from 'react-native';
+import { Animated, Easing, StyleSheet, View } from 'react-native';
 
 import type { SirenStyleProps } from '../types';
 
 type LoadingWindowProps = {
   styles: Partial<SirenStyleProps>;
+  customLoader?: JSX.Element | null;
 };
 /**
  * Displays a loading indicator within a window,
@@ -17,9 +18,10 @@ type LoadingWindowProps = {
  *
  * @param {Object} props - The properties passed to the component.
  * @param {Object} props.styles - Custom styles applied to the loading window container.
+ * @param {Object} props.customLoader - Custom loader to be displayed within the loading window container.
  */
 const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
-  const { styles } = props;
+  const { styles, customLoader } = props;
 
   const pulseAnim = useRef(new Animated.Value(0)).current;
 
@@ -54,9 +56,9 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
     outputRange: [0.05, 0.15]
   });
 
-  const renderSkeltonCard = ({ index }: { index: number }) => {
+  const renderSkeltonCard = () => {
     return (
-      <View key={index} style={[styles.cardContainer, style.cardContainer]}>
+      <View style={[styles.cardContainer, style.cardContainer]}>
         <Animated.View
           style={[styles.skeltonLoaderColor, style.loadingCircle, { opacity: opacityAnim }]}
         />
@@ -92,15 +94,13 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
 
   return (
     <View style={style.container}>
-      <FlatList data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} renderItem={renderSkeltonCard} />
+      {customLoader || renderSkeltonCard()}
     </View>
   );
 };
 
 const style = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
     flex: 1,
     width: '100%'
   },
@@ -111,7 +111,8 @@ const style = StyleSheet.create({
     padding: 12,
     paddingHorizontal: 16,
     borderBottomColor: '#98A2B3',
-    borderBottomWidth: 0.4
+    borderBottomWidth: 0.4,
+    height: 160
   },
   rectangleContainer: {
     flex: 1

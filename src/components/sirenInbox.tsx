@@ -57,6 +57,8 @@ type NotificationFetchParams = {
  * @param {JSX.Element} [props.listEmptyComponent=null] - Custom component to display when the notification list is empty.
  * @param {JSX.Element} [props.customHeader=null] - Custom header component.
  * @param {JSX.Element} [props.customFooter=null] - Custom footer component.
+ * @param {JSX.Element} [props.customLoader=null] - Custom loader component.
+ * @param {JSX.Element} [props.customErrorWindow=null] - Custom error component.
  * @param {Function} [props.customNotificationCard=null] - Custom function for rendering notification cards.
  * @param {Function} [props.onNotificationCardClick=() => null] - Callback for handling notification card clicks.
  * @param {Function} [props.onError] - Callback for handling errors.
@@ -72,6 +74,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     listEmptyComponent = null,
     customHeader = null,
     customFooter = null,
+    customLoader = null,
+    customErrorWindow = null,
     customNotificationCard = null,
     onNotificationCardClick = () => null,
     onError = () => {},
@@ -122,7 +126,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (isNonEmptyArray(newNotifications)) {
       const response = await markNotificationsAsViewed(newNotifications[0].createdAt);
 
-      processError(response.error);
+      processError(response?.error);
     }
   };
 
@@ -250,12 +254,15 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   // Render empty window, error window, or custom empty component
   const renderListEmpty = (): JSX.Element | null => {
     if (!isLoading) {
-      if (isError) return <ErrorWindow styles={styles} darkMode={darkMode} />;
+      if (isError)
+        return (
+          <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
+        );
 
       return listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />;
     }
 
-    return <LoadingWindow styles={styles} />;
+    return <LoadingWindow styles={styles} customLoader={customLoader} />;
   };
 
   const onDelete = async (id: string): Promise<void> => {

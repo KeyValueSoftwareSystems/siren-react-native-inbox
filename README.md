@@ -124,7 +124,9 @@ Customize the notification icon style properties includes size of icon, badge, e
         };
         badgeStyle?: {
             size?: number;
-            textSize?: number;
+            textSize?: number;    
+            top?: number;
+            right?: number;
         };
     }
 ```
@@ -161,6 +163,8 @@ onNotificationCardClick | Props for customizing the notification cards | (notifi
 listEmptyComponent | Custom component to display when the notification list is empty | JSX Element | null |
 customHeader | Custom header component | JSX Element | null |
 customFooter | Custom footer component | JSX Element | null |
+customLoader | Custom loader component | JSX Element | null |
+customErrorWindow | Custom error component | JSX Element | null |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
 
 #### Theming options
@@ -184,6 +188,7 @@ Customizable UI option for notification window, with dark and light theme option
             deleteIcon?: string;
             timerIcon?: string;
             clearAllIcon?: string;
+            infiniteLoader?: string;
         };
         windowHeader?: {
             background?: string;
@@ -205,7 +210,7 @@ Customizable UI option for notification window, with dark and light theme option
     }
 ```
 
-#### Theming options
+#### Styling options
 
 Customizable Styling option for notification window.
 
@@ -223,7 +228,6 @@ Customizable Styling option for notification window.
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
         closeIconSize?: number;
-        titlePadding?: number;
       }
       windowContainer?: {
         padding?: number;
@@ -234,14 +238,23 @@ Customizable Styling option for notification window.
         avatarSize?: number;
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
-        titlePadding?: number;
         descriptionSize?: number;
-        descriptionPadding?: number;
         dateSize?: number;
       };
       badgeStyle?: {
         size?: number;
         textSize?: number;
+        top?: number;
+        right?: number;
+      };
+      deleteIcon?:{
+        size?: number
+      };
+      dateIcon?:{
+        size?: number
+      };
+      clearAllIcon?:{
+        size?: number
       };
     };
 ```

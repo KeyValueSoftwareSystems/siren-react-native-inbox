@@ -32,7 +32,7 @@ const CloseIcon = ({
     <TouchableOpacity
       hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
       onPress={() => onDelete(notification.id)}
-      style={style.closeButton}
+      style={[style.closeButton, styles.closeButton]}
       testID='delete-button'
     >
       <>{icon}</>

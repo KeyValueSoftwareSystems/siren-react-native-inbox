@@ -171,6 +171,7 @@ function Notifications(): React.JSX.Element {
           customFooter={showCustomFooter ? renderCustomFooter() : undefined}
           listEmptyComponent={showCustomEmptyComponent ? renderListEmpty() : undefined}
           customHeader={showCustomHeader ? renderCustomHeader() : undefined}
+          customLoader={renderCustomHeader()}
           customStyles={{
             notificationCard: {
               avatarSize: 30,

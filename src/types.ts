@@ -26,6 +26,8 @@ export type SirenInboxProps = {
   listEmptyComponent?: JSX.Element;
   customFooter?: JSX.Element;
   customHeader?: JSX.Element;
+  customLoader?: JSX.Element;
+  customErrorWindow?: JSX.Element;
   hideClearAll?: boolean;
   customNotificationCard?: (notification: NotificationDataType) => JSX.Element;
   onNotificationCardClick?: (notification: NotificationDataType) => void;
@@ -104,6 +106,7 @@ export type ThemeProps = {
     deleteIcon?: string;
     timerIcon?: string;
     clearAllIcon?: string;
+    infiniteLoader?: string;
   };
   badgeStyle?: {
     color?: string;
@@ -125,6 +128,8 @@ export type ThemeProps = {
     titleColor?: string;
     descriptionColor?: string;
     dateColor?: string;
+    timeIconSize?: number;
+    deleteIconSize?: number;
   };
 };
 
@@ -153,14 +158,23 @@ export type StyleProps = {
     avatarSize?: number;
     titleFontWeight?: TextStyle['fontWeight'];
     titleSize?: number;
-    titlePadding?: number;
     descriptionSize?: number;
-    descriptionPadding?: number;
     dateSize?: number;
   };
   badgeStyle?: {
     size?: number;
     textSize?: number;
+    top?: number;
+    right?: number;
+  };
+  deleteIcon?:{
+    size?: number
+  };
+  dateIcon?:{
+    size?: number
+  };
+  clearAllIcon?:{
+    size?: number
   };
 };
 
@@ -197,6 +211,7 @@ export type SirenStyleProps = {
   headerTitle: TextStyle | object;
   headerAction: TextStyle;
   clearIcon: ViewStyle;
+  clearIconContainer: ViewStyle;
   cardContainer: ViewStyle;
   cardIconRound: ViewStyle;
   cardTitle: TextStyle | object;
@@ -207,6 +222,7 @@ export type SirenStyleProps = {
   errorButton: ViewStyle;
   errorButtonText: TextStyle;
   closeIcon: ViewStyle;
+  closeButton: ViewStyle;
   cardWrapper: ViewStyle;
   activeCardMarker: ViewStyle;
   timerIcon: ViewStyle;

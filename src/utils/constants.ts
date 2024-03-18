@@ -9,6 +9,7 @@ export const COLORS = {
     deleteIcon: "#34405499",
     timerIcon: "#667185",
     clearAllIcon: "#667185",
+    infiniteLoader: '#F56630',
   },
   dark: {
     primaryColor: '#F56630',
@@ -20,6 +21,7 @@ export const COLORS = {
     deleteIcon: "#98A2B3",
     timerIcon: "#98A2B3",
     clearAllIcon: "#D0D5DD",
+    infiniteLoader: '#F56630',
   }
 };
 
@@ -113,13 +115,20 @@ export const defaultStyles = {
     avatarSize: 40,
     titleFontWeight: '500',
     titleSize: 16,
-    titlePadding: 0,
     descriptionSize: 14,
-    descriptionPadding: 0,
     dateSize: 12
   },
   badgeStyle: {
     size: 15,
     textSize: 10,
+  },
+  deleteIcon:{
+    size: 14,
+  },
+  dateIcon:{
+    size: 12,
+  },
+  clearAllIcon:{
+    size: 14,
   },
 };

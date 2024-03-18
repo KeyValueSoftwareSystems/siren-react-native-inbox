@@ -11,18 +11,24 @@ const ClearIcon = ({ styles }: { styles: Partial<SirenStyleProps> }): ReactEleme
       <View key={i} style={[style.clearIcon, styles.clearIcon, { marginLeft: (3 - i) * 2 }]} />
     );
 
-  return <View>{icon}</View>;
+  return <View style={[style.clearIconContainer, styles.clearIconContainer]}>{icon}</View>;
 };
 
 const style = StyleSheet.create({
   clearIcon: {
     height: 2,
-    width: 14,
+    width: '100%',
     borderRadius: 1.2,
     marginTop: 1.5,
     marginBottom: 0.5,
     marginRight: 5
   },
+  clearIconContainer: {
+    width: 14,
+    height: 14,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
 export default ClearIcon;

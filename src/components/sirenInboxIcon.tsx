@@ -85,7 +85,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
     if (siren) {
-      const unViewed: UnviewedCountReturnResponse = await siren.fetchUnviewedNotificationsCount();
+      const unViewed: UnviewedCountReturnResponse | null = await siren.fetchUnviewedNotificationsCount();
 
       siren.startRealTimeUnviewedCountFetch();
       if (unViewed?.data) seUnviewedCount(unViewed.data?.unviewedCount || 0);

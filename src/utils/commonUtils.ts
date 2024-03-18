@@ -143,8 +143,14 @@ export const applyTheme = (
       theme.colors?.clearAllIcon ||
       DefaultTheme[mode].windowHeader.headerActionColor
   },
+  clearIconContainer: {
+    width: customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size,
+    height: customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size,
+  },
   timerIcon: {
-    borderColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon
+    borderColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon,
+    width: customStyles.dateIcon?.size || defaultStyles.dateIcon.size,
+    height: customStyles.dateIcon?.size || defaultStyles.dateIcon.size,
   },
   timerIconLine: {
     backgroundColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon
@@ -174,6 +180,10 @@ export const applyTheme = (
   closeIcon: {
     backgroundColor: theme.colors?.deleteIcon || DefaultTheme[mode].colors.deleteIcon
   },
+  closeButton: {
+    width: customStyles.deleteIcon?.size || defaultStyles.deleteIcon.size,
+    height: customStyles.deleteIcon?.size || defaultStyles.deleteIcon.size,
+  },
   cardTitle: {
     color:
       theme.notificationCard?.titleColor ||
@@ -183,8 +193,6 @@ export const applyTheme = (
     fontWeight:
       customStyles.notificationCard?.titleFontWeight ||
       defaultStyles.notificationCard.titleFontWeight,
-    paddingHorizontal:
-      customStyles.notificationCard?.padding || defaultStyles.notificationCard.titlePadding
   },
   cardDescription: {
     color:
@@ -194,9 +202,6 @@ export const applyTheme = (
     fontSize:
       customStyles.notificationCard?.descriptionSize ||
       defaultStyles.notificationCard.descriptionSize,
-    paddingHorizontal:
-      customStyles.notificationCard?.descriptionPadding ||
-      defaultStyles.notificationCard.descriptionPadding
   },
   dateStyle: {
     color:

@@ -23,23 +23,28 @@ const { ERROR_TEXT } = Constants;
 const ErrorWindow = (props: {
   styles: Partial<SirenStyleProps>;
   darkMode: boolean;
+  customErrorWindow?: JSX.Element | null;
 }): ReactElement => {
-  const { styles, darkMode } = props;
+  const { styles, darkMode, customErrorWindow } = props;
 
   const containerStyle = { backgroundColor: darkMode ? '#38383D' : '#F7F9FC' };
   const iconStyle = { opacity: darkMode ? 0.6 : 1 };
 
   return (
     <View style={[style.container, styles.container]}>
-      <View style={[style.iconContainer, containerStyle]}>
-        <Image
-          source={require('../assets/errorIcon.png')}
-          resizeMode='contain'
-          style={[style.iconStyle, iconStyle]}
-        />
-      </View>
-      <Text style={[style.errorText, styles.errorText]}>{ERROR_TEXT}</Text>
-      <Text style={[style.errorDescription, styles.errorText]}>{ERROR_DESCRIPTION}</Text>
+      {customErrorWindow || (
+        <>
+          <View style={[style.iconContainer, containerStyle]}>
+            <Image
+              source={require('../assets/errorIcon.png')}
+              resizeMode='contain'
+              style={[style.iconStyle, iconStyle]}
+            />
+          </View>
+          <Text style={[style.errorText, styles.errorText]}>{ERROR_TEXT}</Text>
+          <Text style={[style.errorDescription, styles.errorText]}>{ERROR_DESCRIPTION}</Text>
+        </>
+      )}
     </View>
   );
 };
