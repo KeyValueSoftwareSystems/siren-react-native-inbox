@@ -102,7 +102,9 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
       minWidth: badge.size,
       height: badge.size,
       borderRadius: badge.size * 0.5,
-      backgroundColor: badge.color
+      backgroundColor: badge.color,
+      top: badge.top,
+      right: badge.right
     };
     const defaultBadgeText = {
       color: badge.textColor,
@@ -112,8 +114,8 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     const reachCountLimit = unviewedCount >= countLimit;
 
     const defaultBadge = (
-      <View style={[defaultBadgeStyle, styles.badge]}>
-        <Text style={[defaultBadgeText, styles.badgeText]}>
+      <View style={[styles.badge, defaultBadgeStyle]}>
+        <Text style={[styles.badgeText, defaultBadgeText]}>
           {reachCountLimit ? '99+' : unviewedCount}
         </Text>
       </View>
@@ -137,7 +139,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
       testID='notification-icon'
       disabled={disabled}
       onPress={onPress}
-      style={[container, styles.iconContainer]}
+      style={[styles.iconContainer, container]}
     >
       {showBadge && renderBadge()}
 
