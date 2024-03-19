@@ -78,6 +78,6 @@
   ],
   "dependencies": {
     "pubsub-js": "^1.9.4",
-    "test_notification": "^1.0.17"
+    "test_notification": "^1.0.20"
   }
 }

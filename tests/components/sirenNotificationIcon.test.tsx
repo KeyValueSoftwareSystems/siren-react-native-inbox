@@ -19,29 +19,19 @@ describe('SirenInboxIcon', () => {
   const customTheme: Theme = {
     light: {
       badgeStyle: {
-        size: 20,
         color: 'red',
         textColor: 'white',
-        textSize: 12
       },
-      notificationIcon: {
-        size: 30
-      }
     },
     dark: {
       badgeStyle: {
-        size: 20,
         color: 'blue',
         textColor: 'white',
-        textSize: 12
       },
-      notificationIcon: {
-        size: 30
-      }
     }
   };
 
-  const notificationIcon = <Image source={require('../../src/assets/notificationIcon.png')} />;
+  const notificationIcon = <Image source={require('../../src/assets/bellLight.png')} />;
   const mockSiren:Pick<Siren, keyof Siren> = {
     markNotificationAsReadById: jest.fn(),
     markNotificationsAsReadByDate: jest.fn(),

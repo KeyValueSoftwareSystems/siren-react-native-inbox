@@ -46,7 +46,9 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   const [unviewedCount, seUnviewedCount] = useState<number>(0);
 
   const mode = darkMode ? ThemeMode.DARK : ThemeMode.LIGHT;
-  const bellIcon =  darkMode ? 'bellLight': 'bellDark';
+  const bellIconSource = darkMode
+    ? require('../assets/bellDark.png')
+    : require('../assets/bellLight.png');
   const badgeTheme = theme[mode]?.badgeStyle || {};
   const badgeStyle = customStyles?.badgeStyle || {};
   const size = customStyles?.notificationIcon?.size || defaultStyles?.notificationIcon?.size;
@@ -86,7 +88,8 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
     if (siren) {
-      const unViewed: UnviewedCountReturnResponse | null = await siren.fetchUnviewedNotificationsCount();
+      const unViewed: UnviewedCountReturnResponse | null =
+        await siren.fetchUnviewedNotificationsCount();
 
       siren.startRealTimeUnviewedCountFetch();
       if (unViewed?.data) seUnviewedCount(unViewed.data?.unviewedCount || 0);
@@ -123,9 +126,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     /* Render provided notification icon or default icon */
     if (notificationIcon) return notificationIcon;
 
-    return (
-      <Image source={require(`../assets/${bellIcon}.png`)} resizeMode='contain' style={styles.iconStyle} />
-    );
+    return <Image source={bellIconSource} resizeMode='contain' style={styles.iconStyle} />;
   };
 
   /* Render badge with unviewed count if count is greater than 0 */
