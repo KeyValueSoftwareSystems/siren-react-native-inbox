@@ -58,7 +58,7 @@ const config = {
 
 
 ```
-The config is a prop for the SirenProvider component is authenticate and initialize sdk.
+The config is a property containing userToken and recipientId for authenticate and initialize sdk.
 
 ```js
 type config = {
