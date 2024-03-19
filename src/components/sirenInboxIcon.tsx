@@ -46,6 +46,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   const [unviewedCount, seUnviewedCount] = useState<number>(0);
 
   const mode = darkMode ? ThemeMode.DARK : ThemeMode.LIGHT;
+  const bellIcon =  darkMode ? 'bellLight': 'bellDark';
   const badgeTheme = theme[mode]?.badgeStyle || {};
   const badgeStyle = customStyles?.badgeStyle || {};
   const size = customStyles?.notificationIcon?.size || defaultStyles?.notificationIcon?.size;
@@ -123,7 +124,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     if (notificationIcon) return notificationIcon;
 
     return (
-      <Image source={require('../assets/notificationIcon.png')} resizeMode='contain' style={styles.iconStyle} />
+      <Image source={require(`../assets/${bellIcon}.png`)} resizeMode='contain' style={styles.iconStyle} />
     );
   };
 

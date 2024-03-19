@@ -1,5 +1,5 @@
 import React, { useEffect, type ReactElement, useRef } from 'react';
-import { Animated, Easing, StyleSheet, View } from 'react-native';
+import { Animated, Easing, FlatList, StyleSheet, View } from 'react-native';
 
 import type { SirenStyleProps } from '../types';
 
@@ -30,7 +30,7 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
       duration: 1000,
       useNativeDriver: true
     };
-    
+
     Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
@@ -56,9 +56,9 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
     outputRange: [0.05, 0.15]
   });
 
-  const renderSkeltonCard = () => {
+  const renderSkeltonCard = ({ index }: { index: number }) => {
     return (
-      <View style={[styles.cardContainer, style.cardContainer]}>
+      <View key={index} style={[styles.cardContainer, style.cardContainer]}>
         <Animated.View
           style={[styles.skeltonLoaderColor, style.loadingCircle, { opacity: opacityAnim }]}
         />
@@ -94,13 +94,17 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
 
   return (
     <View style={style.container}>
-      {customLoader || renderSkeltonCard()}
+      {customLoader || (
+        <FlatList data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} renderItem={renderSkeltonCard} />
+      )}
     </View>
   );
 };
 
 const style = StyleSheet.create({
   container: {
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
     width: '100%'
   },
