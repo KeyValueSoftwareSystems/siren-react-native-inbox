@@ -133,7 +133,7 @@ Customize the notification icon style properties includes size of icon, badge, e
 
 ### 4. Siren Inbox
 
-SirenNotificationWindow is a paginated list view for displaying notifications.
+SirenNotificationInbox is a paginated list view for displaying notifications.
 
 ```js
 import { SirenInbox } from '@siren/react-native-inbox';
@@ -147,13 +147,14 @@ import { SirenInbox } from '@siren/react-native-inbox';
 />
 
 ```
-#### Siren Notification Window Props
-Given below are all props of window component.
+#### Siren Notification Inbox Props
+Given below are all props of inbox component.
 
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
-theme | Theme object for custom styling |  Theme | {} |
-title |  Title of the notification window |  string | "Notifications" |
+theme | Theme object for custom color theme |  Theme | {} |
+customStyles | Style object for custom styling |  StyleProps | {} |
+title |  Title of the notification inbox |  string | "Notifications" |
 hideHeader | Flag to hide or show the header |  boolean | false |
 hideClearAll | Flag to hide or show the clear all button in header |  boolean | false |
 darkMode | Flag to enable dark mode |  boolean | false |
@@ -167,9 +168,20 @@ customLoader | Custom loader component | JSX Element | null |
 customErrorWindow | Custom error component | JSX Element | null |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
 
+#### Card props
+
+Style object for customize notification card.
+
+```js
+type CardProps = {
+  hideAvatar?: boolean;
+  showMedia?: boolean;
+};
+```
+
 #### Theming options
 
-Customizable UI option for notification window, with dark and light theme options. 
+Customizable UI option for notification inbox, with dark and light theme options. 
 
 ```js
     type Theme = {
@@ -212,7 +224,7 @@ Customizable UI option for notification window, with dark and light theme option
 
 #### Styling options
 
-Customizable Styling option for notification window.
+Customizable Styling option for notification inbox.
 
 ```js
     export type StyleProps = {
