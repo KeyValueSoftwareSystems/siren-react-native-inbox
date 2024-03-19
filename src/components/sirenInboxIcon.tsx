@@ -98,18 +98,36 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   };
 
   const renderBadge = (): JSX.Element | null => {
-    const defaultBadgeStyle = {
-      minWidth: badge.size,
-      height: badge.size,
-      borderRadius: badge.size * 0.5,
-      backgroundColor: badge.color,
-      top: badge.top,
-      right: badge.right
-    };
-    const defaultBadgeText = {
-      color: badge.textColor,
-      fontSize: badge.textSize
-    };
+    const defaultBadgeStyle: {
+      minWidth?: number;
+      height?: number;
+      borderRadius?: number;
+      backgroundColor?: string;
+      top?: number;
+      right?: number;
+    } = {};
+    const defaultBadgeText: {
+      color?: string;
+      fontSize?: number;
+    } = {};
+    if (badge.size) {
+      defaultBadgeStyle.minWidth = badge.size;
+      defaultBadgeStyle.height = badge.size;
+      defaultBadgeStyle.borderRadius = badge.size;
+    }
+    if (badge.color) {
+      defaultBadgeStyle.backgroundColor = badge.color;
+    }
+    if (badge.top) {
+      defaultBadgeStyle.top = badge.top;
+    }
+    if (badge.right) {
+      defaultBadgeStyle.right = badge.right;
+    }
+    if (badge.textColor) {
+      defaultBadgeText.color = badge.textColor;
+      defaultBadgeText.fontSize = badge.textSize;
+    }
     const countLimit = 99;
     const reachCountLimit = unviewedCount >= countLimit;
 
