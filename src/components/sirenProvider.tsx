@@ -12,7 +12,7 @@ import type {
 
 import type { SirenProviderConfigProps } from '../types';
 import { isNonEmptyArray, logger } from '../utils/commonUtils';
-import { events, eventTypes } from '../utils/constants';
+import { events, eventTypes, TOKEN_VERIFICATION_FAILED } from '../utils/constants';
 
 type SirenContextProp = {
   siren: Siren | null;
@@ -66,6 +66,8 @@ export const useSirenContext = (): SirenContextProp => useContext(SirenContext);
  * @param {React.ReactNode} props.children - Child components that will have access to the Siren context.
  */
 const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
+  let retryCount = 0;
+
   const [siren, setSiren] = useState<Siren | null>(null);
 
   useEffect(() => {
@@ -121,9 +123,17 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     return {
       token: config.userToken,
       recipientId: config.recipientId,
-      onError: (error: SirenErrorType): void => logger.info(`Error : ${JSON.stringify(error)}`),
+      onError: retryVerification,
       actionCallbacks: actionCallbacks
     };
+  };
+
+  const retryVerification = (error: SirenErrorType) => {
+    if (error.Code === TOKEN_VERIFICATION_FAILED && retryCount < 3)
+      setTimeout(() => {
+        initialize();
+        retryCount++;
+      }, 5000);
   };
 
   // Function to initialize the Siren SDK and fetch notifications

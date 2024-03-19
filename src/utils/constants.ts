@@ -76,6 +76,7 @@ export const ERROR_DESCRIPTION = 'Could not load the notifications. Please refre
 export const DEFAULT_WINDOW_TITLE = 'Notifications';
 export const RETRY_BUTTON_LABEL = 'Retry';
 export const CLEAR_ALL_LABEL = 'Clear All';
+export const TOKEN_VERIFICATION_FAILED = 'TOKEN_VERIFICATION_FAILED';
 
 export const errorMap = {
   SIREN_OBJECT_NOT_FOUND: {
