@@ -127,7 +127,7 @@ export const defaultStyles = {
     size: 16
   },
   dateIcon: {
-    size: 14
+    size: 12
   },
   clearAllIcon: {
     size: 18
