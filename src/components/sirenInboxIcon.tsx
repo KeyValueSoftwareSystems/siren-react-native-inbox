@@ -110,20 +110,15 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
       color?: string;
       fontSize?: number;
     } = {};
+
     if (badge.size) {
       defaultBadgeStyle.minWidth = badge.size;
       defaultBadgeStyle.height = badge.size;
       defaultBadgeStyle.borderRadius = badge.size;
     }
-    if (badge.color) {
-      defaultBadgeStyle.backgroundColor = badge.color;
-    }
-    if (badge.top) {
-      defaultBadgeStyle.top = badge.top;
-    }
-    if (badge.right) {
-      defaultBadgeStyle.right = badge.right;
-    }
+    if (badge.color) defaultBadgeStyle.backgroundColor = badge.color;
+    if (badge.top) defaultBadgeStyle.top = badge.top;
+    if (badge.right)  defaultBadgeStyle.right = badge.right;
     if (badge.textColor) {
       defaultBadgeText.color = badge.textColor;
       defaultBadgeText.fontSize = badge.textSize;
