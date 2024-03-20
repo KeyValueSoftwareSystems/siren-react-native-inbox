@@ -163,9 +163,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
-    const readyForInitialize = siren && !isError;
 
-    if (readyForInitialize) {
+    if (siren) {
       await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
 
