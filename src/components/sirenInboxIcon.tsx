@@ -118,7 +118,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     }
     if (badge.color) defaultBadgeStyle.backgroundColor = badge.color;
     if (badge.top) defaultBadgeStyle.top = badge.top;
-    if (badge.right)  defaultBadgeStyle.right = badge.right;
+    if (badge.right) defaultBadgeStyle.right = badge.right;
     if (badge.textColor) {
       defaultBadgeText.color = badge.textColor;
       defaultBadgeText.fontSize = badge.textSize;
