@@ -12,7 +12,12 @@ import type {
 
 import type { SirenProviderConfigProps } from '../types';
 import { isNonEmptyArray, logger } from '../utils/commonUtils';
-import { events, eventTypes, IN_APP_RECIPIENT_UNAUTHENTICATED } from '../utils/constants';
+import {
+  events,
+  eventTypes,
+  IN_APP_RECIPIENT_UNAUTHENTICATED,
+  MAXIMUM_RETRY_COUNT
+} from '../utils/constants';
 
 type SirenContextProp = {
   siren: Siren | null;
@@ -129,14 +134,13 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   };
 
   const retryVerification = (error: SirenErrorType) => {
-    if (error.Code === IN_APP_RECIPIENT_UNAUTHENTICATED && retryCount < 3)
+    if (error.Code === IN_APP_RECIPIENT_UNAUTHENTICATED && retryCount < MAXIMUM_RETRY_COUNT)
       setTimeout(() => {
         initialize();
         retryCount++;
       }, 5000);
 
-    if(retryCount === 3)
-      stopRealTimeFetch();
+    if (retryCount === MAXIMUM_RETRY_COUNT) stopRealTimeFetch();
   };
 
   // Function to initialize the Siren SDK and fetch notifications

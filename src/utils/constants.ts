@@ -77,6 +77,7 @@ export const DEFAULT_WINDOW_TITLE = 'Notifications';
 export const RETRY_BUTTON_LABEL = 'Retry';
 export const CLEAR_ALL_LABEL = 'Clear All';
 export const IN_APP_RECIPIENT_UNAUTHENTICATED = 'IN_APP_RECIPIENT_UNAUTHENTICATED';
+export const MAXIMUM_RETRY_COUNT = 3;
 
 export const errorMap = {
   SIREN_OBJECT_NOT_FOUND: {
