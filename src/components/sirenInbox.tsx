@@ -1,4 +1,4 @@
-import React, { type ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { type ReactElement, useEffect, useMemo, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import PubSub from 'pubsub-js';
@@ -99,6 +99,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     unreadCount?: number;
   } | null>(null);
 
+  const disableCardDelete = useRef(false);
+
   useEffect(() => {
     PubSub.subscribe(events.NOTIFICATION_LIST_EVENT, notificationSubscriber);
 
@@ -132,7 +134,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const processError = (error?: SirenErrorType | null) => {
     if (error) {
-      setIsError(true);
+      if (error?.Code !== 'TOKEN_VERIFICATION_PENDING') setIsError(true);
       if (onError) onError(error);
     }
   };
@@ -266,9 +268,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   const onDelete = async (id: string): Promise<void> => {
-    const response = await deleteNotification(id);
-
-    processError(response?.error);
+    if (!disableCardDelete.current) {
+      disableCardDelete.current = true;
+      const response = await deleteNotification(id);
+      
+      processError(response?.error);
+      disableCardDelete.current = false;
+    }
   };
 
   const onPressClearAll = async (): Promise<void> => {
