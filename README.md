@@ -158,6 +158,7 @@ title |  Title of the notification inbox |  string | "Notifications" |
 hideHeader | Flag to hide or show the header |  boolean | false |
 hideClearAll | Flag to hide or show the clear all button in header |  boolean | false |
 darkMode | Flag to enable dark mode |  boolean | false |
+itemsPerFetch | Number of notifications fetch per api request (have a max cap of 50) |  number | 20 |
 cardProps | Props for customizing the notification cards | CardProps | null |
 customNotificationCard | Custom function for rendering notification cards | (notification)=> JSX Element | null |
 onNotificationCardClick | Props for customizing the notification cards | (notification)=> void | ()=>null |

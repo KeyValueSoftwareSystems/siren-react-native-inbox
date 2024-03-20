@@ -29,6 +29,7 @@ export type SirenInboxProps = {
   customLoader?: JSX.Element;
   customErrorWindow?: JSX.Element;
   hideClearAll?: boolean;
+  itemsPerFetch?: number;
   customNotificationCard?: (notification: NotificationDataType) => JSX.Element;
   onNotificationCardClick?: (notification: NotificationDataType) => void;
   onError?: (error: SirenErrorType) => void;

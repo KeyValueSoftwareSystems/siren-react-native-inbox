@@ -15,7 +15,13 @@ import { useSirenContext } from './sirenProvider';
 import type { SirenInboxProps } from '../types';
 import { CommonUtils, Constants, useSiren } from '../utils';
 
-const { DEFAULT_WINDOW_TITLE, ThemeMode, events } = Constants;
+const {
+  DEFAULT_WINDOW_TITLE,
+  ThemeMode,
+  events,
+  TOKEN_VERIFICATION_PENDING,
+  MAXIMUM_ITEMS_PER_FETCH
+} = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
 
 type fetchProps = {
@@ -79,10 +85,12 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     customNotificationCard = null,
     onNotificationCardClick = () => null,
     onError = () => {},
-    hideClearAll = false
+    hideClearAll = false,
+    itemsPerFetch = 20
   } = props;
 
-  const notificationsPerPage = 10;
+  const notificationsPerPage =
+    itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch;
 
   const { siren } = useSirenContext();
 
@@ -134,7 +142,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const processError = (error?: SirenErrorType | null) => {
     if (error) {
-      if (error?.Code !== 'TOKEN_VERIFICATION_PENDING') setIsError(true);
+      if (error?.Code !== TOKEN_VERIFICATION_PENDING) setIsError(true);
       if (onError) onError(error);
     }
   };
