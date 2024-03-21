@@ -81,13 +81,13 @@ const Card = (props: NotificationCardProps): ReactElement => {
         {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>
-            <Text numberOfLines={1} style={[styles.cardTitle, style.cardTitle]}>
+            <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
             <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
           </View>
           {Boolean(notification.message?.subHeader) && (
-            <Text numberOfLines={1} style={[style.cardDescription, styles.cardDescription]}>
+            <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
               {notification.message?.subHeader}
             </Text>
           )}
@@ -122,7 +122,8 @@ const style = StyleSheet.create({
     paddingTop: 4
   },
   cardTitle: {
-    paddingBottom: 4
+    paddingBottom: 4,
+    paddingTop: 4
   },
   icon: {
     width: '100%',

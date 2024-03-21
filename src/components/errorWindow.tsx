@@ -59,7 +59,7 @@ const style = StyleSheet.create({
   },
   errorText: {
     fontSize: 14,
-    fontWeight: '400',
+    fontWeight: '600',
     paddingBottom: 5,
     textAlign: 'center',
     paddingTop: 20

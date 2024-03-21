@@ -58,7 +58,7 @@ const style = StyleSheet.create({
   },
   emptyDescription: {
     fontSize: 12,
-    fontWeight: '400',
+    fontWeight: '600',
     textAlign: 'center',
     opacity: 0.8
   },
