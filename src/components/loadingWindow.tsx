@@ -116,7 +116,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 16,
     borderBottomColor: '#98A2B3',
     borderBottomWidth: 0.4,
-    height: 160
+    height: 140
   },
   rectangleContainer: {
     flex: 1

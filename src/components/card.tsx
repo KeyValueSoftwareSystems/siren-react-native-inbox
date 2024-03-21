@@ -91,7 +91,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
               {notification.message?.subHeader}
             </Text>
           )}
-          <Text numberOfLines={3} style={[style.cardDescription, styles.cardDescription]}>
+          <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
             {notification.message?.body}
           </Text>
           <View style={style.dateContainer}>

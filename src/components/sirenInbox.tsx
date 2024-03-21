@@ -118,8 +118,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
-    if(verificationStatus !== VerificationStatus.PENDING && siren)
-      initialize();
+    if (verificationStatus !== VerificationStatus.PENDING && siren) initialize();
   }, [siren, verificationStatus]);
 
   useEffect(() => {
@@ -167,8 +166,11 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const initialize = async (): Promise<void> => {
 
     if (siren) {
-      await fetchNotifications(siren, true);
+      const allNotifications = await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
+
+      if (isNonEmptyArray(allNotifications))
+        notificationParams.start = allNotifications[0].createdAt;
 
       siren?.startRealTimeNotificationFetch(notificationParams);
     }
@@ -189,15 +191,19 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     nonEmptyResponse: boolean,
     isResetList: boolean,
     responseData: NotificationDataType[]
-  ): void => {
+  ): NotificationDataType[] => {
     if (nonEmptyResponse) {
       const updatedNotifications = isResetList ? responseData : [...notifications, ...responseData];
 
       isResetList && handleMarkNotificationsAsViewed(updatedNotifications);
       setNotifications(updatedNotifications);
+
+      return updatedNotifications;
     } else {
       setEndReached(true);
     }
+
+    return [];
   };
 
   // Fetch notifications
@@ -207,13 +213,16 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   ): Promise<NotificationDataType[]> => {
     setIsError(false);
     setIsLoading(true);
+    let updatedNotifications = notifications;
+
     if (siren)
       try {
         const notificationParams = generateNotificationParams(!isResetList);
         const response = await siren.fetchAllNotifications(notificationParams);
         const nonEmptyResponse = Boolean(isNonEmptyArray(response?.data));
 
-        if (response?.data) processResponse(nonEmptyResponse, isResetList, response.data);
+        if (response?.data) 
+          updatedNotifications = processResponse(nonEmptyResponse, isResetList, response.data);
         if (response?.error) processError(response.error);
 
         setIsLoading(false);
@@ -222,7 +231,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         setIsError(true);
       }
 
-    return notifications;
+    return updatedNotifications;
   };
 
   // Apply theme styles
@@ -244,9 +253,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         setIsError(false);
         setNotifications([]);
         setIsLoading(true);
+
         siren?.stopRealTimeNotificationFetch();
-        await fetchNotifications(siren, true);
+        const allNotifications = (await fetchNotifications(siren, true)) || [];
         const notificationParams: fetchProps = { size: notificationsPerPage };
+
+        if (isNonEmptyArray(allNotifications))
+          notificationParams.start = allNotifications[0].createdAt;
 
         siren?.startRealTimeNotificationFetch(notificationParams);
       } catch (err) {
@@ -280,7 +293,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (!disableCardDelete.current) {
       disableCardDelete.current = true;
       const response = await deleteNotification(id);
-      
+
       processError(response?.error);
       disableCardDelete.current = false;
     }
