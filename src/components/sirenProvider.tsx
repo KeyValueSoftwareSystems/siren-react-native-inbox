@@ -7,7 +7,7 @@ import type {
   NotificationDataType,
   NotificationsApiResponse,
   SirenErrorType,
-  UnviewedCountApiResponse
+  UnviewedCountApiResponse,
 } from 'test_notification/dist/esm/types';
 
 import type { SirenProviderConfigProps } from '../types';
@@ -16,11 +16,13 @@ import {
   events,
   eventTypes,
   IN_APP_RECIPIENT_UNAUTHENTICATED,
-  MAXIMUM_RETRY_COUNT
+  MAXIMUM_RETRY_COUNT,
+  VerificationStatus
 } from '../utils/constants';
 
 type SirenContextProp = {
   siren: Siren | null;
+  verificationStatus: VerificationStatus;
 };
 
 interface SirenProvider {
@@ -29,7 +31,8 @@ interface SirenProvider {
 }
 
 export const SirenContext = createContext<SirenContextProp>({
-  siren: null
+  siren: null,
+  verificationStatus: VerificationStatus.PENDING
 });
 
 /**
@@ -38,9 +41,7 @@ export const SirenContext = createContext<SirenContextProp>({
  * @example
  * const {
  *   siren,
- *   unviewedCount,
- *   setUnviewedCount,
- *   dispatch
+ *   verificationStatus
  * } = useSirenContext();
  *
  * @returns {SirenContextProp} The Siren notifications context.
@@ -51,9 +52,7 @@ export const useSirenContext = (): SirenContextProp => useContext(SirenContext);
  * Provides a React context for Siren notifications, making Siren SDK functionality
  * available throughout your React application.
  *
- * `SirenProvider` initializes the Siren SDK with given configuration and manages the state for
- * notifications, including fetching new notifications, handling errors, and tracking the count
- * of unviewed notifications.
+ * `SirenProvider` initializes the Siren SDK with given configuration and manages the state for siren and verificationStatus.
  *
  * @component
  * @example
@@ -74,6 +73,8 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   let retryCount = 0;
 
   const [siren, setSiren] = useState<Siren | null>(null);
+  const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>(VerificationStatus.PENDING);
+  
 
   useEffect(() => {
     if (config?.recipientId && config?.userToken) {
@@ -122,7 +123,12 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     }
   };
 
-  const actionCallbacks = { onUnViewedCountReceived, onNotificationReceived };
+  const onStatusChange = (status: VerificationStatus) => {
+    setVerificationStatus(status);
+  };
+
+
+  const actionCallbacks = { onUnViewedCountReceived, onNotificationReceived, onStatusChange };
 
   const getDataParams = () => {
     return {
@@ -154,7 +160,8 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   return (
     <SirenContext.Provider
       value={{
-        siren
+        siren,
+        verificationStatus
       }}
     >
       {children}

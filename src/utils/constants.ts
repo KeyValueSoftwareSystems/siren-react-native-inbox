@@ -25,6 +25,12 @@ export const COLORS = {
   }
 };
 
+export enum VerificationStatus {
+  PENDING = "PENDING",
+  SUCCESS = "SUCCESS",
+  FAILED = "FAILED"
+}
+
 export enum ThemeMode {
   DARK = 'dark',
   LIGHT = 'light'

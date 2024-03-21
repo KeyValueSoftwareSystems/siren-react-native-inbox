@@ -20,7 +20,8 @@ const {
   ThemeMode,
   events,
   TOKEN_VERIFICATION_PENDING,
-  MAXIMUM_ITEMS_PER_FETCH
+  MAXIMUM_ITEMS_PER_FETCH,
+  VerificationStatus
 } = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
 
@@ -92,7 +93,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const notificationsPerPage =
     itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch;
 
-  const { siren } = useSirenContext();
+  const { siren, verificationStatus } = useSirenContext();
 
   const { deleteNotification, deleteNotificationsByDate, markNotificationsAsViewed } = useSiren();
 
@@ -117,8 +118,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
-    initialize();
-  }, [siren]);
+    if(verificationStatus !== VerificationStatus.PENDING && siren)
+      initialize();
+  }, [siren, verificationStatus]);
 
   useEffect(() => {
     if (eventListenerData) {
