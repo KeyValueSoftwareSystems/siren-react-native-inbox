@@ -43,14 +43,23 @@ import TimerIcon from './timerIcon';
 
 const renderAvatar = (
   notification: NotificationDataType,
-  styles: Partial<SirenStyleProps>
+  styles: Partial<SirenStyleProps>,
+  darkMode: boolean
 ): JSX.Element => {
+  const emptyState = darkMode
+    ? require('../assets/emptyDark.png')
+    : require('../assets/emptyLight.png');
+
   return (
     <View style={style.cardIconContainer}>
       <View style={[style.cardIconRound, styles.cardIconRound]}>
         {Boolean(notification?.message?.avatar?.imageUrl) && (
           <Image
-            source={{ uri: notification.message?.avatar?.imageUrl }}
+            source={
+              notification.message?.avatar?.imageUrl?.length > 0
+                ? { uri: notification.message?.avatar?.imageUrl }
+                : emptyState
+            }
             resizeMode='cover'
             style={style.cardAvatarStyle}
           />
@@ -61,7 +70,7 @@ const renderAvatar = (
 };
 
 const Card = (props: NotificationCardProps): ReactElement => {
-  const { onCardClick, notification, cardProps, styles, onDelete } = props;
+  const { onCardClick, notification, cardProps, styles, onDelete, darkMode } = props;
 
   return (
     <TouchableOpacity
@@ -78,7 +87,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
         ]}
       />
       <View style={[style.cardContainer, styles.cardContainer]}>
-        {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
+        {!cardProps?.hideAvatar && renderAvatar(notification, styles, darkMode)}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>
             <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>

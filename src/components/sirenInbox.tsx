@@ -166,6 +166,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const initialize = async (): Promise<void> => {
 
     if (siren) {
+      siren?.stopRealTimeNotificationFetch();
       const allNotifications = await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
 
@@ -323,6 +324,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         cardProps={cardProps}
         styles={styles}
         onDelete={onDelete}
+        darkMode={darkMode}
       />
     );
   };
