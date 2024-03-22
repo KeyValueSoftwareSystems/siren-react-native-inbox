@@ -172,7 +172,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       if (isNonEmptyArray(allNotifications))
         notificationParams.start = allNotifications[0].createdAt;
 
-      siren?.startRealTimeNotificationFetch(notificationParams);
+      if(verificationStatus === VerificationStatus.SUCCESS)
+        siren?.startRealTimeNotificationFetch(notificationParams);
     }
   };
 
@@ -260,8 +261,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
         if (isNonEmptyArray(allNotifications))
           notificationParams.start = allNotifications[0].createdAt;
-
-        siren?.startRealTimeNotificationFetch(notificationParams);
+        
+        if(verificationStatus === VerificationStatus.SUCCESS)
+          siren?.startRealTimeNotificationFetch(notificationParams);
       } catch (err) {
         setIsLoading(false);
         setIsError(true);
