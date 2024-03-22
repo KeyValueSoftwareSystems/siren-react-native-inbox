@@ -245,7 +245,7 @@ function MyComponent() {
 
 Functions | Parameters | Type | Description |
 ----------|------------|-------|------------|
-markAllNotificationsAsReadByDate | startDate | ISO date string | Sets the read status of notifications to true until the given date |
+markNotificationsAsReadByDate | startDate | ISO date string | Sets the read status of notifications to true until the given date |
 markAsRead | id | string | Set read status of a notification to true          |
 deleteNotification |  id | string  | Delete a notification by id |
 deleteNotificationsByDate | startDate | ISO date string | Delete all notifications until given date |
