@@ -315,7 +315,7 @@ INVALID_RECIPIENT_ID | Invalid recipient id | Recipient id in provider is invali
 TOKEN_VERIFICATION_FAILED | This operation requires a valid token | Failed to verify token and initialize sdk |
 INVALID_ERROR_FUNCTION | Invalid error function | Error function is invalid |
 GENERIC_API_ERROR | Api error | Failed to call a internal api |
-SIREN_OBJECT_NOT_FOUND | Siren Object Not found | Was failed to initialize sdk, Siren object not created |
+OUTSIDE_SIREN_CONTEXT | Siren Object Not found | Was failed to initialize sdk, Siren object not created |
 MISSING_PARAMETER | Missing Parameter | A parameter is missing in function call |
 
 ### Complete Code Example
