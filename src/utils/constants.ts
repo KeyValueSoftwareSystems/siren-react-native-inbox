@@ -90,8 +90,8 @@ export const MAXIMUM_ITEMS_PER_FETCH = 50;
 export const errorMap = {
   SIREN_OBJECT_NOT_FOUND: {
     Type: 'ERROR',
-    Code: 'SIREN_OBJECT_NOT_FOUND',
-    Message: 'Siren Object Not found'
+    Code: 'OUTSIDE_SIREN_CONTEXT',
+    Message: 'Trying to invoke function outside the siren context'
   },
   MISSING_PARAMETER: {
     Type: 'ERROR',
