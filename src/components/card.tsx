@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import React, { useState, type ReactElement } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import type { NotificationDataType } from 'test_notification/dist/esm/types';
@@ -41,36 +41,34 @@ import TimerIcon from './timerIcon';
  * @param {Function} props.onDelete - Callback function executed when the delete action is triggered.
  */
 
-const renderAvatar = (
-  notification: NotificationDataType,
-  styles: Partial<SirenStyleProps>,
-  darkMode: boolean
-): JSX.Element => {
+const Card = (props: NotificationCardProps): ReactElement => {
+  const { onCardClick, notification, cardProps, styles, onDelete, darkMode } = props;
   const emptyState = darkMode
     ? require('../assets/emptyDark.png')
     : require('../assets/emptyLight.png');
+  const [imageSource, setImageSource] = useState(
+    notification?.message?.avatar?.imageUrl?.length > 0
+      ? { uri: notification.message?.avatar?.imageUrl }
+      : emptyState
+  );
 
-  return (
-    <View style={style.cardIconContainer}>
-      <View style={[style.cardIconRound, styles.cardIconRound]}>
-        {Boolean(notification?.message?.avatar?.imageUrl) && (
+  const renderAvatar = (
+    notification: NotificationDataType,
+    styles: Partial<SirenStyleProps>
+  ): JSX.Element => {
+    return (
+      <View style={style.cardIconContainer}>
+        <View style={[style.cardIconRound, styles.cardIconRound]}>
           <Image
-            source={
-              notification.message?.avatar?.imageUrl?.length > 0
-                ? { uri: notification.message?.avatar?.imageUrl }
-                : emptyState
-            }
+            source={imageSource}
             resizeMode='cover'
             style={style.cardAvatarStyle}
+            onError={() => setImageSource(emptyState)}
           />
-        )}
+        </View>
       </View>
-    </View>
-  );
-};
-
-const Card = (props: NotificationCardProps): ReactElement => {
-  const { onCardClick, notification, cardProps, styles, onDelete, darkMode } = props;
+    );
+  };
 
   return (
     <TouchableOpacity
@@ -87,7 +85,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
         ]}
       />
       <View style={[style.cardContainer, styles.cardContainer]}>
-        {!cardProps?.hideAvatar && renderAvatar(notification, styles, darkMode)}
+        {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>
             <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>
