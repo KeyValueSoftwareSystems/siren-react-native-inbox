@@ -1,48 +1,25 @@
-<div>
-    <img width="50px" style="float:left;padding-right:12px;" src="https://app.dev.sirenapp.io/assets/Siren-b2f89b52.svg" >
-    <H1>Siren React Native Inbox</H1>
-</div>
+# Siren React Native Inbox
 
-## Table of Contents
-<!-- MarkdownTOC -->
-- [Overview](#overview)
-- [Quick Start Guide](#quick-start-guide)
-    - [Install SDK](#1-install-sdk)
-    - [Siren Provider](#2-siren-provider)
-    - [Siren Notification Icon](#3-siren-notification-icon)
-    - [Siren Inbox](#4-siren-inbox)
-    - [useSiren](#5-usesiren)
-    - [Error Codes](#6-error-codes)
-    - [Complete Code Example](#complete-code-example)
-- [I want to know more!](#i-want-to-know-more)
-
-<!-- /MarkdownTOC -->
-
-
-<a name="introduction"></a>
 ## Overview
 
-The @siren/react-native-inbox sdk is a comprehensive and customizable React Native UI kit for displaying and managing notifications. This documentation provides comprehensive information on how to install, configure, and use the sdk effectively.
+The `@siren/react-native-inbox` sdk is a comprehensive and customizable React Native UI kit for displaying and managing notifications. This documentation provides comprehensive information on how to install, configure, and use the sdk effectively.
 
-## Quick Start Guide
+## 1. Installation
 
-### 1. Install SDK
-To install the @siren/react-native-inbox sdk, you can use npm or yarn.
+You can install the react sdk from npm 
 
-#### Prerequisites
-- React Native v0.6+
-#### Steps
-1. Under your app's root directory, install @siren/react-native-inbox. 
+```bash
+npm @siren/react-native-inbox
 ```
-npm install @siren/react-native-inbox
-```
-2. Under your application's ios folder, run
-```
-pod install
-``` 
+or from yarn
 
-### 2. Siren Provider
-The SirenProvider initializes the Siren sdk with the specified configuration, which contains important parameters like the user token and recipient ID. Wrap the SirenProvider around your App's root.
+```bash
+yarn @siren/react-native-inbox
+```
+
+## 2. Configuration
+### 2.1 Initialization
+Initialize the sdk with user token and recipient id. Wrap the provider around your App's root.
 
 ```js
 import { SirenProvider } from '@siren/react-native-inbox';
@@ -55,50 +32,35 @@ const config = {
 <SirenProvider config={config}>
   {/* Your app components */}
 </SirenProvider>
-
-
-```
-The config is a property containing userToken and recipientId for authenticate and initialize sdk.
-
-```js
-type config = {
-  userToken: string,
-  recipientId:  string,
-};
 ```
 
-### 3. Siren Notification Icon
-This component includes a customizable notification icon and a badge for indicating the number of un-viewed notifications in the user interface.
+### 2.2 Configure notification icon
+Once the provider is configured, next step is to configure the notification icon
 
+This component consists of a notification icon along with a badge to display the number of unviewed notifications
 ```js
 import { SirenInboxIcon } from '@siren/react-native-inbox';
 
- <SirenInboxIcon
-   theme={customTheme}
-   customStyles={customStyles}
-   notificationIcon={<CustomIcon />}
-   darkMode={true}
-   onError={(error) => console.error(error)}
- />
+ <SirenInboxIcon />
 
 ```
 
-#### Siren Notification Icon Props
-Given below are all props of Icon component.
+#### Props for notification icon
+Below are optional props available for the icon component:
 
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
-theme | Theme object for custom color theme |  Theme | {} |
-customStyles | Style object for custom styling |  StyleProps | {} |
-notificationIcon | Option to use custom notification Icon |  JSX Element | null |
-darkMode | Flag to enable dark mode |  boolean | false |
+theme | Object for custom themes |  Theme | {} |
+customStyles | Object for custom styling |  StyleProps | {} |
+notificationIcon | Option to use custom notification icon |  JSX Element | null |
+darkMode | Toggle to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
-onPress | Function for handling press of icon | ()=> void | null |
-disabled | Flag to disable click handler of icon |  boolean | false |
-hideBadge | Flag to hide unread notification count badge |  boolean | false |
+onPress | Custom click handler for notification icon | ()=> void | null |
+disabled | Toggle to disable click on icon |  boolean | false |
+hideBadge | Toggle to  hide unviewed count badge |  boolean | false |
 
-#### Theming options
-Customize the unread badge of the notification icon, and choose between dark and light theming options. 
+#### Theme customization
+Here are the available theme options:
 
 ```js
    type Theme = {
@@ -114,9 +76,8 @@ Customize the unread badge of the notification icon, and choose between dark and
     }
 ```
 
-#### Styling options
-Customize the notification icon style properties includes size of icon, badge, etc. 
-
+#### Style customization
+Here are the custom style options for the notification icon:
 ```js
 
     type StyleProps = {
@@ -132,58 +93,42 @@ Customize the notification icon style properties includes size of icon, badge, e
     }
 ```
 
-### 4. Siren Inbox
+### 2.3. Configure notification inbox
 
-SirenNotificationInbox is a paginated list view for displaying notifications.
+Inbox is a paginated list view for displaying notifications.
 
 ```js
 import { SirenInbox } from '@siren/react-native-inbox';
 
-<SirenInbox
-    theme={customTheme}
-    title="Notifications"
-    hideHeader={false}
-    darkMode={true}
-    onError={(error) => console.log(error)}
-/>
+<SirenInbox />
 
 ```
-#### Siren Notification Inbox Props
-Given below are all props of inbox component.
+#### Props for the notification inbox
+Below are optional props available for the inbox component:
 
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
-theme | Theme object for custom color theme |  Theme | {} |
-customStyles | Style object for custom styling |  StyleProps | {} |
+theme | Object for custom themes |  Theme | {} |
+customStyles | Object for custom styling |  StyleProps | {} |
 title |  Title of the notification inbox |  string | "Notifications" |
-hideHeader | Flag to hide or show the header |  boolean | false |
-hideClearAll | Flag to hide or show the clear all button in header |  boolean | false |
-darkMode | Flag to enable dark mode |  boolean | false |
+hideHeader | Toggle to hide or show the header section |  boolean | false |
+hideClearAll | Toggle to hide or show the clear all button |  boolean | false |
+darkMode |  Toggle to enable dark mode|  boolean | false |
 itemsPerFetch | Number of notifications fetch per api request (have a max cap of 50) |  number | 20 |
-cardProps | Props for customizing the notification cards | CardProps | null |
-customNotificationCard | Custom function for rendering notification cards | (notification)=> JSX Element | null |
-onNotificationCardClick | Props for customizing the notification cards | (notification)=> void | ()=>null |
-listEmptyComponent | Custom component to display when the notification list is empty | JSX Element | null |
+cardProps | Props for customizing the notification cards | { hideAvatar: boolean } | { hideAvatar: false } |
+customNotificationCard | Function for rendering custom notification cards | (notification)=> JSX Element | null |
+onNotificationCardClick | Custom click handler for notification cards | (notification)=> void | ()=>null |
+listEmptyComponent | Custom component for empty notification list | JSX Element | null |
 customHeader | Custom header component | JSX Element | null |
 customFooter | Custom footer component | JSX Element | null |
-customLoader | Custom loader component | JSX Element | null |
-customErrorWindow | Custom error component | JSX Element | null |
+customLoader | Custom component to display the initial loading state| JSX Element | null |
+customErrorWindow | Custom error window | JSX Element | null |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
 
-#### Card props
 
-Style object for customize notification card.
+#### Theme customization
 
-```js
-type CardProps = {
-  hideAvatar?: boolean;
-  showMedia?: boolean;
-};
-```
-
-#### Theming options
-
-Customizable UI option for notification inbox, with dark and light theme options. 
+Here are the available theme options:
 
 ```js
     type Theme = {
@@ -224,9 +169,9 @@ Customizable UI option for notification inbox, with dark and light theme options
     }
 ```
 
-#### Styling options
+#### Style options
 
-Customizable Styling option for notification inbox.
+Here are the custom style options for the notification inbox:
 
 ```js
     export type StyleProps = {
@@ -273,8 +218,9 @@ Customizable Styling option for notification inbox.
     };
 ```
 
-### 5. useSiren
-This is a hook that provides utility functions for modifying notifications.
+## 3. Hooks
+
+`useSiren` is a hook that provides utility functions for modifying notifications.
 
 ```js
 import { useSiren } from '@siren/react-native-inbox';
@@ -297,29 +243,28 @@ function MyComponent() {
 ```
 #### useSiren functions
 
-Function name | Parameters type | Description |
---- | --- | --- |
-markAllNotificationsAsReadByDate | startDate: string | Set all notification read status to true until given date |
-markAsRead | id: string | Set read status of a specific notification to true |
-deleteNotification |  id: string  | Delete a specific notification by id |
-deleteNotificationsByDate | startDate: string | Delete all notifications until given date |
-markNotificationsAsViewed | startDate: string | Set all notification viewed status to true until given date |
+Functions | Parameters | Type | Description |
+----------|------------|-------|------------|
+markAllNotificationsAsReadByDate | startDate | ISO date string | Sets the read status of notifications to true until the given date |
+markAsRead | id | string | Set read status of a notification to true          |
+deleteNotification |  id | string  | Delete a notification by id |
+deleteNotificationsByDate | startDate | ISO date string | Delete all notifications until given date |
+markNotificationsAsViewed | startDate | ISO date string |Sets the viewed status of notifications to true until the given date |
 
-### 6. Error codes
-Given below are all possible error codes thrown by sdk.
+## 4. Error codes
+Given below are all possible error codes thrown by sdk:
 
-Error code | Message | Description |
---- | --- | --- |
-INVALID_TOKEN | Invalid token | Token passed in provider is invalid |
-INVALID_RECIPIENT_ID | Invalid recipient id | Recipient id in provider is invalid |
-TOKEN_VERIFICATION_FAILED | This operation requires a valid token | Failed to verify token and initialize sdk |
-INVALID_ERROR_FUNCTION | Invalid error function | Error function is invalid |
-GENERIC_API_ERROR | Api error | Failed to call a internal api |
-OUTSIDE_SIREN_CONTEXT | Siren Object Not found | Was failed to initialize sdk, Siren object not created |
-MISSING_PARAMETER | Missing Parameter | A parameter is missing in function call |
+Error code  | Description |
+--- | --- |
+INVALID_TOKEN | The token passed in the provider is invalid |
+INVALID_RECIPIENT_ID | The recipient id passed in the provider is invalid |
+TOKEN_VERIFICATION_FAILED | Verification of the given tokens has failed |
+GENERIC_API_ERROR | Occurrence of an unexpected api error |
+OUTSIDE_SIREN_CONTEXT | Attempting to invoke the functions outside the siren inbox context |
+MISSING_PARAMETER | The required parameter is missing |
 
-### Complete Code Example
-Here's a runnable code example that covers everything in this quick start guide.
+## Example
+Here's a basic example to help you get started
 ```js
 
 import React from 'react';
@@ -345,7 +290,7 @@ export default App;
 function MyContainer(): React.JSX.Element {
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <View>
       <SirenInboxIcon
         darkMode={false}
       />
@@ -353,18 +298,12 @@ function MyContainer(): React.JSX.Element {
         title="Notifications"
         hideHeader={false}
         darkMode={false}
-        cardProps={{hideAvatar: false, showMedia: true}}
+        cardProps={{hideAvatar: false}}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
 export default MyContainer;
 
 ```
-
-### I want to know more!
-
-No worries, here are some links that you will find useful:
-* **[Advanced React Native Guide](https://reactnative.dev/docs/environment-setup)**
-
