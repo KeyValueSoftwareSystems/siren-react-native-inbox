@@ -95,6 +95,7 @@ darkMode | Flag to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
 onPress | Function for handling press of icon | ()=> void | null |
 disabled | Flag to disable click handler of icon |  boolean | false |
+hideBadge | Flag to hide unread notification count badge |  boolean | false |
 
 #### Theming options
 Customize the unread badge of the notification icon, and choose between dark and light theming options. 

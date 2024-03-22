@@ -36,6 +36,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     customStyles = {},
     notificationIcon,
     darkMode = false,
+    hideBadge = false,
     onPress = () => null,
     disabled = false,
     onError = () => null
@@ -145,7 +146,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   };
 
   /* Render badge with unviewed count if count is greater than 0 */
-  const showBadge = unviewedCount > 0;
+  const showBadge = unviewedCount > 0 && !hideBadge;
 
   return (
     <TouchableOpacity

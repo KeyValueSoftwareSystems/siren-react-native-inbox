@@ -51,6 +51,7 @@ export type SirenInboxIconProps = {
   darkMode?: boolean;
   onPress?: () => void;
   disabled?: boolean;
+  hideBadge?: boolean;
 };
 
 /**
