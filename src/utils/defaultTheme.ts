@@ -11,7 +11,8 @@ const defaultTheme = {
       dateColor: COLORS[ThemeMode.LIGHT].dateColor,
       deleteIcon: COLORS[ThemeMode.LIGHT].deleteIcon,
       timerIcon: COLORS[ThemeMode.LIGHT].timerIcon,
-      clearAllIcon: COLORS[ThemeMode.LIGHT].clearAllIcon
+      clearAllIcon: COLORS[ThemeMode.LIGHT].clearAllIcon,
+      infiniteLoader: COLORS[ThemeMode.LIGHT].infiniteLoader,
     },
     windowHeader: {
       background: COLORS[ThemeMode.LIGHT].neutralColor,
@@ -27,7 +28,7 @@ const defaultTheme = {
       background: COLORS[ThemeMode.LIGHT].neutralColor,
       titleColor: COLORS[ThemeMode.LIGHT].textColor,
       descriptionColor: COLORS[ThemeMode.LIGHT].textColor,
-      dateColor: COLORS[ThemeMode.LIGHT].textColor
+      dateColor: COLORS[ThemeMode.LIGHT].textColor,
     }
   },
   dark: {
@@ -40,7 +41,8 @@ const defaultTheme = {
       dateColor: COLORS[ThemeMode.DARK].dateColor,
       deleteIcon: COLORS[ThemeMode.DARK].deleteIcon,
       timerIcon: COLORS[ThemeMode.DARK].timerIcon,
-      clearAllIcon: COLORS[ThemeMode.DARK].clearAllIcon
+      clearAllIcon: COLORS[ThemeMode.DARK].clearAllIcon,
+      infiniteLoader: COLORS[ThemeMode.LIGHT].infiniteLoader,
     },
     windowHeader: {
       background: COLORS[ThemeMode.DARK].neutralColor,

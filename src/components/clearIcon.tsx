@@ -8,21 +8,20 @@ const ClearIcon = ({ styles }: { styles: Partial<SirenStyleProps> }): ReactEleme
 
   for (let i = 0; i < 3; i++)
     icon.push(
-      <View key={i} style={[style.clearIcon, styles.clearIcon, { marginLeft: (3 - i) * 2 }]} />
+      <View key={i} style={[style.clearIcon, styles.clearIcon, { marginLeft: (2 - i) * 5 }]} />
     );
 
-  return <View>{icon}</View>;
+  return <View style={[style.clearIconContainer, styles.clearIconContainer]}>{icon}</View>;
 };
 
 const style = StyleSheet.create({
   clearIcon: {
-    height: 2,
-    width: 14,
-    borderRadius: 1.2,
-    marginTop: 1.5,
-    marginBottom: 0.5,
-    marginRight: 5
+    width: '100%'
   },
+  clearIconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
 export default ClearIcon;

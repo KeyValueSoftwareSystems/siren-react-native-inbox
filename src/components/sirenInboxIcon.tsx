@@ -36,6 +36,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     customStyles = {},
     notificationIcon,
     darkMode = false,
+    hideBadge = false,
     onPress = () => null,
     disabled = false,
     onError = () => null
@@ -46,6 +47,9 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   const [unviewedCount, seUnviewedCount] = useState<number>(0);
 
   const mode = darkMode ? ThemeMode.DARK : ThemeMode.LIGHT;
+  const bellIconSource = darkMode
+    ? require('../assets/bellDark.png')
+    : require('../assets/bellLight.png');
   const badgeTheme = theme[mode]?.badgeStyle || {};
   const badgeStyle = customStyles?.badgeStyle || {};
   const size = customStyles?.notificationIcon?.size || defaultStyles?.notificationIcon?.size;
@@ -85,7 +89,8 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   // Function to initialize the Siren SDK and fetch unviewed notifications count
   const initialize = async (): Promise<void> => {
     if (siren) {
-      const unViewed: UnviewedCountReturnResponse = await siren.fetchUnviewedNotificationsCount();
+      const unViewed: UnviewedCountReturnResponse | null =
+        await siren.fetchUnviewedNotificationsCount();
 
       siren.startRealTimeUnviewedCountFetch();
       if (unViewed?.data) seUnviewedCount(unViewed.data?.unviewedCount || 0);
@@ -94,22 +99,37 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   };
 
   const renderBadge = (): JSX.Element | null => {
-    const defaultBadgeStyle = {
-      minWidth: badge.size,
-      height: badge.size,
-      borderRadius: badge.size * 0.5,
-      backgroundColor: badge.color
-    };
-    const defaultBadgeText = {
-      color: badge.textColor,
-      fontSize: badge.textSize
-    };
+    const defaultBadgeStyle: {
+      minWidth?: number;
+      height?: number;
+      borderRadius?: number;
+      backgroundColor?: string;
+      top?: number;
+      right?: number;
+    } = {};
+    const defaultBadgeText: {
+      color?: string;
+      fontSize?: number;
+    } = {};
+
+    if (badge.size) {
+      defaultBadgeStyle.minWidth = badge.size;
+      defaultBadgeStyle.height = badge.size;
+      defaultBadgeStyle.borderRadius = badge.size;
+    }
+    if (badge.color) defaultBadgeStyle.backgroundColor = badge.color;
+    if (badge.top) defaultBadgeStyle.top = badge.top;
+    if (badge.right) defaultBadgeStyle.right = badge.right;
+    if (badge.textColor) {
+      defaultBadgeText.color = badge.textColor;
+      defaultBadgeText.fontSize = badge.textSize;
+    }
     const countLimit = 99;
     const reachCountLimit = unviewedCount >= countLimit;
 
     const defaultBadge = (
-      <View style={[defaultBadgeStyle, styles.badge]}>
-        <Text style={[defaultBadgeText, styles.badgeText]}>
+      <View style={[styles.badge, defaultBadgeStyle]}>
+        <Text style={[styles.badgeText, defaultBadgeText]}>
           {reachCountLimit ? '99+' : unviewedCount}
         </Text>
       </View>
@@ -122,20 +142,18 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     /* Render provided notification icon or default icon */
     if (notificationIcon) return notificationIcon;
 
-    return (
-      <Image source={require('../assets/notificationIcon.png')} resizeMode='contain' style={styles.iconStyle} />
-    );
+    return <Image source={bellIconSource} resizeMode='contain' style={styles.iconStyle} />;
   };
 
   /* Render badge with unviewed count if count is greater than 0 */
-  const showBadge = unviewedCount > 0;
+  const showBadge = unviewedCount > 0 && !hideBadge;
 
   return (
     <TouchableOpacity
       testID='notification-icon'
       disabled={disabled}
       onPress={onPress}
-      style={[container, styles.iconContainer]}
+      style={[styles.iconContainer, container]}
     >
       {showBadge && renderBadge()}
 

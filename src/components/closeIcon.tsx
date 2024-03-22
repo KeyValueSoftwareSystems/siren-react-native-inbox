@@ -32,7 +32,7 @@ const CloseIcon = ({
     <TouchableOpacity
       hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
       onPress={() => onDelete(notification.id)}
-      style={style.closeButton}
+      style={[style.closeButton, styles.closeButton]}
       testID='delete-button'
     >
       <>{icon}</>
@@ -42,15 +42,12 @@ const CloseIcon = ({
 
 const style = StyleSheet.create({
   closeIconLine: {
-    height: 1.6,
     marginVertical: 2,
     width: '100%',
     borderRadius: 1,
     position: 'absolute'
   },
   closeButton: {
-    width: 14,
-    height: 14,
     overflow: 'hidden',
     justifyContent: 'center',
     opacity: 0.8

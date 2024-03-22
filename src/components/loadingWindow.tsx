@@ -5,6 +5,7 @@ import type { SirenStyleProps } from '../types';
 
 type LoadingWindowProps = {
   styles: Partial<SirenStyleProps>;
+  customLoader?: JSX.Element | null;
 };
 /**
  * Displays a loading indicator within a window,
@@ -17,9 +18,10 @@ type LoadingWindowProps = {
  *
  * @param {Object} props - The properties passed to the component.
  * @param {Object} props.styles - Custom styles applied to the loading window container.
+ * @param {Object} props.customLoader - Custom loader to be displayed within the loading window container.
  */
 const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
-  const { styles } = props;
+  const { styles, customLoader } = props;
 
   const pulseAnim = useRef(new Animated.Value(0)).current;
 
@@ -28,7 +30,7 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
       duration: 1000,
       useNativeDriver: true
     };
-    
+
     Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
@@ -92,7 +94,9 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
 
   return (
     <View style={style.container}>
-      <FlatList data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} renderItem={renderSkeltonCard} />
+      {customLoader || (
+        <FlatList data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} renderItem={renderSkeltonCard} />
+      )}
     </View>
   );
 };
@@ -111,29 +115,30 @@ const style = StyleSheet.create({
     padding: 12,
     paddingHorizontal: 16,
     borderBottomColor: '#98A2B3',
-    borderBottomWidth: 0.4
+    borderBottomWidth: 0.4,
+    height: 140
   },
   rectangleContainer: {
     flex: 1
   },
   loadingRectangle1: {
     marginHorizontal: 16,
-    flex: 1,
-    height: 20,
+    height: 15,
     borderRadius: 5,
-    marginBottom: 5
+    marginBottom: 10
   },
   loadingRectangle2: {
     marginHorizontal: 16,
     flex: 1,
     height: 40,
-    borderRadius: 5
+    borderRadius: 5,
+    marginBottom: 4,
   },
   loadingRectangle3: {
     marginRight: 16,
     marginLeft: 6,
     flex: 1,
-    height: 15,
+    height: 14,
     borderRadius: 6
   },
   loadingCircle: {
@@ -143,15 +148,15 @@ const style = StyleSheet.create({
     overflow: 'hidden'
   },
   loadingCircleSmall: {
-    width: 15,
-    height: 15,
-    borderRadius: 8,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
     overflow: 'hidden',
     marginLeft: 16
   },
   loadingSquire: {
-    width: 20,
-    height: 20,
+    width: 15,
+    height: 15,
     borderRadius: 4
   },
   rectangleCircleContainer: {

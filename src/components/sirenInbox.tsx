@@ -1,4 +1,4 @@
-import React, { type ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { type ReactElement, useEffect, useMemo, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import PubSub from 'pubsub-js';
@@ -15,7 +15,14 @@ import { useSirenContext } from './sirenProvider';
 import type { SirenInboxProps } from '../types';
 import { CommonUtils, Constants, useSiren } from '../utils';
 
-const { DEFAULT_WINDOW_TITLE, ThemeMode, events } = Constants;
+const {
+  DEFAULT_WINDOW_TITLE,
+  ThemeMode,
+  events,
+  TOKEN_VERIFICATION_PENDING,
+  MAXIMUM_ITEMS_PER_FETCH,
+  VerificationStatus
+} = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
 
 type fetchProps = {
@@ -57,6 +64,8 @@ type NotificationFetchParams = {
  * @param {JSX.Element} [props.listEmptyComponent=null] - Custom component to display when the notification list is empty.
  * @param {JSX.Element} [props.customHeader=null] - Custom header component.
  * @param {JSX.Element} [props.customFooter=null] - Custom footer component.
+ * @param {JSX.Element} [props.customLoader=null] - Custom loader component.
+ * @param {JSX.Element} [props.customErrorWindow=null] - Custom error component.
  * @param {Function} [props.customNotificationCard=null] - Custom function for rendering notification cards.
  * @param {Function} [props.onNotificationCardClick=() => null] - Callback for handling notification card clicks.
  * @param {Function} [props.onError] - Callback for handling errors.
@@ -72,15 +81,19 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     listEmptyComponent = null,
     customHeader = null,
     customFooter = null,
+    customLoader = null,
+    customErrorWindow = null,
     customNotificationCard = null,
     onNotificationCardClick = () => null,
     onError = () => {},
-    hideClearAll = false
+    hideClearAll = false,
+    itemsPerFetch = 20
   } = props;
 
-  const notificationsPerPage = 10;
+  const notificationsPerPage =
+    itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch;
 
-  const { siren } = useSirenContext();
+  const { siren, verificationStatus } = useSirenContext();
 
   const { deleteNotification, deleteNotificationsByDate, markNotificationsAsViewed } = useSiren();
 
@@ -95,6 +108,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     unreadCount?: number;
   } | null>(null);
 
+  const disableCardDelete = useRef(false);
+
   useEffect(() => {
     PubSub.subscribe(events.NOTIFICATION_LIST_EVENT, notificationSubscriber);
 
@@ -103,8 +118,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
-    initialize();
-  }, [siren]);
+    if (verificationStatus !== VerificationStatus.PENDING && siren) initialize();
+  }, [siren, verificationStatus]);
 
   useEffect(() => {
     if (eventListenerData) {
@@ -122,13 +137,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (isNonEmptyArray(newNotifications)) {
       const response = await markNotificationsAsViewed(newNotifications[0].createdAt);
 
-      processError(response.error);
+      processError(response?.error);
     }
   };
 
   const processError = (error?: SirenErrorType | null) => {
     if (error) {
-      setIsError(true);
+      if (error?.Code !== TOKEN_VERIFICATION_PENDING) setIsError(true);
       if (onError) onError(error);
     }
   };
@@ -149,13 +164,17 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
-    const readyForInitialize = siren && !isError;
 
-    if (readyForInitialize) {
-      await fetchNotifications(siren, true);
+    if (siren) {
+      siren?.stopRealTimeNotificationFetch();
+      const allNotifications = await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
 
-      siren?.startRealTimeNotificationFetch(notificationParams);
+      if (isNonEmptyArray(allNotifications))
+        notificationParams.start = allNotifications[0].createdAt;
+
+      if(verificationStatus === VerificationStatus.SUCCESS)
+        siren?.startRealTimeNotificationFetch(notificationParams);
     }
   };
 
@@ -174,15 +193,19 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     nonEmptyResponse: boolean,
     isResetList: boolean,
     responseData: NotificationDataType[]
-  ): void => {
+  ): NotificationDataType[] => {
     if (nonEmptyResponse) {
       const updatedNotifications = isResetList ? responseData : [...notifications, ...responseData];
 
       isResetList && handleMarkNotificationsAsViewed(updatedNotifications);
       setNotifications(updatedNotifications);
+
+      return updatedNotifications;
     } else {
       setEndReached(true);
     }
+
+    return [];
   };
 
   // Fetch notifications
@@ -192,13 +215,16 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   ): Promise<NotificationDataType[]> => {
     setIsError(false);
     setIsLoading(true);
+    let updatedNotifications = notifications;
+
     if (siren)
       try {
         const notificationParams = generateNotificationParams(!isResetList);
         const response = await siren.fetchAllNotifications(notificationParams);
         const nonEmptyResponse = Boolean(isNonEmptyArray(response?.data));
 
-        if (response?.data) processResponse(nonEmptyResponse, isResetList, response.data);
+        if (response?.data) 
+          updatedNotifications = processResponse(nonEmptyResponse, isResetList, response.data);
         if (response?.error) processError(response.error);
 
         setIsLoading(false);
@@ -207,7 +233,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         setIsError(true);
       }
 
-    return notifications;
+    return updatedNotifications;
   };
 
   // Apply theme styles
@@ -229,11 +255,16 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         setIsError(false);
         setNotifications([]);
         setIsLoading(true);
+
         siren?.stopRealTimeNotificationFetch();
-        await fetchNotifications(siren, true);
+        const allNotifications = (await fetchNotifications(siren, true)) || [];
         const notificationParams: fetchProps = { size: notificationsPerPage };
 
-        siren?.startRealTimeNotificationFetch(notificationParams);
+        if (isNonEmptyArray(allNotifications))
+          notificationParams.start = allNotifications[0].createdAt;
+        
+        if(verificationStatus === VerificationStatus.SUCCESS)
+          siren?.startRealTimeNotificationFetch(notificationParams);
       } catch (err) {
         setIsLoading(false);
         setIsError(true);
@@ -250,18 +281,25 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   // Render empty window, error window, or custom empty component
   const renderListEmpty = (): JSX.Element | null => {
     if (!isLoading) {
-      if (isError) return <ErrorWindow styles={styles} darkMode={darkMode} />;
+      if (isError)
+        return (
+          <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
+        );
 
       return listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />;
     }
 
-    return <LoadingWindow styles={styles} />;
+    return <LoadingWindow styles={styles} customLoader={customLoader} />;
   };
 
   const onDelete = async (id: string): Promise<void> => {
-    const response = await deleteNotification(id);
+    if (!disableCardDelete.current) {
+      disableCardDelete.current = true;
+      const response = await deleteNotification(id);
 
-    processError(response?.error);
+      processError(response?.error);
+      disableCardDelete.current = false;
+    }
   };
 
   const onPressClearAll = async (): Promise<void> => {
@@ -286,6 +324,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         cardProps={cardProps}
         styles={styles}
         onDelete={onDelete}
+        darkMode={darkMode}
       />
     );
   };

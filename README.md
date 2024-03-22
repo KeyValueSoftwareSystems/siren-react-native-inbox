@@ -58,7 +58,7 @@ const config = {
 
 
 ```
-The config is a prop for the SirenProvider component is authenticate and initialize sdk.
+The config is a property containing userToken and recipientId for authenticate and initialize sdk.
 
 ```js
 type config = {
@@ -95,6 +95,7 @@ darkMode | Flag to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
 onPress | Function for handling press of icon | ()=> void | null |
 disabled | Flag to disable click handler of icon |  boolean | false |
+hideBadge | Flag to hide unread notification count badge |  boolean | false |
 
 #### Theming options
 Customize the unread badge of the notification icon, and choose between dark and light theming options. 
@@ -124,14 +125,16 @@ Customize the notification icon style properties includes size of icon, badge, e
         };
         badgeStyle?: {
             size?: number;
-            textSize?: number;
+            textSize?: number;    
+            top?: number;
+            right?: number;
         };
     }
 ```
 
 ### 4. Siren Inbox
 
-SirenNotificationWindow is a paginated list view for displaying notifications.
+SirenNotificationInbox is a paginated list view for displaying notifications.
 
 ```js
 import { SirenInbox } from '@siren/react-native-inbox';
@@ -145,27 +148,42 @@ import { SirenInbox } from '@siren/react-native-inbox';
 />
 
 ```
-#### Siren Notification Window Props
-Given below are all props of window component.
+#### Siren Notification Inbox Props
+Given below are all props of inbox component.
 
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
-theme | Theme object for custom styling |  Theme | {} |
-title |  Title of the notification window |  string | "Notifications" |
+theme | Theme object for custom color theme |  Theme | {} |
+customStyles | Style object for custom styling |  StyleProps | {} |
+title |  Title of the notification inbox |  string | "Notifications" |
 hideHeader | Flag to hide or show the header |  boolean | false |
 hideClearAll | Flag to hide or show the clear all button in header |  boolean | false |
 darkMode | Flag to enable dark mode |  boolean | false |
+itemsPerFetch | Number of notifications fetch per api request (have a max cap of 50) |  number | 20 |
 cardProps | Props for customizing the notification cards | CardProps | null |
 customNotificationCard | Custom function for rendering notification cards | (notification)=> JSX Element | null |
 onNotificationCardClick | Props for customizing the notification cards | (notification)=> void | ()=>null |
 listEmptyComponent | Custom component to display when the notification list is empty | JSX Element | null |
 customHeader | Custom header component | JSX Element | null |
 customFooter | Custom footer component | JSX Element | null |
+customLoader | Custom loader component | JSX Element | null |
+customErrorWindow | Custom error component | JSX Element | null |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
+
+#### Card props
+
+Style object for customize notification card.
+
+```js
+type CardProps = {
+  hideAvatar?: boolean;
+  showMedia?: boolean;
+};
+```
 
 #### Theming options
 
-Customizable UI option for notification window, with dark and light theme options. 
+Customizable UI option for notification inbox, with dark and light theme options. 
 
 ```js
     type Theme = {
@@ -184,6 +202,7 @@ Customizable UI option for notification window, with dark and light theme option
             deleteIcon?: string;
             timerIcon?: string;
             clearAllIcon?: string;
+            infiniteLoader?: string;
         };
         windowHeader?: {
             background?: string;
@@ -205,9 +224,9 @@ Customizable UI option for notification window, with dark and light theme option
     }
 ```
 
-#### Theming options
+#### Styling options
 
-Customizable Styling option for notification window.
+Customizable Styling option for notification inbox.
 
 ```js
     export type StyleProps = {
@@ -223,7 +242,6 @@ Customizable Styling option for notification window.
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
         closeIconSize?: number;
-        titlePadding?: number;
       }
       windowContainer?: {
         padding?: number;
@@ -234,14 +252,23 @@ Customizable Styling option for notification window.
         avatarSize?: number;
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
-        titlePadding?: number;
         descriptionSize?: number;
-        descriptionPadding?: number;
         dateSize?: number;
       };
       badgeStyle?: {
         size?: number;
         textSize?: number;
+        top?: number;
+        right?: number;
+      };
+      deleteIcon?:{
+        size?: number
+      };
+      dateIcon?:{
+        size?: number
+      };
+      clearAllIcon?:{
+        size?: number
       };
     };
 ```
@@ -288,7 +315,7 @@ INVALID_RECIPIENT_ID | Invalid recipient id | Recipient id in provider is invali
 TOKEN_VERIFICATION_FAILED | This operation requires a valid token | Failed to verify token and initialize sdk |
 INVALID_ERROR_FUNCTION | Invalid error function | Error function is invalid |
 GENERIC_API_ERROR | Api error | Failed to call a internal api |
-SIREN_OBJECT_NOT_FOUND | Siren Object Not found | Was failed to initialize sdk, Siren object not created |
+OUTSIDE_SIREN_CONTEXT | Siren Object Not found | Was failed to initialize sdk, Siren object not created |
 MISSING_PARAMETER | Missing Parameter | A parameter is missing in function call |
 
 ### Complete Code Example

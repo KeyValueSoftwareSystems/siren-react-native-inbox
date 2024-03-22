@@ -60,8 +60,7 @@ const style = StyleSheet.create({
   clearIconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0.8
+    justifyContent: 'center'
   },
   headerTitle: {
     width: '70%'

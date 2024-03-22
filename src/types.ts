@@ -26,7 +26,10 @@ export type SirenInboxProps = {
   listEmptyComponent?: JSX.Element;
   customFooter?: JSX.Element;
   customHeader?: JSX.Element;
+  customLoader?: JSX.Element;
+  customErrorWindow?: JSX.Element;
   hideClearAll?: boolean;
+  itemsPerFetch?: number;
   customNotificationCard?: (notification: NotificationDataType) => JSX.Element;
   onNotificationCardClick?: (notification: NotificationDataType) => void;
   onError?: (error: SirenErrorType) => void;
@@ -48,6 +51,7 @@ export type SirenInboxIconProps = {
   darkMode?: boolean;
   onPress?: () => void;
   disabled?: boolean;
+  hideBadge?: boolean;
 };
 
 /**
@@ -104,6 +108,7 @@ export type ThemeProps = {
     deleteIcon?: string;
     timerIcon?: string;
     clearAllIcon?: string;
+    infiniteLoader?: string;
   };
   badgeStyle?: {
     color?: string;
@@ -125,6 +130,8 @@ export type ThemeProps = {
     titleColor?: string;
     descriptionColor?: string;
     dateColor?: string;
+    timeIconSize?: number;
+    deleteIconSize?: number;
   };
 };
 
@@ -153,14 +160,23 @@ export type StyleProps = {
     avatarSize?: number;
     titleFontWeight?: TextStyle['fontWeight'];
     titleSize?: number;
-    titlePadding?: number;
     descriptionSize?: number;
-    descriptionPadding?: number;
     dateSize?: number;
   };
   badgeStyle?: {
     size?: number;
     textSize?: number;
+    top?: number;
+    right?: number;
+  };
+  deleteIcon?:{
+    size?: number
+  };
+  dateIcon?:{
+    size?: number
+  };
+  clearAllIcon?:{
+    size?: number
   };
 };
 
@@ -177,6 +193,7 @@ export type NotificationCardProps = {
   onCardClick: (notification: NotificationDataType) => void;
   notification: NotificationDataType;
   cardProps: CardProps;
+  darkMode: boolean;
   styles: Partial<SirenStyleProps>;
   onDelete: (id: string) => void;
 };
@@ -197,6 +214,7 @@ export type SirenStyleProps = {
   headerTitle: TextStyle | object;
   headerAction: TextStyle;
   clearIcon: ViewStyle;
+  clearIconContainer: ViewStyle;
   cardContainer: ViewStyle;
   cardIconRound: ViewStyle;
   cardTitle: TextStyle | object;
@@ -207,10 +225,12 @@ export type SirenStyleProps = {
   errorButton: ViewStyle;
   errorButtonText: TextStyle;
   closeIcon: ViewStyle;
+  closeButton: ViewStyle;
   cardWrapper: ViewStyle;
   activeCardMarker: ViewStyle;
   timerIcon: ViewStyle;
   timerIconLine: ViewStyle;
+  timerIconLine2: ViewStyle;
   skeltonLoaderColor: ViewStyle;
   highlighted: ViewStyle;
 };

@@ -141,13 +141,37 @@ export const applyTheme = (
     backgroundColor:
       theme.windowHeader?.headerActionColor ||
       theme.colors?.clearAllIcon ||
-      DefaultTheme[mode].windowHeader.headerActionColor
+      DefaultTheme[mode].windowHeader.headerActionColor,
+    height: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.1,
+    borderRadius: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.12,
+    marginTop: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.1,
+    marginBottom: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.05,
+    marginRight: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.5
+  },
+  clearIconContainer: {
+    width: customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size,
+    height: customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size,
+    marginRight: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.2
   },
   timerIcon: {
-    borderColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon
+    borderColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon,
+    width: customStyles.dateIcon?.size || defaultStyles.dateIcon.size,
+    height: customStyles.dateIcon?.size || defaultStyles.dateIcon.size,
+    borderRadius: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) / 2,
+    borderWidth: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1,
+    padding: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1
   },
   timerIconLine: {
-    backgroundColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon
+    backgroundColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon,
+    height: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.36,
+    width: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1
+  },
+  timerIconLine2: {
+    backgroundColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon,
+    height: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.28,
+    width: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1,
+    marginLeft: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.22,
+    marginTop: -(customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1
   },
   cardContainer: {
     padding: customStyles.notificationCard?.padding || defaultStyles.notificationCard.padding
@@ -172,7 +196,12 @@ export const applyTheme = (
       (customStyles.notificationCard?.avatarSize || defaultStyles.notificationCard.avatarSize) / 2
   },
   closeIcon: {
-    backgroundColor: theme.colors?.deleteIcon || DefaultTheme[mode].colors.deleteIcon
+    backgroundColor: theme.colors?.deleteIcon || DefaultTheme[mode].colors.deleteIcon,
+    height: (customStyles.deleteIcon?.size || defaultStyles.deleteIcon.size) * 0.14
+  },
+  closeButton: {
+    width: customStyles.deleteIcon?.size || defaultStyles.deleteIcon.size,
+    height: customStyles.deleteIcon?.size || defaultStyles.deleteIcon.size
   },
   cardTitle: {
     color:
@@ -182,9 +211,7 @@ export const applyTheme = (
     fontSize: customStyles.notificationCard?.titleSize || defaultStyles.notificationCard.titleSize,
     fontWeight:
       customStyles.notificationCard?.titleFontWeight ||
-      defaultStyles.notificationCard.titleFontWeight,
-    paddingHorizontal:
-      customStyles.notificationCard?.padding || defaultStyles.notificationCard.titlePadding
+      defaultStyles.notificationCard.titleFontWeight
   },
   cardDescription: {
     color:
@@ -193,10 +220,7 @@ export const applyTheme = (
       DefaultTheme[mode].notificationCard.descriptionColor,
     fontSize:
       customStyles.notificationCard?.descriptionSize ||
-      defaultStyles.notificationCard.descriptionSize,
-    paddingHorizontal:
-      customStyles.notificationCard?.descriptionPadding ||
-      defaultStyles.notificationCard.descriptionPadding
+      defaultStyles.notificationCard.descriptionSize
   },
   dateStyle: {
     color:

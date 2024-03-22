@@ -6,7 +6,7 @@ import { ThemeMode } from '../../src/utils/constants';
 describe('spinner', () => {
   const customTheme = {
     colors: {
-      textColor: '#000'
+      infiniteLoader: '#000'
     }
   };
   const mode = ThemeMode.LIGHT;
@@ -31,6 +31,6 @@ describe('spinner', () => {
     const activityIndicator = getByTestId('activity-indicator');
 
     // Check if color is set correctly based on the provided theme and mode
-    expect(activityIndicator.props.color).toEqual(customTheme.colors?.textColor || '#000');
+    expect(activityIndicator.props.color).toEqual(customTheme.colors?.infiniteLoader || '#000');
   });
 });

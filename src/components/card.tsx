@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import React, { useState, type ReactElement } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import type { NotificationDataType } from 'test_notification/dist/esm/types';
@@ -41,27 +41,34 @@ import TimerIcon from './timerIcon';
  * @param {Function} props.onDelete - Callback function executed when the delete action is triggered.
  */
 
-const renderAvatar = (
-  notification: NotificationDataType,
-  styles: Partial<SirenStyleProps>
-): JSX.Element => {
-  return (
-    <View style={style.cardIconContainer}>
-      <View style={[style.cardIconRound, styles.cardIconRound]}>
-        {Boolean(notification?.message?.avatar?.imageUrl) && (
+const Card = (props: NotificationCardProps): ReactElement => {
+  const { onCardClick, notification, cardProps, styles, onDelete, darkMode } = props;
+  const emptyState = darkMode
+    ? require('../assets/emptyDark.png')
+    : require('../assets/emptyLight.png');
+  const [imageSource, setImageSource] = useState(
+    notification?.message?.avatar?.imageUrl?.length > 0
+      ? { uri: notification.message?.avatar?.imageUrl }
+      : emptyState
+  );
+
+  const renderAvatar = (
+    notification: NotificationDataType,
+    styles: Partial<SirenStyleProps>
+  ): JSX.Element => {
+    return (
+      <View style={style.cardIconContainer}>
+        <View style={[style.cardIconRound, styles.cardIconRound]}>
           <Image
-            source={{ uri: notification.message?.avatar?.imageUrl }}
+            source={imageSource}
             resizeMode='cover'
             style={style.cardAvatarStyle}
+            onError={() => setImageSource(emptyState)}
           />
-        )}
+        </View>
       </View>
-    </View>
-  );
-};
-
-const Card = (props: NotificationCardProps): ReactElement => {
-  const { onCardClick, notification, cardProps, styles, onDelete } = props;
+    );
+  };
 
   return (
     <TouchableOpacity
@@ -81,17 +88,17 @@ const Card = (props: NotificationCardProps): ReactElement => {
         {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>
-            <Text numberOfLines={1} style={[styles.cardTitle, style.cardTitle]}>
+            <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
             <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
           </View>
           {Boolean(notification.message?.subHeader) && (
-            <Text numberOfLines={1} style={[style.cardDescription, styles.cardDescription]}>
+            <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
               {notification.message?.subHeader}
             </Text>
           )}
-          <Text numberOfLines={3} style={[style.cardDescription, styles.cardDescription]}>
+          <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
             {notification.message?.body}
           </Text>
           <View style={style.dateContainer}>
@@ -122,7 +129,8 @@ const style = StyleSheet.create({
     paddingTop: 4
   },
   cardTitle: {
-    paddingBottom: 4
+    paddingBottom: 4,
+    paddingTop: 4
   },
   icon: {
     width: '100%',

@@ -31,7 +31,7 @@ const Spinner = (props: SpinnerProps): ReactElement => {
     <View style={style.container}>
       <ActivityIndicator
         testID='activity-indicator'
-        color={theme?.colors?.textColor || DefaultTheme[mode].colors.primaryColor}
+        color={theme?.colors?.infiniteLoader || DefaultTheme[mode].colors.infiniteLoader}
         size='small'
       />
     </View>
