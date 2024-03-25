@@ -1,9 +1,7 @@
-import React, { useState, type ReactElement } from 'react';
+import React, { useState, type ReactElement, useMemo, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import type { NotificationDataType } from 'test_notification/dist/esm/types';
-
-import type { NotificationCardProps, SirenStyleProps } from '../types';
+import type { NotificationCardProps } from '../types';
 import { CommonUtils } from '../utils';
 import CloseIcon from './closeIcon';
 import TimerIcon from './timerIcon';
@@ -43,19 +41,26 @@ import TimerIcon from './timerIcon';
 
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps, styles, onDelete, darkMode } = props;
-  const emptyState = darkMode
-    ? require('../assets/emptyDark.png')
-    : require('../assets/emptyLight.png');
+
+  const emptyState = () => {
+    return darkMode ? require('../assets/emptyDark.png') : require('../assets/emptyLight.png');
+  };
+
   const [imageSource, setImageSource] = useState(
     notification?.message?.avatar?.imageUrl?.length > 0
       ? { uri: notification.message?.avatar?.imageUrl }
-      : emptyState
+      : emptyState()
   );
 
-  const renderAvatar = (
-    notification: NotificationDataType,
-    styles: Partial<SirenStyleProps>
-  ): JSX.Element => {
+  useEffect(() => {
+    setImageSource(
+      notification?.message?.avatar?.imageUrl?.length > 0
+        ? { uri: notification.message?.avatar?.imageUrl }
+        : emptyState()
+    );
+  }, [notification, darkMode]);
+
+  const renderAvatar = useMemo((): JSX.Element => {
     return (
       <View style={style.cardIconContainer}>
         <View style={[style.cardIconRound, styles.cardIconRound]}>
@@ -63,12 +68,12 @@ const Card = (props: NotificationCardProps): ReactElement => {
             source={imageSource}
             resizeMode='cover'
             style={style.cardAvatarStyle}
-            onError={() => setImageSource(emptyState)}
+            onError={() => setImageSource(emptyState())}
           />
         </View>
       </View>
     );
-  };
+  }, [styles, darkMode, imageSource]);
 
   return (
     <TouchableOpacity
@@ -85,7 +90,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
         ]}
       />
       <View style={[style.cardContainer, styles.cardContainer]}>
-        {!cardProps?.hideAvatar && renderAvatar(notification, styles)}
+        {!cardProps?.hideAvatar && renderAvatar}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>
             <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>
