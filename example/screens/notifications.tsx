@@ -117,7 +117,7 @@ function Notifications(): React.JSX.Element {
             {renderButton('Theme-Mode', () =>
               setSdkDarkModeEnabled((sdkDarkModeEnabled) => !sdkDarkModeEnabled)
             )}
-            {renderButton(`${showCustomHeader ? 'Hide' : 'Show'}-Header`, () =>
+            {renderButton(`${hideHeader ? 'Show' : 'Hide'}-Header`, () =>
               setHideHeader((hideHeader) => !hideHeader)
             )}
             {renderButton(`${showCustomHeader ? 'Default' : 'Custom'}-Header`, () =>

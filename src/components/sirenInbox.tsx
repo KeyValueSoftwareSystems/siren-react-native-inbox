@@ -164,7 +164,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
-
     if (siren) {
       siren?.stopRealTimeNotificationFetch();
       const allNotifications = await fetchNotifications(siren, true);
@@ -173,7 +172,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       if (isNonEmptyArray(allNotifications))
         notificationParams.start = allNotifications[0].createdAt;
 
-      if(verificationStatus === VerificationStatus.SUCCESS)
+      if (verificationStatus === VerificationStatus.SUCCESS)
         siren?.startRealTimeNotificationFetch(notificationParams);
     }
   };
@@ -223,7 +222,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         const response = await siren.fetchAllNotifications(notificationParams);
         const nonEmptyResponse = Boolean(isNonEmptyArray(response?.data));
 
-        if (response?.data) 
+        if (response?.data)
           updatedNotifications = processResponse(nonEmptyResponse, isResetList, response.data);
         if (response?.error) processError(response.error);
 
@@ -262,8 +261,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
         if (isNonEmptyArray(allNotifications))
           notificationParams.start = allNotifications[0].createdAt;
-        
-        if(verificationStatus === VerificationStatus.SUCCESS)
+
+        if (verificationStatus === VerificationStatus.SUCCESS)
           siren?.startRealTimeNotificationFetch(notificationParams);
       } catch (err) {
         setIsLoading(false);
@@ -350,8 +349,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   const renderHeader = (): JSX.Element | null => {
-    if (customHeader) return customHeader;
-    if (!hideHeader)
+
+    if (!hideHeader) {
+      if (customHeader) return customHeader;
+
       return (
         <Header
           title={title}
@@ -361,6 +362,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           clearAllDisabled={!isNonEmptyArray(notifications)}
         />
       );
+    }
 
     return null;
   };
