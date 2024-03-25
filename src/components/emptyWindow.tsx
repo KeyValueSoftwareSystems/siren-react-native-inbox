@@ -51,14 +51,14 @@ const style = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    fontWeight: '400',
+    fontWeight: '600',
     paddingBottom: 5,
     textAlign: 'center',
     paddingTop: 20
   },
   emptyDescription: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '400',
     textAlign: 'center',
     opacity: 0.8
   },
