@@ -147,7 +147,6 @@ export type StyleProps = {
     height?: number;
     titleFontWeight?: TextStyle['fontWeight'];
     titleSize?: number;
-    closeIconSize?: number;
     titlePadding?: number;
     borderWidth?: number;
   };
