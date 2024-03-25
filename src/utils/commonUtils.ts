@@ -151,7 +151,7 @@ export const applyTheme = (
   clearIconContainer: {
     width: customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size,
     height: customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size,
-    marginRight: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.2
+    marginRight: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.3
   },
   timerIcon: {
     borderColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon,

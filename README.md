@@ -186,7 +186,6 @@ Here are the custom style options for the notification inbox:
         height?: number;
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
-        closeIconSize?: number;
       }
       windowContainer?: {
         padding?: number;

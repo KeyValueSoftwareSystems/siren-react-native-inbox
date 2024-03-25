@@ -38,12 +38,16 @@ const Header = (props: {
       <Text numberOfLines={1} style={[style.headerTitle, styles.headerTitle]}>
         {title}
       </Text>
-      {!hideClearAll && <View style={style.clearIconContainer}>
-        <ClearIcon styles={styles} />
-        <TouchableOpacity disabled={clearAllDisabled} onPress={onPressClearAll}>
+      {!hideClearAll && (
+        <TouchableOpacity
+          disabled={clearAllDisabled}
+          onPress={onPressClearAll}
+          style={style.clearIconContainer}
+        >
+          <ClearIcon styles={styles} />
           <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
         </TouchableOpacity>
-      </View>}
+      )}
     </View>
   );
 };
@@ -55,7 +59,7 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingHorizontal: 15
   },
   clearIconContainer: {
     flexDirection: 'row',

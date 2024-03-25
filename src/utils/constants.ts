@@ -112,7 +112,6 @@ export const defaultStyles = {
     height: 50,
     titleFontWeight: '500',
     titleSize: 20,
-    closeIconSize: 20,
     titlePadding: 0,
     borderWidth: 0.6
   },
@@ -139,6 +138,6 @@ export const defaultStyles = {
     size: 12
   },
   clearAllIcon: {
-    size: 18
+    size: 16
   }
 };
