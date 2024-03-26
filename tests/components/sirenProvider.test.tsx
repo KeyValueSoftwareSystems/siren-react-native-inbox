@@ -2,9 +2,9 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import SirenProvider from '../../src/components/sirenProvider';
-import { Siren } from 'test_notification';
+import { Siren } from '@sirenapp/js-sdk';
 
-jest.mock('test_notification');
+jest.mock('@sirenapp/js-sdk');
 
 describe('SirenProvider', () => {
   it('should render children', () => {
