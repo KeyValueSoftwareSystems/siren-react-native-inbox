@@ -13,7 +13,7 @@
     "@react-navigation/bottom-tabs": "^6.5.14",
     "@react-navigation/native": "^6.1.12",
     "@react-navigation/native-stack": "^6.9.20",
-    "@siren/react-native-inbox": "siren-sdk01.tgz",
+    "@sirenapp/react-native-inbox": "^1.0.0",
     "react": "18.2.0",
     "react-native": "0.73.4",
     "react-native-modal": "^13.0.1",

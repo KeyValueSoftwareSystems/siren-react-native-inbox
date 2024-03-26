@@ -9,8 +9,8 @@ import {
   StyleSheet
 } from 'react-native';
 
-import { SirenInbox, useSiren } from '@siren/react-native-inbox';
-import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/esm/types';
+import { SirenInbox, useSiren } from '@sirenapp/react-native-inbox';
+import type { NotificationDataType, SirenErrorType } from '@sirenapp/js-sdk/dist/esm/types';
 import { useNavigation } from '@react-navigation/native';
 import NetworkLogDebugModal from './networkLogDebugModal';
 

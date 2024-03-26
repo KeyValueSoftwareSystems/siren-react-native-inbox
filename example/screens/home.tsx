@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Image
 } from 'react-native';
-import { SirenInboxIcon } from '@siren/react-native-inbox';
+import { SirenInboxIcon } from '@sirenapp/react-native-inbox';
 import { useNavigation } from '@react-navigation/native';
 
 import NetworkLogDebugModal from './networkLogDebugModal';
