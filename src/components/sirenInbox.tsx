@@ -2,8 +2,8 @@ import React, { type ReactElement, useEffect, useMemo, useState, useRef } from '
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import PubSub from 'pubsub-js';
-import type { Siren } from 'test_notification';
-import type { NotificationDataType, SirenErrorType } from 'test_notification/dist/esm/types';
+import type { Siren } from '@sirenapp/js-sdk';
+import type { NotificationDataType, SirenErrorType } from '@sirenapp/js-sdk/dist/esm/types';
 
 import Card from './card';
 import EmptyWindow from './emptyWindow';

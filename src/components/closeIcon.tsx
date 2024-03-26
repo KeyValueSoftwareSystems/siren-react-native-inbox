@@ -1,7 +1,7 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import type { NotificationDataType } from 'test_notification/dist/esm/types';
+import type { NotificationDataType } from '@sirenapp/js-sdk/dist/esm/types';
 
 import type { SirenStyleProps } from '../types';
 
