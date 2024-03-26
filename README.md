@@ -2,19 +2,19 @@
 
 ## Overview
 
-The `@sirenapp/react-native-inbox` sdk is a comprehensive and customizable React Native UI kit for displaying and managing notifications. This documentation provides comprehensive information on how to install, configure, and use the sdk effectively.
+The `@siren/react-native-inbox` sdk is a comprehensive and customizable React Native UI kit for displaying and managing notifications. This documentation provides comprehensive information on how to install, configure, and use the sdk effectively.
 
 ## 1. Installation
 
 You can install the react sdk from npm 
 
 ```bash
-npm @sirenapp/react-native-inbox
+npm @siren/react-native-inbox
 ```
 or from yarn
 
 ```bash
-yarn @sirenapp/react-native-inbox
+yarn @siren/react-native-inbox
 ```
 
 ## 2. Configuration
@@ -22,7 +22,7 @@ yarn @sirenapp/react-native-inbox
 Initialize the sdk with user token and recipient id. Wrap the provider around your App's root.
 
 ```js
-import { SirenProvider } from '@sirenapp/react-native-inbox';
+import { SirenProvider } from '@siren/react-native-inbox';
 
 const config = {
   userToken: 'your_user_token',
@@ -39,7 +39,7 @@ Once the provider is configured, next step is to configure the notification icon
 
 This component consists of a notification icon along with a badge to display the number of unviewed notifications
 ```js
-import { SirenInboxIcon } from '@sirenapp/react-native-inbox';
+import { SirenInboxIcon } from '@siren/react-native-inbox';
 
  <SirenInboxIcon />
 
@@ -98,7 +98,7 @@ Here are the custom style options for the notification icon:
 Inbox is a paginated list view for displaying notifications.
 
 ```js
-import { SirenInbox } from '@sirenapp/react-native-inbox';
+import { SirenInbox } from '@siren/react-native-inbox';
 
 <SirenInbox />
 
@@ -222,7 +222,7 @@ Here are the custom style options for the notification inbox:
 `useSiren` is a hook that provides utility functions for modifying notifications.
 
 ```js
-import { useSiren } from '@sirenapp/react-native-inbox';
+import { useSiren } from '@siren/react-native-inbox';
 
 function MyComponent() {
   const { markAsRead, deleteNotification } = useSiren();
@@ -268,7 +268,7 @@ Here's a basic example to help you get started
 
 import React from 'react';
 import {SafeAreaView} from 'react-native';
-import {SirenInbox,SirenInboxIcon,SirenProvider} from '@sirenapp/react-native-inbox';
+import {SirenInbox,SirenInboxIcon,SirenProvider} from '@siren/react-native-inbox';
 
 function App(): React.JSX.Element {
 
