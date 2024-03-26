@@ -1,6 +1,6 @@
 import { useSiren } from '../../src';
 import * as sirenProvider from '../../src/components/sirenProvider';
-import type { Siren } from 'test_notification';
+import type { Siren } from '@sirenapp/js-sdk';
 
 const Response = {
   data: {
