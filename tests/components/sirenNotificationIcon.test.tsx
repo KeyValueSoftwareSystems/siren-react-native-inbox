@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Image } from 'react-native';
-import type { Siren } from 'test_notification';
+import type { Siren } from '@sirenapp/js-sdk';
 
 import { SirenInboxIcon } from '../../src';
 import type { Theme } from '../../src/types';

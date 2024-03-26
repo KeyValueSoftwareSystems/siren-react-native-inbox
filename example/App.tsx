@@ -1,5 +1,5 @@
 import React from 'react';
-import { SirenProvider } from '@siren/react-native-inbox';
+import { SirenProvider } from '@sirenapp/react-native-inbox';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -24,10 +24,10 @@ function MyStack() {
 }
 
 function App(): React.JSX.Element {
-  const [config, setConfig] = React.useState({
-    userToken: '227047349b3044fbac7c24fdf5537c44',
-    recipientId: '551cd601-65b3-41b2-bbce-bbd15908992f'
-  });
+  const config ={
+    userToken: 'your user token',
+    recipientId: 'your recipient id',
+  };
 
   return (
     <NavigationContainer>
