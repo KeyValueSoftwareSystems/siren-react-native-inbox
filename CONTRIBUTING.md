@@ -9,5 +9,5 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 1. Please ensure your proposal will not radically change current functionality or bring along breaking changes.
 2. PRs only consisting of typo fixes (or other automated contributions), will not be accepted.
-4. Document your changes thoroughly.
-6. Be reactive to any comments, reviews or change requests entered in your pull request.
+3. Document your changes thoroughly.
+4. Be reactive to any comments, reviews or change requests entered in your pull request.
