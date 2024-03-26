@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import Card from '../../src/components/card';
 import type { SirenStyleProps } from '../../src/types';
-import type { NotificationDataType } from 'test_notification/dist/esm/types';
+import type { NotificationDataType } from '@sirenapp/js-sdk/dist/esm/types';
 
 describe('Card Component', () => {
   const notification: NotificationDataType = {
