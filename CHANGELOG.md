@@ -6,4 +6,4 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- React native UI kit for managing and displaying in-app notification
+- React native UI kit for managing and displaying in-app notification.
