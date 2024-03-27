@@ -9,12 +9,12 @@ The `@sirenapp/react-native-inbox` sdk is a comprehensive and customizable React
 You can install the react sdk from npm 
 
 ```bash
-npm @sirenapp/react-native-inbox
+npm install @sirenapp/react-native-inbox
 ```
 or from yarn
 
 ```bash
-yarn @sirenapp/react-native-inbox
+yarn add @sirenapp/react-native-inbox
 ```
 
 ## 2. Configuration
