@@ -11,7 +11,6 @@ describe('SirenInbox', () => {
     render(
       <SirenInbox
         title='Notifications'
-        hideHeader={false}
         darkMode={false}
         onError={(error) => console.log(error)}
       />
