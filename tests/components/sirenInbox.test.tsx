@@ -21,7 +21,7 @@ describe('SirenInbox', () => {
   test("should render custom header ", () => {
     const { getByTestId } = render(
       <SirenInbox
-        customHeader={<View testID="custom-header"><Text>My notifications</Text></View>}
+        inboxHeaderProps={{customHeader: <View testID="custom-header"><Text>My notifications</Text></View>}}
       />
     );
 
@@ -30,7 +30,7 @@ describe('SirenInbox', () => {
   test("should render custom footer ", () => {
     const { getByTestId } = render(
       <SirenInbox
-        customHeader={<View testID="custom-footer"><Text>My notifications</Text></View>}
+        customFooter={<View testID="custom-footer"><Text>My notifications</Text></View>}
       />
     );
 
