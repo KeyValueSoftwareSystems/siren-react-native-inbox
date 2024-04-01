@@ -20,15 +20,13 @@ export type SirenInboxProps = {
   theme?: Theme;
   customStyles?: StyleProps;
   title?: string;
-  hideHeader?: boolean;
   darkMode?: boolean;
   cardProps?: CardProps;
   listEmptyComponent?: JSX.Element;
   customFooter?: JSX.Element;
-  customHeader?: JSX.Element;
+  inboxHeaderProps?: InboxHeaderProps;
   customLoader?: JSX.Element;
   customErrorWindow?: JSX.Element;
-  hideClearAll?: boolean;
   itemsPerFetch?: number;
   customNotificationCard?: (notification: NotificationDataType) => JSX.Element;
   onNotificationCardClick?: (notification: NotificationDataType) => void;
@@ -54,6 +52,12 @@ export type SirenInboxIconProps = {
   hideBadge?: boolean;
 };
 
+export type InboxHeaderProps = {
+  hideHeader?: boolean;
+  hideClearAll?: boolean;
+  customHeader?: JSX.Element;
+};
+
 /**
  * Defines the configuration properties required by the SirenProvider.
  *
@@ -74,7 +78,7 @@ export type SirenProviderConfigProps = {
  */
 type CardProps = {
   hideAvatar?: boolean;
-  showMedia?: boolean;
+  disableAutoMarkAsRead?: boolean;
 };
 
 /**

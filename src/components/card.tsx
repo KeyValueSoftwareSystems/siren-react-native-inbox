@@ -2,7 +2,7 @@ import React, { useState, type ReactElement, useMemo, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import type { NotificationCardProps } from '../types';
-import { CommonUtils } from '../utils';
+import { CommonUtils, useSiren } from '../utils';
 import CloseIcon from './closeIcon';
 import TimerIcon from './timerIcon';
 
@@ -27,7 +27,7 @@ import TimerIcon from './timerIcon';
  *   onCardClick={() => console.log('Notification clicked')}
  *   onDelete={() => console.log('Notification deleted')}
  *   notification={notification}
- *   cardProps={{ hideAvatar: false, showMedia: true }}
+ *   cardProps={{ hideAvatar: false, disableAutoMarkAsRead: false }}
  *   styles={customStyles}
  * />
  *
@@ -40,7 +40,9 @@ import TimerIcon from './timerIcon';
  */
 
 const Card = (props: NotificationCardProps): ReactElement => {
-  const { onCardClick, notification, cardProps, styles, onDelete, darkMode } = props;
+  const { onCardClick, notification, cardProps = {}, styles, onDelete, darkMode } = props;
+  const { hideAvatar, disableAutoMarkAsRead } =  cardProps;
+  const { markAsRead } = useSiren();
 
   const emptyState = () => {
     return darkMode ? require('../assets/emptyDark.png') : require('../assets/emptyLight.png');
@@ -60,6 +62,16 @@ const Card = (props: NotificationCardProps): ReactElement => {
     );
   }, [notification, darkMode]);
 
+  const cardClick = (): void => {
+    onCardClick(notification);
+    if (!disableAutoMarkAsRead)
+      markAsRead(notification.id);
+  }
+
+  const onError = (): void => {
+    setImageSource(emptyState());
+  } 
+
   const renderAvatar = useMemo((): JSX.Element => {
     return (
       <View style={style.cardIconContainer}>
@@ -68,7 +80,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             source={imageSource}
             resizeMode='cover'
             style={style.cardAvatarStyle}
-            onError={() => setImageSource(emptyState())}
+            onError={onError}
           />
         </View>
       </View>
@@ -77,7 +89,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
 
   return (
     <TouchableOpacity
-      onPress={() => onCardClick(notification)}
+      onPress={cardClick}
       activeOpacity={0.6}
       testID='card-touchable'
       style={[style.cardWrapper, styles.cardWrapper, !notification?.isRead && styles.highlighted]}
@@ -90,7 +102,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
         ]}
       />
       <View style={[style.cardContainer, styles.cardContainer]}>
-        {!cardProps?.hideAvatar && renderAvatar}
+        {!hideAvatar && renderAvatar}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>
             <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>

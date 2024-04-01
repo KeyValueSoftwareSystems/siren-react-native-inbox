@@ -52,7 +52,7 @@ function Notifications(): React.JSX.Element {
     backgroundColor: isDarkMode ? '#000' : '#FFF'
   };
 
-  const { markNotificationsAsReadByDate, markAsRead } = useSiren();
+  const { markNotificationsAsReadByDate } = useSiren();
 
   const renderListEmpty = () => {
     return (
@@ -164,13 +164,15 @@ function Notifications(): React.JSX.Element {
       <View style={styles.contentContainer}>
         <SirenInbox
           title='Siren Notifications'
-          hideHeader={hideHeader}
+          inboxHeaderProps={{
+            hideHeader: hideHeader,
+            customHeader: showCustomHeader ? renderCustomHeader() : undefined
+          }}
           darkMode={sdkDarkModeEnabled}
-          cardProps={{ hideAvatar: hideAvatar, showMedia: true }}
+          cardProps={{ hideAvatar: hideAvatar, disableAutoMarkAsRead: false }}
           theme={windowThemes[windowThemeIndex]}
           customFooter={showCustomFooter ? renderCustomFooter() : undefined}
           listEmptyComponent={showCustomEmptyComponent ? renderListEmpty() : undefined}
-          customHeader={showCustomHeader ? renderCustomHeader() : undefined}
           customStyles={{
             notificationCard: {
               avatarSize: 30,
@@ -183,7 +185,6 @@ function Notifications(): React.JSX.Element {
           }
           onNotificationCardClick={(notification: NotificationDataType) => {
             console.log('click on notification');
-            markAsRead(notification.id);
           }}
           onError={(error: SirenErrorType) => {
             console.log(`error: ${error}`);
