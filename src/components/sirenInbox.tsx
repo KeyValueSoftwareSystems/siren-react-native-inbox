@@ -363,12 +363,14 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     );
   };
 
+  const keyExtractor = (item: NotificationDataType) => item.id;
+
   const renderList = (): JSX.Element => {
     return (
       <FlatList
         data={notifications}
         renderItem={renderCard}
-        keyExtractor={(item) => item.id}
+        keyExtractor={keyExtractor}
         onRefresh={onRefresh}
         refreshing={false}
         contentContainerStyle={styles.contentContainer}
