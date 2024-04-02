@@ -166,7 +166,8 @@ function Notifications(): React.JSX.Element {
           title='Siren Notifications'
           inboxHeaderProps={{
             hideHeader: hideHeader,
-            customHeader: showCustomHeader ? renderCustomHeader() : undefined
+            customHeader: showCustomHeader ? renderCustomHeader() : undefined,
+            showBackButton: true,
           }}
           darkMode={sdkDarkModeEnabled}
           cardProps={{ hideAvatar: hideAvatar, disableAutoMarkAsRead: false }}

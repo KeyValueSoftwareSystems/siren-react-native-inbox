@@ -56,6 +56,9 @@ export type InboxHeaderProps = {
   hideHeader?: boolean;
   hideClearAll?: boolean;
   customHeader?: JSX.Element;
+  showBackButton?: boolean;
+  backButton?: JSX.Element;
+  handleBackNavigation?: () => void;
 };
 
 /**
@@ -236,4 +239,5 @@ export type SirenStyleProps = {
   timerIconLine2: ViewStyle;
   skeltonLoaderColor: ViewStyle;
   highlighted: ViewStyle;
+  backIcon: ViewStyle;
 };

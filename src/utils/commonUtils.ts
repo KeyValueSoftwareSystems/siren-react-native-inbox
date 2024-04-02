@@ -249,5 +249,10 @@ export const applyTheme = (
   highlighted: {
     backgroundColor:
       theme.colors?.highlightedCardColor || DefaultTheme[mode].colors.highlightedCardColor
+  },
+  backIcon: {
+    backgroundColor: theme.windowHeader?.titleColor ||
+    theme.colors?.textColor ||
+    DefaultTheme[mode].windowHeader.titleColor,
   }
 });

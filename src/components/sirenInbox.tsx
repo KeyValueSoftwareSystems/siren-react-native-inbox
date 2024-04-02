@@ -87,7 +87,14 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     itemsPerFetch = 20
   } = props;
 
-  const { hideHeader, hideClearAll, customHeader } = inboxHeaderProps;
+  const {
+    hideHeader,
+    hideClearAll,
+    customHeader,
+    showBackButton,
+    backButton,
+    handleBackNavigation
+  } = inboxHeaderProps;
   const notificationsPerPage = Math.max(
     0,
     itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch
@@ -359,6 +366,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         onPressClearAll={onPressClearAll}
         hideClearAll={hideClearAll}
         clearAllDisabled={!isNonEmptyArray(notifications)}
+        showBackButton={showBackButton}
+        backButton={backButton}
+        handleBackNavigation={handleBackNavigation}
       />
     );
   };

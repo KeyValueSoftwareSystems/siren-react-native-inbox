@@ -230,6 +230,9 @@ Here are the custom style options for the notification inbox:
       hideHeader?: boolean;
       hideClearAll?: boolean;
       customHeader?: JSX.Element | null;
+      showBackButton?: boolean;
+      backButton?: JSX.Element;
+      handleBackNavigation?: () => void;
     };
 ```
 
