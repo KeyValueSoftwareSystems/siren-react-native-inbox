@@ -168,7 +168,7 @@ function Notifications(): React.JSX.Element {
             hideHeader: hideHeader,
             customHeader: showCustomHeader ? renderCustomHeader() : undefined,
             showBackButton: true,
-            handleBackNavigation: () => navigation.goBack(),
+            onBackPress: () => navigation.goBack(),
           }}
           darkMode={sdkDarkModeEnabled}
           cardProps={{ hideAvatar: hideAvatar, disableAutoMarkAsRead: false }}

@@ -25,7 +25,7 @@ import BackIcon from './backIcon';
  * @param {boolean} props.clearAllDisabled - Disables the clear all button.
  * @param {boolean} props.showBackButton - Toggle for show back button in header.
  * @param {boolean} props.backButton - Custom back button.
- * @param {boolean} props.handleBackNavigation - A callback function that is called when back button is pressed.
+ * @param {boolean} props.onBackPress - A callback function that is called when back button is pressed.
  */
 
 type HeaderProps = {
@@ -36,7 +36,7 @@ type HeaderProps = {
   hideClearAll?: boolean;
   showBackButton?: boolean;
   backButton?: JSX.Element;
-  handleBackNavigation?: () => void;
+  onBackPress?: () => void;
 };
 
 const Header = (props: HeaderProps): ReactElement => {
@@ -48,13 +48,13 @@ const Header = (props: HeaderProps): ReactElement => {
     hideClearAll,
     showBackButton = false,
     backButton,
-    handleBackNavigation = () => null
+    onBackPress = () => null
   } = props;
 
   const renderBackButton = () => {
     if (showBackButton)
       return (
-        <TouchableOpacity onPress={handleBackNavigation}>
+        <TouchableOpacity onPress={onBackPress}>
           {backButton || <BackIcon styles={styles} />}
         </TouchableOpacity>
       );

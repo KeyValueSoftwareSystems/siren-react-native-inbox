@@ -93,7 +93,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     customHeader,
     showBackButton,
     backButton,
-    handleBackNavigation
+    onBackPress
   } = inboxHeaderProps;
   const notificationsPerPage = Math.max(
     0,
@@ -368,7 +368,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         clearAllDisabled={!isNonEmptyArray(notifications)}
         showBackButton={showBackButton}
         backButton={backButton}
-        handleBackNavigation={handleBackNavigation}
+        onBackPress={onBackPress}
       />
     );
   };

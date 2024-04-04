@@ -58,7 +58,7 @@ export type InboxHeaderProps = {
   customHeader?: JSX.Element;
   showBackButton?: boolean;
   backButton?: JSX.Element;
-  handleBackNavigation?: () => void;
+  onBackPress?: () => void;
 };
 
 /**
