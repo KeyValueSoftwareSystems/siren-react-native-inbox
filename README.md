@@ -117,7 +117,7 @@ cardProps | Props for customizing the notification cards | CardProps | { hideAva
 customNotificationCard | Function for rendering custom notification cards | (notification)=> JSX Element | null |
 onNotificationCardClick | Custom click handler for notification cards | (notification)=> void | ()=>null |
 listEmptyComponent | Custom component for empty notification list | JSX Element | null |
-inboxHeaderProps | Props for customizing the header | InboxHeaderProps | { hideHeader: false, hideClearAll: false, customHeader: null, onBackPress: ()=> null } |
+inboxHeaderProps | Props for customizing the header | InboxHeaderProps | { hideHeader: false, hideClearAll: false, customHeader: null, showBackButton:false, backButton: null, onBackPress: ()=> null } |
 customFooter | Custom footer component | JSX Element | null |
 customLoader | Custom component to display the initial loading state| JSX Element | null |
 customErrorWindow | Custom error window | JSX Element | null |
