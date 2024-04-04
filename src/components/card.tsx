@@ -41,7 +41,7 @@ import TimerIcon from './timerIcon';
 
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps = {}, styles, onDelete, darkMode } = props;
-  const { hideAvatar, disableAutoMarkAsRead } =  cardProps;
+  const { hideAvatar, disableAutoMarkAsRead, hideDelete = false } = cardProps;
   const { markAsRead } = useSiren();
 
   const emptyState = () => {
@@ -64,13 +64,12 @@ const Card = (props: NotificationCardProps): ReactElement => {
 
   const cardClick = (): void => {
     onCardClick(notification);
-    if (!disableAutoMarkAsRead)
-      markAsRead(notification.id);
-  }
+    if (!disableAutoMarkAsRead) markAsRead(notification.id);
+  };
 
   const onError = (): void => {
     setImageSource(emptyState());
-  } 
+  };
 
   const renderAvatar = useMemo((): JSX.Element => {
     return (
@@ -108,7 +107,9 @@ const Card = (props: NotificationCardProps): ReactElement => {
             <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
-            <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
+            {!hideDelete && (
+              <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
+            )}
           </View>
           {Boolean(notification.message?.subHeader) && (
             <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
@@ -139,10 +140,10 @@ const style = StyleSheet.create({
   cardContainer: {
     width: '100%',
     flexDirection: 'row',
-    paddingRight: 16
   },
   cardIconContainer: {
-    paddingHorizontal: 10,
+    paddingLeft: 6,
+    paddingRight: 12,
     paddingTop: 4
   },
   cardTitle: {

@@ -75,7 +75,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     customStyles = {},
     title = DEFAULT_WINDOW_TITLE,
     darkMode = false,
-    cardProps = { hideAvatar: false, showMedia: true },
+    cardProps = { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false },
     listEmptyComponent = null,
     inboxHeaderProps = {},
     customFooter = null,
@@ -291,7 +291,14 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       return listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />;
     }
 
-    return <LoadingWindow styles={styles} customLoader={customLoader} />;
+    return (
+      <LoadingWindow
+        styles={styles}
+        customLoader={customLoader}
+        hideAvatar={cardProps?.hideAvatar}
+        hideDelete={cardProps?.hideDelete}
+      />
+    );
   };
 
   const onDelete = async (id: string): Promise<void> => {
