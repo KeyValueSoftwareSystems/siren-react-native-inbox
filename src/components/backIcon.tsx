@@ -15,7 +15,7 @@ const BackIcon = ({ styles }: { styles: Partial<SirenStyleProps> }): ReactElemen
 const style = StyleSheet.create({
   backIconContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     height: 30,
     width: 20,
   },

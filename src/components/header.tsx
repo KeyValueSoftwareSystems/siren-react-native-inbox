@@ -58,7 +58,7 @@ const Header = (props: HeaderProps): ReactElement => {
           {backButton || <BackIcon styles={styles} />}
         </TouchableOpacity>
       );
-    
+
     return null;
   };
 
@@ -103,10 +103,10 @@ const style = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   backIcon: {
-    paddingRight: 5,
+    paddingRight: 2
   }
 });
 
