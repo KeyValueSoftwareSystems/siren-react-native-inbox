@@ -9,12 +9,12 @@ The `@sirenapp/react-native-inbox` sdk is a comprehensive and customizable React
 You can install the react sdk from npm 
 
 ```bash
-npm @sirenapp/react-native-inbox
+npm install @sirenapp/react-native-inbox
 ```
 or from yarn
 
 ```bash
-yarn @sirenapp/react-native-inbox
+yarn add @sirenapp/react-native-inbox
 ```
 
 ## 2. Configuration
@@ -111,8 +111,6 @@ Prop | Description | Type | Default value |
 theme | Object for custom themes |  Theme | {} |
 customStyles | Object for custom styling |  StyleProps | {} |
 title |  Title of the notification inbox |  string | "Notifications" |
-hideHeader | Toggle to hide or show the header section |  boolean | false |
-hideClearAll | Toggle to hide or show the clear all button |  boolean | false |
 darkMode |  Toggle to enable dark mode|  boolean | false |
 itemsPerFetch | Number of notifications fetch per api request (have a max cap of 50) |  number | 20 |
 cardProps | Props for customizing the notification cards | CardProps | { hideAvatar: false, disableAutoMarkAsRead: false } |

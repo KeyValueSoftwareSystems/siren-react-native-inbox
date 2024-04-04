@@ -386,6 +386,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         contentContainerStyle={styles.contentContainer}
         onEndReached={onEndReached}
         ListFooterComponent={renderListFooter}
+        removeClippedSubviews
+        maxToRenderPerBatch={20}
+        windowSize={3}
       />
     );
   };
