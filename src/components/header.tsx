@@ -54,7 +54,7 @@ const Header = (props: HeaderProps): ReactElement => {
   const renderBackButton = () => {
     if (showBackButton)
       return (
-        <TouchableOpacity onPress={onBackPress}>
+        <TouchableOpacity style={style.backIcon} onPress={onBackPress}>
           {backButton || <BackIcon styles={styles} />}
         </TouchableOpacity>
       );
@@ -64,10 +64,12 @@ const Header = (props: HeaderProps): ReactElement => {
 
   return (
     <View style={[style.headerContainer, styles.headerContainer]}>
-      {renderBackButton()}
-      <Text numberOfLines={1} style={[style.headerTitle, styles.headerTitle]}>
-        {title}
-      </Text>
+      <View style={style.rowContainer}>
+        {renderBackButton()}
+        <Text numberOfLines={1} style={[style.headerTitle, styles.headerTitle]}>
+          {title}
+        </Text>
+      </View>
       {!hideClearAll && (
         <TouchableOpacity
           disabled={clearAllDisabled}
@@ -98,6 +100,13 @@ const style = StyleSheet.create({
   },
   headerTitle: {
     width: '70%'
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backIcon: {
+    paddingRight: 5,
   }
 });
 
