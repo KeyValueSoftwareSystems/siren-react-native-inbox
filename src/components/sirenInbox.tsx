@@ -87,14 +87,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     itemsPerFetch = 20
   } = props;
 
-  const {
-    hideHeader,
-    hideClearAll,
-    customHeader,
-    showBackButton,
-    backButton,
-    onBackPress
-  } = inboxHeaderProps;
+  const { hideHeader, hideClearAll, customHeader, showBackButton, backButton, onBackPress } =
+    inboxHeaderProps;
   const notificationsPerPage = Math.max(
     0,
     itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch
@@ -141,11 +135,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   }, [eventListenerData]);
 
   const handleMarkNotificationsAsViewed = async (newNotifications = notifications) => {
-    if (isNonEmptyArray(newNotifications)) {
-      const response = await markNotificationsAsViewed(newNotifications[0].createdAt);
+    const currentTimestamp = new Date().getTime();
+    const isoString = new Date(currentTimestamp).toISOString();
+    const response = await markNotificationsAsViewed(
+      isNonEmptyArray(newNotifications) ? newNotifications[0].createdAt : isoString
+    );
 
-      processError(response?.error);
-    }
+    processError(response?.error);
   };
 
   const processError = (error?: SirenErrorType | null) => {
