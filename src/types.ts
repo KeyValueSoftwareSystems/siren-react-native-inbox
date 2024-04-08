@@ -19,7 +19,6 @@ import type { NotificationDataType, SirenErrorType } from '@sirenapp/js-sdk/dist
 export type SirenInboxProps = {
   theme?: Theme;
   customStyles?: StyleProps;
-  title?: string;
   darkMode?: boolean;
   cardProps?: CardProps;
   listEmptyComponent?: JSX.Element;
@@ -53,6 +52,7 @@ export type SirenInboxIconProps = {
 };
 
 export type InboxHeaderProps = {
+  title?: string;
   hideHeader?: boolean;
   hideClearAll?: boolean;
   customHeader?: JSX.Element;

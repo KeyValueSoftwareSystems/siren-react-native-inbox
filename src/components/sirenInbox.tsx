@@ -49,7 +49,6 @@ type NotificationFetchParams = {
  * };
  * <SirenInbox
  *   theme={theme}
- *   title="Notifications"
  *   hideHeader={false}
  *   darkMode={true}
  *   onError={(error) => console.log(error)}
@@ -57,7 +56,6 @@ type NotificationFetchParams = {
  *
  * @param {Object} props - The props for the SirenInbox component.
  * @param {Object} [props.theme={}] - Theme object for custom styling.
- * @param {string} [props.title=DEFAULT_WINDOW_TITLE] - Title of the notification window.
  * @param {boolean} [props.darkMode=false] - Flag to enable dark mode.
  * @param {Object} [props.cardProps={ hideAvatar: false, showMedia: true }] - Props for customizing the notification cards.
  * @param {JSX.Element} [props.listEmptyComponent=null] - Custom component to display when the notification list is empty.
@@ -73,7 +71,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const {
     theme = { dark: {}, light: {} },
     customStyles = {},
-    title = DEFAULT_WINDOW_TITLE,
     darkMode = false,
     cardProps = { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false },
     listEmptyComponent = null,
@@ -87,8 +84,15 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     itemsPerFetch = 20
   } = props;
 
-  const { hideHeader, hideClearAll, customHeader, showBackButton, backButton, onBackPress } =
-    inboxHeaderProps;
+  const {
+    title = DEFAULT_WINDOW_TITLE,
+    hideHeader,
+    hideClearAll,
+    customHeader,
+    showBackButton,
+    backButton,
+    onBackPress
+  } = inboxHeaderProps;
   const notificationsPerPage = Math.max(
     0,
     itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch
