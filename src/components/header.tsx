@@ -4,6 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { SirenStyleProps } from '../types';
 import { Constants } from '../utils';
 import ClearIcon from './clearIcon';
+import BackIcon from './backIcon';
 
 /**
  * Renders a header component with a title and a "Clear All" (deletes all the notifications till date) action.
@@ -22,22 +23,53 @@ import ClearIcon from './clearIcon';
  * @param {Object} props.styles - Custom styles to apply to the header component.
  * @param {Function} props.onClearAllNotifications - A callback function that is called when the "Clear All" action is triggered.
  * @param {boolean} props.clearAllDisabled - Disables the clear all button.
+ * @param {boolean} props.showBackButton - Toggle for show back button in header.
+ * @param {boolean} props.backButton - Custom back button.
+ * @param {boolean} props.onBackPress - A callback function that is called when back button is pressed.
  */
 
-const Header = (props: {
+type HeaderProps = {
   title: string;
   styles: Partial<SirenStyleProps>;
   onPressClearAll: () => void;
   clearAllDisabled: boolean;
   hideClearAll?: boolean;
-}): ReactElement => {
-  const { title = '', styles, onPressClearAll, clearAllDisabled = false, hideClearAll } = props;
+  showBackButton?: boolean;
+  backButton?: JSX.Element;
+  onBackPress?: () => void;
+};
+
+const Header = (props: HeaderProps): ReactElement => {
+  const {
+    title = '',
+    styles,
+    onPressClearAll,
+    clearAllDisabled = false,
+    hideClearAll,
+    showBackButton = false,
+    backButton,
+    onBackPress = () => null
+  } = props;
+
+  const renderBackButton = () => {
+    if (showBackButton)
+      return (
+        <TouchableOpacity style={style.backIcon} onPress={onBackPress}>
+          {backButton || <BackIcon styles={styles} />}
+        </TouchableOpacity>
+      );
+
+    return null;
+  };
 
   return (
     <View style={[style.headerContainer, styles.headerContainer]}>
-      <Text numberOfLines={1} style={[style.headerTitle, styles.headerTitle]}>
-        {title}
-      </Text>
+      <View style={style.rowContainer}>
+        {renderBackButton()}
+        <Text numberOfLines={1} style={[style.headerTitle, styles.headerTitle]}>
+          {title}
+        </Text>
+      </View>
       {!hideClearAll && (
         <TouchableOpacity
           disabled={clearAllDisabled}
@@ -68,6 +100,13 @@ const style = StyleSheet.create({
   },
   headerTitle: {
     width: '70%'
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  backIcon: {
+    paddingRight: 2
   }
 });
 

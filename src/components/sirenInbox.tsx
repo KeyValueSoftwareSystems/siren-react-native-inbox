@@ -49,7 +49,6 @@ type NotificationFetchParams = {
  * };
  * <SirenInbox
  *   theme={theme}
- *   title="Notifications"
  *   hideHeader={false}
  *   darkMode={true}
  *   onError={(error) => console.log(error)}
@@ -57,12 +56,10 @@ type NotificationFetchParams = {
  *
  * @param {Object} props - The props for the SirenInbox component.
  * @param {Object} [props.theme={}] - Theme object for custom styling.
- * @param {string} [props.title=DEFAULT_WINDOW_TITLE] - Title of the notification window.
- * @param {boolean} [props.hideHeader=false] - Flag to hide or show the header.
  * @param {boolean} [props.darkMode=false] - Flag to enable dark mode.
  * @param {Object} [props.cardProps={ hideAvatar: false, showMedia: true }] - Props for customizing the notification cards.
  * @param {JSX.Element} [props.listEmptyComponent=null] - Custom component to display when the notification list is empty.
- * @param {JSX.Element} [props.customHeader=null] - Custom header component.
+ * @param {CardProps} [props.inboxHeaderProps] - Object containing props related to the inbox header
  * @param {JSX.Element} [props.customFooter=null] - Custom footer component.
  * @param {JSX.Element} [props.customLoader=null] - Custom loader component.
  * @param {JSX.Element} [props.customErrorWindow=null] - Custom error component.
@@ -74,24 +71,32 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const {
     theme = { dark: {}, light: {} },
     customStyles = {},
-    title = DEFAULT_WINDOW_TITLE,
-    hideHeader = false,
     darkMode = false,
-    cardProps = { hideAvatar: false, showMedia: true },
+    cardProps = { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false },
     listEmptyComponent = null,
-    customHeader = null,
+    inboxHeaderProps = {},
     customFooter = null,
     customLoader = null,
     customErrorWindow = null,
     customNotificationCard = null,
     onNotificationCardClick = () => null,
     onError = () => {},
-    hideClearAll = false,
     itemsPerFetch = 20
   } = props;
 
-  const notificationsPerPage =
-    itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch;
+  const {
+    title = DEFAULT_WINDOW_TITLE,
+    hideHeader,
+    hideClearAll,
+    customHeader,
+    showBackButton,
+    backButton,
+    onBackPress
+  } = inboxHeaderProps;
+  const notificationsPerPage = Math.max(
+    0,
+    itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch
+  );
 
   const { siren, verificationStatus } = useSirenContext();
 
@@ -134,11 +139,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   }, [eventListenerData]);
 
   const handleMarkNotificationsAsViewed = async (newNotifications = notifications) => {
-    if (isNonEmptyArray(newNotifications)) {
-      const response = await markNotificationsAsViewed(newNotifications[0].createdAt);
+    const currentTimestamp = new Date().getTime();
+    const isoString = new Date(currentTimestamp).toISOString();
+    const response = await markNotificationsAsViewed(
+      isNonEmptyArray(newNotifications) ? newNotifications[0].createdAt : isoString
+    );
 
-      processError(response?.error);
-    }
+    processError(response?.error);
   };
 
   const processError = (error?: SirenErrorType | null) => {
@@ -288,7 +295,14 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       return listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />;
     }
 
-    return <LoadingWindow styles={styles} customLoader={customLoader} />;
+    return (
+      <LoadingWindow
+        styles={styles}
+        customLoader={customLoader}
+        hideAvatar={cardProps?.hideAvatar}
+        hideDelete={cardProps?.hideDelete}
+      />
+    );
   };
 
   const onDelete = async (id: string): Promise<void> => {
@@ -349,30 +363,31 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   const renderHeader = (): JSX.Element | null => {
+    if (hideHeader) return null;
+    if (customHeader) return customHeader;
 
-    if (!hideHeader) {
-      if (customHeader) return customHeader;
-
-      return (
-        <Header
-          title={title}
-          styles={styles}
-          onPressClearAll={onPressClearAll}
-          hideClearAll={hideClearAll}
-          clearAllDisabled={!isNonEmptyArray(notifications)}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <Header
+        title={title}
+        styles={styles}
+        onPressClearAll={onPressClearAll}
+        hideClearAll={hideClearAll}
+        clearAllDisabled={!isNonEmptyArray(notifications)}
+        showBackButton={showBackButton}
+        backButton={backButton}
+        onBackPress={onBackPress}
+      />
+    );
   };
+
+  const keyExtractor = (item: NotificationDataType) => item.id;
 
   const renderList = (): JSX.Element => {
     return (
       <FlatList
         data={notifications}
         renderItem={renderCard}
-        keyExtractor={(item) => item.id}
+        keyExtractor={keyExtractor}
         onRefresh={onRefresh}
         refreshing={false}
         contentContainerStyle={styles.contentContainer}

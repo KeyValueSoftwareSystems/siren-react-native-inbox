@@ -19,24 +19,24 @@ const badgeThemes = [
   {
     light: {
       badgeStyle: {
-        color: 'black',
-      }, 
+        color: 'black'
+      }
     },
     dark: {
       badgeStyle: {
-        color: 'green', 
+        color: 'green'
       }
     }
   },
   {
     light: {
       badgeStyle: {
-        color: 'blue',
+        color: 'blue'
       }
     },
     dark: {
       badgeStyle: {
-        color: 'pink',
+        color: 'pink'
       }
     }
   }
@@ -48,7 +48,7 @@ function Home(): React.JSX.Element {
   const [showTestingWindow, setShowTestingWindow] = useState(false);
   const [showCustomNotification, setShowCustomNotification] = useState(false);
   const [badgeThemeIndex, setBadgeThemeIndex] = useState(0);
-  const [showNetwork, setShowNetwork] = useState(true);
+  const [showNetwork, setShowNetwork] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? '#000' : '#FFF'
@@ -79,12 +79,9 @@ function Home(): React.JSX.Element {
         </View>
         {showTestingWindow && (
           <View style={styles.testingWindowInnerContainer}>
-            {renderButton(
-              `${showNetwork ? 'Hide' : 'Show'} network`,
-              () => {
-                setShowNetwork((showNetwork) => !showNetwork);
-              }
-            )}
+            {renderButton(`${showNetwork ? 'Hide' : 'Show'} network`, () => {
+              setShowNetwork((showNetwork) => !showNetwork);
+            })}
             {renderButton(`${showCustomNotification ? 'Default' : 'Custom'}-N-Icon`, () =>
               setShowCustomNotification((showCustomNotification) => !showCustomNotification)
             )}
@@ -120,20 +117,24 @@ function Home(): React.JSX.Element {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={styles.contentContainer}>
-        <SirenInboxIcon
-          theme={badgeThemes[badgeThemeIndex]}
-          customStyles={{
-            notificationIcon: {
-              size: 60
-            }
-          }}
-          notificationIcon={showCustomNotification ? renderNotificationIcon() : undefined}
-          onPress={() => navigation.navigate('Notifications')}
-        />
-        <Text>Siren Notification Icon Theme Testing</Text>
-        {showNetwork && <NetworkLogDebugModal />}
+        <View style={styles.iconContainer}>
+          <SirenInboxIcon
+            theme={badgeThemes[badgeThemeIndex]}
+            customStyles={{
+              notificationIcon: {
+                size: 30
+              }
+            }}
+            notificationIcon={showCustomNotification ? renderNotificationIcon() : undefined}
+            onPress={() => navigation.navigate('Notifications')}
+          />
+        </View>
+        <View style={styles.contentContainer}>
+          <Text>Home screen</Text>
+          {showNetwork && <NetworkLogDebugModal />}
+        </View>
+        {testingWindow()}
       </View>
-      {testingWindow()}
     </SafeAreaView>
   );
 }
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
   },
   testingWindowInnerContainer: {
     flexWrap: 'wrap',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   whiteLabel: {
     color: '#fff',
@@ -187,6 +188,12 @@ const styles = StyleSheet.create({
     margin: 6,
     borderRadius: 4,
     height: 30
+  },
+  iconContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 10,
+    zIndex:2,
   }
 });
 
