@@ -1,5 +1,5 @@
 import React, { type ReactElement, useEffect, useMemo, useState, useRef } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, LayoutAnimation, StyleSheet, View } from 'react-native';
 
 import PubSub from 'pubsub-js';
 import type { Siren } from '@sirenapp/js-sdk';
@@ -305,6 +305,17 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     );
   };
 
+  const deleteAnimation = () => {
+    const layoutAnimConfig = {
+      duration: 300,
+      update: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+      },
+    };
+    
+    LayoutAnimation.configureNext(layoutAnimConfig);
+  }
+
   const onDelete = async (id: string): Promise<void> => {
     if (!disableCardDelete.current) {
       disableCardDelete.current = true;
@@ -312,6 +323,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
       processError(response?.error);
       disableCardDelete.current = false;
+      deleteAnimation();
     }
   };
 
