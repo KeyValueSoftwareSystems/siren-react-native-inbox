@@ -81,6 +81,7 @@ export type SirenProviderConfigProps = {
  */
 type CardProps = {
   hideAvatar?: boolean;
+  avatarClick?: () => void;
   disableAutoMarkAsRead?: boolean;
   hideDelete?: boolean;
 };

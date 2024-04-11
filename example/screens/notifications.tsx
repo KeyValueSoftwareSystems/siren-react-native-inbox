@@ -163,15 +163,15 @@ function Notifications(): React.JSX.Element {
       />
       <View style={styles.contentContainer}>
         <SirenInbox
-          title='Siren Notifications'
           inboxHeaderProps={{
             hideHeader: hideHeader,
             customHeader: showCustomHeader ? renderCustomHeader() : undefined,
             showBackButton: true,
             onBackPress: () => navigation.goBack(),
+            title: 'Siren Inbox',
           }}
           darkMode={sdkDarkModeEnabled}
-          cardProps={{ hideAvatar: hideAvatar, disableAutoMarkAsRead: false }}
+          cardProps={{ hideAvatar: hideAvatar, disableAutoMarkAsRead: false, avatarClick: () => console.log('avatar click') }}
           theme={windowThemes[windowThemeIndex]}
           customFooter={showCustomFooter ? renderCustomFooter() : undefined}
           listEmptyComponent={showCustomEmptyComponent ? renderListEmpty() : undefined}

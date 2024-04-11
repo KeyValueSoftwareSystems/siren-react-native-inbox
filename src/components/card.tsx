@@ -41,7 +41,7 @@ import TimerIcon from './timerIcon';
 
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps = {}, styles, onDelete, darkMode } = props;
-  const { hideAvatar, disableAutoMarkAsRead, hideDelete = false } = cardProps;
+  const { hideAvatar, disableAutoMarkAsRead, hideDelete = false, avatarClick } = cardProps;
   const { markAsRead } = useSiren();
 
   const emptyState = () => {
@@ -74,17 +74,21 @@ const Card = (props: NotificationCardProps): ReactElement => {
   const renderAvatar = useMemo((): JSX.Element => {
     return (
       <View style={style.cardIconContainer}>
-        <View style={[style.cardIconRound, styles.cardIconRound]}>
+        <TouchableOpacity
+          disabled={Boolean(!avatarClick)}
+          onPress={avatarClick}
+          style={[style.cardIconRound, styles.cardIconRound]}
+        >
           <Image
             source={imageSource}
             resizeMode='cover'
             style={style.cardAvatarStyle}
             onError={onError}
           />
-        </View>
+        </TouchableOpacity>
       </View>
     );
-  }, [styles, darkMode, imageSource]);
+  }, [styles, darkMode, imageSource, avatarClick]);
 
   return (
     <TouchableOpacity
@@ -139,7 +143,7 @@ const style = StyleSheet.create({
   },
   cardContainer: {
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   cardIconContainer: {
     paddingLeft: 6,
