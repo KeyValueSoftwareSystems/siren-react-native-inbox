@@ -71,12 +71,16 @@ const Card = (props: NotificationCardProps): ReactElement => {
     setImageSource(emptyState());
   };
 
+  const avatarClick = () => {
+    if (onAvatarClick) onAvatarClick(notification);
+  };
+
   const renderAvatar = useMemo((): JSX.Element => {
     return (
       <View style={style.cardIconContainer}>
         <TouchableOpacity
           disabled={Boolean(!onAvatarClick)}
-          onPress={onAvatarClick}
+          onPress={avatarClick}
           style={[style.cardIconRound, styles.cardIconRound]}
         >
           <Image

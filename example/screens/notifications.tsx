@@ -171,7 +171,7 @@ function Notifications(): React.JSX.Element {
             title: 'Siren Inbox',
           }}
           darkMode={sdkDarkModeEnabled}
-          cardProps={{ hideAvatar: hideAvatar, disableAutoMarkAsRead: false, onAvatarClick: () => console.log('avatar click') }}
+          cardProps={{ hideAvatar: hideAvatar, disableAutoMarkAsRead: false, onAvatarClick: (notification: NotificationDataType) => console.log('avatar click', notification) }}
           theme={windowThemes[windowThemeIndex]}
           customFooter={showCustomFooter ? renderCustomFooter() : undefined}
           listEmptyComponent={showCustomEmptyComponent ? renderListEmpty() : undefined}
