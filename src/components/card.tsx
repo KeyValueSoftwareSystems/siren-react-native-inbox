@@ -1,8 +1,9 @@
-import React, { useState, type ReactElement, useMemo, useEffect } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, type ReactElement, useMemo, useEffect, useRef } from 'react';
+import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import type { NotificationCardProps } from '../types';
 import { CommonUtils, useSiren } from '../utils';
+import { eventTypes, events } from '../utils/constants';
 import CloseIcon from './closeIcon';
 import TimerIcon from './timerIcon';
 
@@ -43,6 +44,8 @@ const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps = {}, styles, onDelete, darkMode } = props;
   const { hideAvatar, disableAutoMarkAsRead, hideDelete = false } = cardProps;
   const { markAsRead } = useSiren();
+
+  const opacity = useRef(new Animated.Value(1)).current;
 
   const emptyState = () => {
     return darkMode ? require('../assets/emptyDark.png') : require('../assets/emptyLight.png');
@@ -86,6 +89,22 @@ const Card = (props: NotificationCardProps): ReactElement => {
     );
   }, [styles, darkMode, imageSource]);
 
+  const onDeleteItem = async (): Promise<void> => {
+    
+    const isSuccess = await onDelete(notification.id, false);
+
+    if (isSuccess) 
+      Animated.timing(opacity, {
+        toValue: 0.1,
+        duration: 300,
+        useNativeDriver: true
+      }).start(() => {
+        const payload = { id: notification.id, action: eventTypes.DELETE_ITEM };
+
+        PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+      });
+  };
+
   return (
     <TouchableOpacity
       onPress={cardClick}
@@ -100,7 +119,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
           notification?.isRead && style.transparent
         ]}
       />
-      <View style={[style.cardContainer, styles.cardContainer]}>
+      <Animated.View style={[style.cardContainer, styles.cardContainer, { opacity }]}>
         {!hideAvatar && renderAvatar}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>
@@ -108,7 +127,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
               {notification.message?.header}
             </Text>
             {!hideDelete && (
-              <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
+              <CloseIcon onDelete={onDeleteItem} notification={notification} styles={styles} />
             )}
           </View>
           {Boolean(notification.message?.subHeader) && (
@@ -126,7 +145,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             </Text>
           </View>
         </View>
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   );
 };
@@ -139,7 +158,7 @@ const style = StyleSheet.create({
   },
   cardContainer: {
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   cardIconContainer: {
     paddingLeft: 6,

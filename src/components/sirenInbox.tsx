@@ -305,14 +305,20 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     );
   };
 
-  const onDelete = async (id: string): Promise<void> => {
+  const onDelete = async (id: string, shouldUpdateList: boolean): Promise<boolean> => {
+    let isSuccess = false;
+
     if (!disableCardDelete.current) {
       disableCardDelete.current = true;
-      const response = await deleteNotification(id);
 
+      const response = await deleteNotification(id, shouldUpdateList);
+      
+      if (response?.data) isSuccess = true;
       processError(response?.error);
       disableCardDelete.current = false;
     }
+
+    return isSuccess;
   };
 
   const onPressClearAll = async (): Promise<void> => {
