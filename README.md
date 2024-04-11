@@ -217,7 +217,7 @@ Here are the custom style options for the notification inbox:
 ```js
     type CardProps = {
       hideAvatar?: boolean;
-      avatarClick?: () => void;
+      onAvatarClick?: () => void;
       disableAutoMarkAsRead?: boolean;
       hideDelete?: boolean;
     };

@@ -41,7 +41,7 @@ import TimerIcon from './timerIcon';
 
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps = {}, styles, onDelete, darkMode } = props;
-  const { hideAvatar, disableAutoMarkAsRead, hideDelete = false, avatarClick } = cardProps;
+  const { hideAvatar, disableAutoMarkAsRead, hideDelete = false, onAvatarClick } = cardProps;
   const { markAsRead } = useSiren();
 
   const emptyState = () => {
@@ -75,8 +75,8 @@ const Card = (props: NotificationCardProps): ReactElement => {
     return (
       <View style={style.cardIconContainer}>
         <TouchableOpacity
-          disabled={Boolean(!avatarClick)}
-          onPress={avatarClick}
+          disabled={Boolean(!onAvatarClick)}
+          onPress={onAvatarClick}
           style={[style.cardIconRound, styles.cardIconRound]}
         >
           <Image
@@ -88,7 +88,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
         </TouchableOpacity>
       </View>
     );
-  }, [styles, darkMode, imageSource, avatarClick]);
+  }, [styles, darkMode, imageSource, onAvatarClick]);
 
   return (
     <TouchableOpacity
