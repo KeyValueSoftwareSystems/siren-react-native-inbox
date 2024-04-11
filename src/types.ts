@@ -19,16 +19,13 @@ import type { NotificationDataType, SirenErrorType } from '@sirenapp/js-sdk/dist
 export type SirenInboxProps = {
   theme?: Theme;
   customStyles?: StyleProps;
-  title?: string;
-  hideHeader?: boolean;
   darkMode?: boolean;
   cardProps?: CardProps;
   listEmptyComponent?: JSX.Element;
   customFooter?: JSX.Element;
-  customHeader?: JSX.Element;
+  inboxHeaderProps?: InboxHeaderProps;
   customLoader?: JSX.Element;
   customErrorWindow?: JSX.Element;
-  hideClearAll?: boolean;
   itemsPerFetch?: number;
   customNotificationCard?: (notification: NotificationDataType) => JSX.Element;
   onNotificationCardClick?: (notification: NotificationDataType) => void;
@@ -54,6 +51,16 @@ export type SirenInboxIconProps = {
   hideBadge?: boolean;
 };
 
+export type InboxHeaderProps = {
+  title?: string;
+  hideHeader?: boolean;
+  hideClearAll?: boolean;
+  customHeader?: JSX.Element;
+  showBackButton?: boolean;
+  backButton?: JSX.Element;
+  onBackPress?: () => void;
+};
+
 /**
  * Defines the configuration properties required by the SirenProvider.
  *
@@ -74,7 +81,8 @@ export type SirenProviderConfigProps = {
  */
 type CardProps = {
   hideAvatar?: boolean;
-  showMedia?: boolean;
+  disableAutoMarkAsRead?: boolean;
+  hideDelete?: boolean;
 };
 
 /**
@@ -232,4 +240,5 @@ export type SirenStyleProps = {
   timerIconLine2: ViewStyle;
   skeltonLoaderColor: ViewStyle;
   highlighted: ViewStyle;
+  backIcon: ViewStyle;
 };

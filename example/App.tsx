@@ -11,7 +11,13 @@ const Stack = createNativeStackNavigator();
 function MyStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen
+        name='Home'
+        options={{
+          headerShown: false
+        }}
+        component={Home}
+      />
       <Stack.Screen
         name='Notifications'
         options={{
@@ -31,11 +37,7 @@ function App(): React.JSX.Element {
 
   return (
     <NavigationContainer>
-      <SirenProvider
-        config={config}
-      >
-        {MyStack()}
-      </SirenProvider>
+      <SirenProvider config={config}>{MyStack()}</SirenProvider>
     </NavigationContainer>
   );
 }

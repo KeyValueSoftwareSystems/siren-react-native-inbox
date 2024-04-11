@@ -119,7 +119,7 @@ export const defaultStyles = {
     padding: 0
   },
   notificationCard: {
-    padding: 10,
+    padding: 14,
     borderWidth: 0.6,
     avatarSize: 40,
     titleFontWeight: '500',

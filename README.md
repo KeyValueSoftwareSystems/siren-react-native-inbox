@@ -9,12 +9,12 @@ The `@sirenapp/react-native-inbox` sdk is a comprehensive and customizable React
 You can install the react sdk from npm 
 
 ```bash
-npm @sirenapp/react-native-inbox
+npm install @sirenapp/react-native-inbox
 ```
 or from yarn
 
 ```bash
-yarn @sirenapp/react-native-inbox
+yarn add @sirenapp/react-native-inbox
 ```
 
 ## 2. Configuration
@@ -110,16 +110,13 @@ Prop | Description | Type | Default value |
 --- | --- | --- | --- |
 theme | Object for custom themes |  Theme | {} |
 customStyles | Object for custom styling |  StyleProps | {} |
-title |  Title of the notification inbox |  string | "Notifications" |
-hideHeader | Toggle to hide or show the header section |  boolean | false |
-hideClearAll | Toggle to hide or show the clear all button |  boolean | false |
 darkMode |  Toggle to enable dark mode|  boolean | false |
 itemsPerFetch | Number of notifications fetch per api request (have a max cap of 50) |  number | 20 |
-cardProps | Props for customizing the notification cards | { hideAvatar: boolean } | { hideAvatar: false } |
+cardProps | Props for customizing the notification cards | CardProps | { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false } |
 customNotificationCard | Function for rendering custom notification cards | (notification)=> JSX Element | null |
 onNotificationCardClick | Custom click handler for notification cards | (notification)=> void | ()=>null |
 listEmptyComponent | Custom component for empty notification list | JSX Element | null |
-customHeader | Custom header component | JSX Element | null |
+inboxHeaderProps | Props for customizing the header | InboxHeaderProps | { title: "Notifications", hideHeader: false, hideClearAll: false, customHeader: null, showBackButton:false, backButton: null, onBackPress: ()=> null } |
 customFooter | Custom footer component | JSX Element | null |
 customLoader | Custom component to display the initial loading state| JSX Element | null |
 customErrorWindow | Custom error window | JSX Element | null |
@@ -174,7 +171,7 @@ Here are the available theme options:
 Here are the custom style options for the notification inbox:
 
 ```js
-    export type StyleProps = {
+    type StyleProps = {
       notificationIcon?: {
         size?: number;
       };
@@ -214,6 +211,27 @@ Here are the custom style options for the notification inbox:
       clearAllIcon?:{
         size?: number
       };
+    };
+```
+#### CardProps
+```js
+    type CardProps = {
+      hideAvatar?: boolean;
+      disableAutoMarkAsRead?: boolean;
+      hideDelete?: boolean;
+    };
+```
+
+#### InboxHeaderProps
+```js
+    type InboxHeaderProps = {
+      title?: string;
+      hideHeader?: boolean;
+      hideClearAll?: boolean;
+      customHeader?: JSX.Element | null;
+      showBackButton?: boolean;
+      backButton?: JSX.Element;
+      onBackPress?: () => void;
     };
 ```
 
@@ -297,7 +315,7 @@ function MyContainer(): React.JSX.Element {
         title="Notifications"
         hideHeader={false}
         darkMode={false}
-        cardProps={{hideAvatar: false}}
+        cardProps={{hideAvatar: false, disableAutoMarkAsRead: false}}
       />
     </View>
   );
