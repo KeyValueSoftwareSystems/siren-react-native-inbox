@@ -3,6 +3,7 @@ import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react
 
 import type { NotificationCardProps } from '../types';
 import { CommonUtils, useSiren } from '../utils';
+import { eventTypes, events } from '../utils/constants';
 import CloseIcon from './closeIcon';
 import TimerIcon from './timerIcon';
 
@@ -88,19 +89,20 @@ const Card = (props: NotificationCardProps): ReactElement => {
     );
   }, [styles, darkMode, imageSource]);
 
-  const onDeleteItem = (): void => {
-    Animated.timing(opacity, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true
-    }).start(async () => {
-      await onDelete(notification.id);
+  const onDeleteItem = async (): Promise<void> => {
+    
+    const isSuccess = await onDelete(notification.id, false);
+
+    if (isSuccess) 
       Animated.timing(opacity, {
-        toValue: 0,
-        duration: 100,
+        toValue: 0.1,
+        duration: 300,
         useNativeDriver: true
-      }).start();
-    });
+      }).start(() => {
+        const payload = { id: notification.id, action: eventTypes.DELETE_ITEM };
+
+        PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+      });
   };
 
   return (

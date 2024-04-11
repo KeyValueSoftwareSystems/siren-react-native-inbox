@@ -202,7 +202,7 @@ export type NotificationCardProps = {
   cardProps: CardProps;
   darkMode: boolean;
   styles: Partial<SirenStyleProps>;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, shouldUpdateList: boolean) => Promise<boolean>;
 };
 
 /**
