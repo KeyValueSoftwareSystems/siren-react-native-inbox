@@ -84,7 +84,7 @@ describe('Card Component', () => {
     await act(async () => {
       fireEvent.press(getByTestId('delete-button'));
       await waitFor(() => {
-        expect(onDeleteMock).toHaveBeenCalledWith(notification.id);
+        expect(onDeleteMock).toHaveBeenCalledWith(notification.id, false);
       });
     });
   });
