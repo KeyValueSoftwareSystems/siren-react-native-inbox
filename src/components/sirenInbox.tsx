@@ -292,7 +292,11 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
         );
 
-      return listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />;
+      return (
+        <View style={style.container} accessibilityLabel='siren-empty-state'>
+          {listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />}
+        </View>
+      );
     }
 
     return (
@@ -402,6 +406,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         removeClippedSubviews
         maxToRenderPerBatch={20}
         windowSize={3}
+        accessibilityLabel='siren-notification-list'
       />
     );
   };

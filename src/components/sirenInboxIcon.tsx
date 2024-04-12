@@ -151,6 +151,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   return (
     <TouchableOpacity
       testID='notification-icon'
+      accessibilityLabel='siren-notification-icon'
       disabled={disabled}
       onPress={onPress}
       style={[styles.iconContainer, container]}

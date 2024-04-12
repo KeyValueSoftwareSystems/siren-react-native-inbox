@@ -54,7 +54,7 @@ const Header = (props: HeaderProps): ReactElement => {
   const renderBackButton = () => {
     if (showBackButton)
       return (
-        <TouchableOpacity style={style.backIcon} onPress={onBackPress}>
+        <TouchableOpacity accessibilityLabel='siren-header-back' style={style.backIcon} onPress={onBackPress}>
           {backButton || <BackIcon styles={styles} />}
         </TouchableOpacity>
       );
@@ -73,6 +73,7 @@ const Header = (props: HeaderProps): ReactElement => {
       {!hideClearAll && (
         <TouchableOpacity
           disabled={clearAllDisabled}
+          accessibilityLabel='siren-header-clear-all'
           onPress={onPressClearAll}
           style={style.clearIconContainer}
         >
