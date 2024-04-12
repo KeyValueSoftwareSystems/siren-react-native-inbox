@@ -144,7 +144,7 @@ export const applyTheme = (
       theme.windowHeader?.headerActionColor ||
       theme.colors?.clearAllIcon ||
       DefaultTheme[mode].windowHeader.headerActionColor,
-    height: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.1,
+    height: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.15,
     borderRadius: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.12,
     marginTop: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.1,
     marginBottom: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.05,

@@ -110,8 +110,8 @@ export const defaultStyles = {
   },
   windowHeader: {
     height: 50,
-    titleFontWeight: '500',
-    titleSize: 20,
+    titleFontWeight: '600',
+    titleSize: 18,
     titlePadding: 0,
     borderWidth: 0.6
   },
@@ -119,7 +119,7 @@ export const defaultStyles = {
     padding: 0
   },
   notificationCard: {
-    padding: 14,
+    padding: 12,
     borderWidth: 0.6,
     avatarSize: 40,
     titleFontWeight: '500',

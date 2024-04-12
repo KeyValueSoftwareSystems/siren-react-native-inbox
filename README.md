@@ -152,6 +152,7 @@ Here are the available theme options:
             headerActionColor?: string;
             borderColor?: string;
             borderWidth?: string;
+            titlePadding?: string;
         };
         windowContainer?: {
             background?: string;

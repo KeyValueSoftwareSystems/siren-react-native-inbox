@@ -77,7 +77,7 @@ const Header = (props: HeaderProps): ReactElement => {
           style={style.clearIconContainer}
         >
           <ClearIcon styles={styles} />
-          <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
+          <Text style={[styles.headerAction, style.headerAction]}>{Constants.CLEAR_ALL_LABEL}</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -91,7 +91,7 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 15
+    paddingHorizontal: 18
   },
   clearIconContainer: {
     flexDirection: 'row',
@@ -107,6 +107,11 @@ const style = StyleSheet.create({
   },
   backIcon: {
     paddingRight: 2
+  },
+  headerAction: {
+    fontSize: 14,
+    fontWeight: '500',
+    paddingLeft: 2,
   }
 });
 
