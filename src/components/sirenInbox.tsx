@@ -72,7 +72,11 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     theme = { dark: {}, light: {} },
     customStyles = {},
     darkMode = false,
-    cardProps = { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false },
+    cardProps = {
+      hideAvatar: false,
+      disableAutoMarkAsRead: false,
+      hideDelete: false
+    },
     listEmptyComponent = null,
     inboxHeaderProps = {},
     customFooter = null,

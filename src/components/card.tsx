@@ -42,7 +42,7 @@ import TimerIcon from './timerIcon';
 
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps = {}, styles, onDelete, darkMode } = props;
-  const { hideAvatar, disableAutoMarkAsRead, hideDelete = false } = cardProps;
+  const { hideAvatar, disableAutoMarkAsRead, hideDelete = false, onAvatarClick } = cardProps;
   const { markAsRead } = useSiren();
 
   const opacity = useRef(new Animated.Value(1)).current;
@@ -74,20 +74,28 @@ const Card = (props: NotificationCardProps): ReactElement => {
     setImageSource(emptyState());
   };
 
+  const avatarClick = () => {
+    if (onAvatarClick) onAvatarClick(notification);
+  };
+
   const renderAvatar = useMemo((): JSX.Element => {
     return (
       <View style={style.cardIconContainer}>
-        <View style={[style.cardIconRound, styles.cardIconRound]}>
+        <TouchableOpacity
+          disabled={Boolean(!onAvatarClick)}
+          onPress={avatarClick}
+          style={[style.cardIconRound, styles.cardIconRound]}
+        >
           <Image
             source={imageSource}
             resizeMode='cover'
             style={style.cardAvatarStyle}
             onError={onError}
           />
-        </View>
+        </TouchableOpacity>
       </View>
     );
-  }, [styles, darkMode, imageSource]);
+  }, [styles, darkMode, imageSource, onAvatarClick]);
 
   const onDeleteItem = async (): Promise<void> => {
     
