@@ -151,7 +151,6 @@ Here are the available theme options:
             titleColor?: string;
             headerActionColor?: string;
             borderColor?: string;
-            borderWidth?: string;
         };
         windowContainer?: {
             background?: string;
@@ -183,6 +182,7 @@ Here are the custom style options for the notification inbox:
         height?: number;
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
+        borderWidth?: string;
       }
       windowContainer?: {
         padding?: number;
@@ -313,7 +313,6 @@ function MyContainer(): React.JSX.Element {
         darkMode={false}
       />
       <SirenInbox
-        title="Notifications"
         hideHeader={false}
         darkMode={false}
         cardProps={{hideAvatar: false, disableAutoMarkAsRead: false}}

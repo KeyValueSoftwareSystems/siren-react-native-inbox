@@ -128,7 +128,6 @@ export type ThemeProps = {
     titleColor?: string;
     headerActionColor?: string;
     borderColor?: string;
-    borderWidth?: string;
   };
   windowContainer?: {
     background?: string;
@@ -139,8 +138,6 @@ export type ThemeProps = {
     titleColor?: string;
     descriptionColor?: string;
     dateColor?: string;
-    timeIconSize?: number;
-    deleteIconSize?: number;
   };
 };
 
