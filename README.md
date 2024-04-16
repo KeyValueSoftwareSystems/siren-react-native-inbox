@@ -161,6 +161,7 @@ Here are the available theme options:
             borderColor?: string;
             background?: string;
             titleColor?: string;
+            subTitleColor?: string;
             descriptionColor?: string;
         };
     }
@@ -193,6 +194,9 @@ Here are the custom style options for the notification inbox:
         avatarSize?: number;
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
+        subTitleFontWeight?: TextStyle['fontWeight'];
+        subTitleSize?: number
+        descriptionFontWeight?: TextStyle['fontWeight'];
         descriptionSize?: number;
         dateSize?: number;
       };

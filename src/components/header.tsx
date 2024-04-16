@@ -91,7 +91,8 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 18
+    paddingLeft: 16,
+    paddingRight: 18
   },
   clearIconContainer: {
     flexDirection: 'row',
