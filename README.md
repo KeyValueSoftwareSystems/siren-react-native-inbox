@@ -162,7 +162,6 @@ Here are the available theme options:
             background?: string;
             titleColor?: string;
             descriptionColor?: string;
-            dateColor?: string;
         };
     }
 ```
