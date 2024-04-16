@@ -74,7 +74,7 @@ const Header = (props: HeaderProps): ReactElement => {
         <TouchableOpacity
           disabled={clearAllDisabled}
           onPress={onPressClearAll}
-          style={style.clearIconContainer}
+          style={[style.clearIconContainer, clearAllDisabled && style.lowOpacity]}
         >
           <ClearIcon styles={styles} />
           <Text style={[styles.headerAction, style.headerAction]}>{Constants.CLEAR_ALL_LABEL}</Text>
@@ -112,7 +112,10 @@ const style = StyleSheet.create({
   headerAction: {
     fontSize: 14,
     fontWeight: '500',
-    paddingLeft: 2,
+    paddingLeft: 2
+  },
+  lowOpacity: {
+    opacity: 0.4
   }
 });
 
