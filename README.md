@@ -183,6 +183,7 @@ Here are the custom style options for the notification inbox:
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
         borderWidth?: string;
+        titlePadding?: number;
       }
       windowContainer?: {
         padding?: number;
