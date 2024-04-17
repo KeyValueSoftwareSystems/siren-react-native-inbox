@@ -152,6 +152,7 @@ Here are the available theme options:
             headerActionColor?: string;
             borderColor?: string;
             borderWidth?: string;
+            titlePadding?: string;
         };
         windowContainer?: {
             background?: string;
@@ -160,8 +161,8 @@ Here are the available theme options:
             borderColor?: string;
             background?: string;
             titleColor?: string;
+            subTitleColor?: string;
             descriptionColor?: string;
-            dateColor?: string;
         };
     }
 ```
@@ -193,6 +194,9 @@ Here are the custom style options for the notification inbox:
         avatarSize?: number;
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
+        subTitleFontWeight?: TextStyle['fontWeight'];
+        subTitleSize?: number
+        descriptionFontWeight?: TextStyle['fontWeight'];
         descriptionSize?: number;
         dateSize?: number;
       };
@@ -217,6 +221,7 @@ Here are the custom style options for the notification inbox:
 ```js
     type CardProps = {
       hideAvatar?: boolean;
+      onAvatarClick?: (notification: NotificationDataType) => void;
       disableAutoMarkAsRead?: boolean;
       hideDelete?: boolean;
     };

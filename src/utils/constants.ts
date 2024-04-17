@@ -1,6 +1,6 @@
 export const COLORS = {
   light: {
-    primaryColor: '#F56630',
+    primaryColor: '#FA9874',
     highlightedCardColor: '#FFECE5',
     textColor: '#344054',
     neutralColor: '#FFFFFF',
@@ -12,7 +12,7 @@ export const COLORS = {
     infiniteLoader: '#F56630'
   },
   dark: {
-    primaryColor: '#F56630',
+    primaryColor: '#FA9874',
     highlightedCardColor: '#2E2D30',
     textColor: '#FFFFFF',
     neutralColor: '#232326',
@@ -110,8 +110,8 @@ export const defaultStyles = {
   },
   windowHeader: {
     height: 50,
-    titleFontWeight: '500',
-    titleSize: 20,
+    titleFontWeight: '600',
+    titleSize: 18,
     titlePadding: 0,
     borderWidth: 0.6
   },
@@ -119,12 +119,15 @@ export const defaultStyles = {
     padding: 0
   },
   notificationCard: {
-    padding: 14,
+    padding: 12,
     borderWidth: 0.6,
     avatarSize: 40,
-    titleFontWeight: '500',
-    titleSize: 16,
+    titleFontWeight: '600',
+    titleSize: 14,
+    subTitleFontWeight: '500',
+    subTitleSize: 14,
     descriptionSize: 14,
+    descriptionFontWeight: '400',
     dateSize: 12
   },
   badgeStyle: {
@@ -132,7 +135,7 @@ export const defaultStyles = {
     textSize: 10
   },
   deleteIcon: {
-    size: 16
+    size: 14
   },
   dateIcon: {
     size: 12
