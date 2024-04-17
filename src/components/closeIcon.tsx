@@ -45,12 +45,12 @@ const style = StyleSheet.create({
     marginVertical: 2,
     width: '100%',
     borderRadius: 1,
-    position: 'absolute'
+    position: 'absolute',
   },
   closeButton: {
     overflow: 'hidden',
     justifyContent: 'center',
-    opacity: 0.8
+    opacity: 0.8,
   }
 });
 

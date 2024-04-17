@@ -74,10 +74,10 @@ const Header = (props: HeaderProps): ReactElement => {
         <TouchableOpacity
           disabled={clearAllDisabled}
           onPress={onPressClearAll}
-          style={style.clearIconContainer}
+          style={[style.clearIconContainer, clearAllDisabled && style.lowOpacity]}
         >
           <ClearIcon styles={styles} />
-          <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
+          <Text style={[styles.headerAction, style.headerAction]}>{Constants.CLEAR_ALL_LABEL}</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -91,7 +91,8 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 15
+    paddingLeft: 16,
+    paddingRight: 18
   },
   clearIconContainer: {
     flexDirection: 'row',
@@ -107,6 +108,14 @@ const style = StyleSheet.create({
   },
   backIcon: {
     paddingRight: 2
+  },
+  headerAction: {
+    fontSize: 14,
+    fontWeight: '500',
+    paddingLeft: 2
+  },
+  lowOpacity: {
+    opacity: 0.4
   }
 });
 
