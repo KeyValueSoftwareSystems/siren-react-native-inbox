@@ -139,7 +139,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             )}
           </View>
           {Boolean(notification.message?.subHeader) && (
-            <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
+            <Text numberOfLines={2} style={[style.cardSubTitle, styles.cardSubTitle]}>
               {notification.message?.subHeader}
             </Text>
           )}
@@ -162,20 +162,17 @@ const style = StyleSheet.create({
   cardWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 2
   },
   cardContainer: {
     width: '100%',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   cardIconContainer: {
     paddingLeft: 6,
-    paddingRight: 12,
-    paddingTop: 4
+    paddingRight: 6,
   },
   cardTitle: {
     paddingBottom: 4,
-    paddingTop: 4
   },
   icon: {
     width: '100%',
@@ -193,16 +190,19 @@ const style = StyleSheet.create({
   cardContentContainer: {
     flex: 1,
     width: '100%',
-    paddingRight: 6
+    paddingRight: 6,
+    paddingLeft: 6,
   },
   cardDescription: {
-    fontWeight: '400',
-    paddingBottom: 10
+    paddingBottom: 10,
+  },
+  cardSubTitle: {
+    paddingBottom: 6
   },
   cardFooterRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   dateStyle: {
     paddingLeft: 3
@@ -214,7 +214,9 @@ const style = StyleSheet.create({
   },
   activeCardMarker: {
     width: 4,
-    height: '100%'
+    height: '100%',
+    position: 'absolute',
+    zIndex: 2
   },
   transparent: {
     backgroundColor: 'transparent'

@@ -137,6 +137,7 @@ export type ThemeProps = {
     borderColor?: string;
     background?: string;
     titleColor?: string;
+    subTitleColor?: string;
     descriptionColor?: string;
     dateColor?: string;
     timeIconSize?: number;
@@ -168,6 +169,9 @@ export type StyleProps = {
     avatarSize?: number;
     titleFontWeight?: TextStyle['fontWeight'];
     titleSize?: number;
+    subTitleFontWeight?: TextStyle['fontWeight'];
+    subTitleSize?: number
+    descriptionFontWeight?: TextStyle['fontWeight'];
     descriptionSize?: number;
     dateSize?: number;
   };
@@ -226,7 +230,8 @@ export type SirenStyleProps = {
   cardContainer: ViewStyle;
   cardIconRound: ViewStyle;
   cardTitle: TextStyle | object;
-  cardDescription: TextStyle;
+  cardSubTitle: TextStyle | object;
+  cardDescription: TextStyle | object;
   dateStyle: TextStyle;
   emptyText: TextStyle;
   errorText: TextStyle;
