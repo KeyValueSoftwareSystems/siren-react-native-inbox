@@ -34,6 +34,7 @@ const CloseIcon = ({
       onPress={() => onDelete(notification.id)}
       style={[style.closeButton, styles.closeButton]}
       testID='delete-button'
+      accessibilityLabel={`siren-notification-delete${notification.id}`}
     >
       <>{icon}</>
     </TouchableOpacity>

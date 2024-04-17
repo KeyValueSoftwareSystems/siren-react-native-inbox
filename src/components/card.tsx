@@ -83,6 +83,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
       <View style={style.cardIconContainer}>
         <TouchableOpacity
           disabled={Boolean(!onAvatarClick)}
+          accessibilityLabel={`siren-notification-avatar-${notification.id}`}
           onPress={avatarClick}
           style={[style.cardIconRound, styles.cardIconRound]}
         >
@@ -101,7 +102,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
     
     const isSuccess = await onDelete(notification.id, false);
 
-    if (isSuccess) 
+    if (isSuccess)
       Animated.timing(opacity, {
         toValue: 0.1,
         duration: 300,
@@ -118,6 +119,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
       onPress={cardClick}
       activeOpacity={0.6}
       testID='card-touchable'
+      accessibilityLabel={`siren-notification-card-${notification.id}`}
       style={[style.cardWrapper, styles.cardWrapper, !notification?.isRead && styles.highlighted]}
     >
       <View

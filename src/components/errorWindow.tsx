@@ -31,7 +31,7 @@ const ErrorWindow = (props: {
   const iconStyle = { opacity: darkMode ? 0.6 : 1 };
 
   return (
-    <View style={[style.container, styles.container]}>
+    <View accessibilityLabel='siren-error-state' style={[style.container, styles.container]}>
       {customErrorWindow || (
         <>
           <View style={[style.iconContainer, containerStyle]}>
