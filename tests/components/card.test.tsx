@@ -55,10 +55,11 @@ describe('Card Component', () => {
 
     const { getByTestId } = render(
       <Card
+        darkMode
         onCardClick={onCardClickMock}
         onDelete={onDeleteMock}
         notification={notification}
-        cardProps={{ hideAvatar: false, showMedia: true }}
+        cardProps={{ hideAvatar: false }}
         styles={customStyles}
       />
     );

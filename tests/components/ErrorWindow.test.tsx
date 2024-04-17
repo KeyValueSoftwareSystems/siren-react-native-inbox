@@ -28,10 +28,8 @@ describe('ErrorWindow', () => {
       }
     };
 
-    const retryCallback = jest.fn();
-
     const { getByText } = render(
-      <ErrorWindow styles={customErrorStyles} />
+      <ErrorWindow styles={customErrorStyles} darkMode={false} />
     );
 
     expect(getByText(ERROR_TEXT)).toBeTruthy();

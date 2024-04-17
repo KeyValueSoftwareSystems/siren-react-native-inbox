@@ -10,7 +10,6 @@ describe('SirenInbox', () => {
   it('renders without crashing', () => {
     render(
       <SirenInbox
-        title='Notifications'
         darkMode={false}
         onError={(error) => console.log(error)}
       />

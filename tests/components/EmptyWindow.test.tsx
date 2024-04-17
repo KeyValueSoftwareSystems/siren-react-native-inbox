@@ -17,7 +17,7 @@ describe('EmptyWindow', () => {
       }
     };
 
-    const { getByText } = render(<EmptyWindow styles={customStyles} />);
+    const { getByText } = render(<EmptyWindow styles={customStyles} darkMode={false} />);
 
     expect(getByText(LIST_EMPTY_TEXT)).toBeTruthy();
     expect(getByText(LIST_EMPTY_DESCRIPTION)).toBeTruthy();
