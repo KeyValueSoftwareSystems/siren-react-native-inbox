@@ -73,7 +73,7 @@ export const useSirenContext = (): SirenContextProp => useContext(SirenContext);
 const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   let retryCount = 0;
 
-  const { markNotificationsAsViewed } = useSiren();
+  const { markAllAsViewed } = useSiren();
   
   const [siren, setSiren] = useState<Siren | null>(null);
   const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>(VerificationStatus.PENDING);
@@ -121,7 +121,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     if (isNonEmptyArray(responseData)) {
       logger.info(`new notifications : ${JSON.stringify(responseData)}`);
       
-      markNotificationsAsViewed(responseData[0].createdAt);
+      markAllAsViewed(responseData[0].createdAt);
       const payload = { newNotifications: response?.data, action: eventTypes.NEW_NOTIFICATIONS };    
 
       PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));

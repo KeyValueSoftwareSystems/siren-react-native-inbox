@@ -96,7 +96,7 @@ export const errorMap = {
   MISSING_PARAMETER: {
     Type: 'ERROR',
     Code: 'MISSING_PARAMETER',
-    Message: 'Missing Parameter'
+    Message: 'Missing required parameter'
   }
 };
 

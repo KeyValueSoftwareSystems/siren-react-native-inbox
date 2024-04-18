@@ -59,12 +59,12 @@ type NotificationFetchParams = {
  * @param {boolean} [props.darkMode=false] - Flag to enable dark mode.
  * @param {Object} [props.cardProps={ hideAvatar: false, showMedia: true }] - Props for customizing the notification cards.
  * @param {JSX.Element} [props.listEmptyComponent=null] - Custom component to display when the notification list is empty.
- * @param {CardProps} [props.inboxHeaderProps] - Object containing props related to the inbox header
+ * @param {CardProps} [props.headerProps] - Object containing props related to the inbox header
  * @param {JSX.Element} [props.customFooter=null] - Custom footer component.
  * @param {JSX.Element} [props.customLoader=null] - Custom loader component.
  * @param {JSX.Element} [props.customErrorWindow=null] - Custom error component.
- * @param {Function} [props.customNotificationCard=null] - Custom function for rendering notification cards.
- * @param {Function} [props.onNotificationCardClick=() => null] - Callback for handling notification card clicks.
+ * @param {Function} [props.customCard=null] - Custom function for rendering notification cards.
+ * @param {Function} [props.onCardClick=() => null] - Callback for handling notification card clicks.
  * @param {Function} [props.onError] - Callback for handling errors.
  */
 const SirenInbox = (props: SirenInboxProps): ReactElement => {
@@ -78,12 +78,12 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       hideDelete: false
     },
     listEmptyComponent = null,
-    inboxHeaderProps = {},
+    headerProps = {},
     customFooter = null,
     customLoader = null,
     customErrorWindow = null,
-    customNotificationCard = null,
-    onNotificationCardClick = () => null,
+    customCard = null,
+    onCardClick = () => null,
     onError = () => {},
     itemsPerFetch = 20
   } = props;
@@ -96,7 +96,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     showBackButton,
     backButton,
     onBackPress
-  } = inboxHeaderProps;
+  } = headerProps;
   const notificationsPerPage = Math.max(
     0,
     itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch
@@ -104,7 +104,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const { siren, verificationStatus } = useSirenContext();
 
-  const { deleteNotification, deleteNotificationsByDate, markNotificationsAsViewed } = useSiren();
+  const { deleteById, deleteByDate, markAllAsViewed } = useSiren();
 
   const [notifications, setNotifications] = useState<NotificationDataType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -145,7 +145,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const handleMarkNotificationsAsViewed = async (newNotifications = notifications) => {
     const currentTimestamp = new Date().getTime();
     const isoString = new Date(currentTimestamp).toISOString();
-    const response = await markNotificationsAsViewed(
+    const response = await markAllAsViewed(
       isNonEmptyArray(newNotifications) ? newNotifications[0].createdAt : isoString
     );
 
@@ -319,7 +319,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (!disableCardDelete.current) {
       disableCardDelete.current = true;
 
-      const response = await deleteNotification(id, shouldUpdateList);
+      const response = await deleteById(id, shouldUpdateList);
       
       if (response?.data) isSuccess = true;
       processError(response?.error);
@@ -331,7 +331,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const onPressClearAll = async (): Promise<void> => {
     if (isNonEmptyArray(notifications)) {
-      const response = await deleteNotificationsByDate(notifications[0].createdAt);
+      const response = await deleteByDate(notifications[0].createdAt);
 
       if (response?.error) {
         processError(response?.error);
@@ -346,7 +346,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const renderDefaultNotificationCard = (item: NotificationDataType) => {
     return (
       <Card
-        onCardClick={onNotificationCardClick}
+        onCardClick={onCardClick}
         notification={item}
         cardProps={cardProps}
         styles={styles}
@@ -358,7 +358,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   // Render notification card
   const renderCard = ({ item }: { item: NotificationDataType }): JSX.Element => {
-    if (customNotificationCard) return customNotificationCard(item);
+    if (customCard) return customCard(item);
 
     return renderDefaultNotificationCard(item);
   };

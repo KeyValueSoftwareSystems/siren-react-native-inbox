@@ -1,7 +1,7 @@
 import type { NotificationDataType } from '@sirenapp/js-sdk/dist/esm/types';
 
 import { defaultStyles, eventTypes, levelLogFns, LogLevel, ThemeMode } from './constants';
-import type { SirenStyleProps, StyleProps, ThemeProps } from '../types';
+import type { SirenStyleProps, CustomStyleProps, ThemeProps } from '../types';
 
 import { DefaultTheme } from './index';
 
@@ -92,7 +92,7 @@ export const logger = {
 
 export const applyTheme = (
   theme: ThemeProps = {},
-  customStyles: StyleProps = {},
+  customStyles: CustomStyleProps = {},
   mode: ThemeMode = ThemeMode.LIGHT
 ): SirenStyleProps => ({
   container: {

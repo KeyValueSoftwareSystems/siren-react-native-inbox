@@ -51,7 +51,7 @@ Below are optional props available for the icon component:
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
 theme | Object for custom themes |  Theme | {} |
-customStyles | Object for custom styling |  StyleProps | {} |
+customStyles | Object for custom styling |  CustomStyleProps | {} |
 notificationIcon | Option to use custom notification icon |  JSX Element | null |
 darkMode | Toggle to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
@@ -80,7 +80,7 @@ Here are the available theme options:
 Here are the custom style options for the notification icon:
 ```js
 
-    type StyleProps = {
+    type CustomStyleProps = {
         notificationIcon?: {
           size?: number,
         };
@@ -109,14 +109,14 @@ Below are optional props available for the inbox component:
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
 theme | Object for custom themes |  Theme | {} |
-customStyles | Object for custom styling |  StyleProps | {} |
+customStyles | Object for custom styling |  CustomStyleProps | {} |
 darkMode |  Toggle to enable dark mode|  boolean | false |
 itemsPerFetch | Number of notifications fetch per api request (have a max cap of 50) |  number | 20 |
 cardProps | Props for customizing the notification cards | CardProps | { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false } |
-customNotificationCard | Function for rendering custom notification cards | (notification)=> JSX Element | null |
-onNotificationCardClick | Custom click handler for notification cards | (notification)=> void | ()=>null |
+customCard | Function for rendering custom notification cards | (notification)=> JSX Element | null |
+onCardClick | Custom click handler for notification cards | (notification)=> void | ()=>null |
 listEmptyComponent | Custom component for empty notification list | JSX Element | null |
-inboxHeaderProps | Props for customizing the header | InboxHeaderProps | { title: "Notifications", hideHeader: false, hideClearAll: false, customHeader: null, showBackButton:false, backButton: null, onBackPress: ()=> null } |
+headerProps | Props for customizing the header | HeaderProps | { title: "Notifications", hideHeader: false, hideClearAll: false, customHeader: null, showBackButton:false, backButton: null, onBackPress: ()=> null } |
 customFooter | Custom footer component | JSX Element | null |
 customLoader | Custom component to display the initial loading state| JSX Element | null |
 customErrorWindow | Custom error window | JSX Element | null |
@@ -170,7 +170,7 @@ Here are the available theme options:
 Here are the custom style options for the notification inbox:
 
 ```js
-    type StyleProps = {
+    type CustomStyleProps = {
       notificationIcon?: {
         size?: number;
       };
@@ -228,9 +228,9 @@ Here are the custom style options for the notification inbox:
     };
 ```
 
-#### InboxHeaderProps
+#### HeaderProps
 ```js
-    type InboxHeaderProps = {
+    type HeaderProps = {
       title?: string;
       hideHeader?: boolean;
       hideClearAll?: boolean;
@@ -249,14 +249,14 @@ Here are the custom style options for the notification inbox:
 import { useSiren } from '@sirenapp/react-native-inbox';
 
 function MyComponent() {
-  const { markAsRead, deleteNotification } = useSiren();
+  const { markAsRead, deleteById } = useSiren();
 
   function handleMarkAsRead(id) {
     markAsRead(id);
   }
 
   function handleDeleteNotification(id) {
-    deleteNotification(id);
+    deleteById(id);
   }
 
   return (
@@ -268,11 +268,11 @@ function MyComponent() {
 
 Functions | Parameters | Type | Description |
 ----------|------------|-------|------------|
-markNotificationsAsReadByDate | startDate | ISO date string | Sets the read status of notifications to true until the given date |
+markAsReadByDate | startDate | ISO date string | Sets the read status of notifications to true until the given date |
 markAsRead | id | string | Set read status of a notification to true          |
-deleteNotification |  id | string  | Delete a notification by id |
-deleteNotificationsByDate | startDate | ISO date string | Delete all notifications until given date |
-markNotificationsAsViewed | startDate | ISO date string |Sets the viewed status of notifications to true until the given date |
+deleteById |  id | string  | Delete a notification by id |
+deleteByDate | startDate | ISO date string | Delete all notifications until given date |
+markAllAsViewed | startDate | ISO date string |Sets the viewed status of notifications to true until the given date |
 
 ## 4. Error codes
 Given below are all possible error codes thrown by sdk:

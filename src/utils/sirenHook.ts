@@ -25,7 +25,7 @@ const useSiren = () => {
     return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
-  const markNotificationsAsReadByDate = async (untilDate: string) => {
+  const markAsReadByDate = async (untilDate: string) => {
     if (siren && untilDate) {
       const response = await siren?.markNotificationsAsReadByDate(untilDate);
 
@@ -41,7 +41,7 @@ const useSiren = () => {
     return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
-  const deleteNotification = async (id: string, shouldUpdateList: boolean = true) => {
+  const deleteById = async (id: string, shouldUpdateList: boolean = true) => {
     if (siren)
       if (id?.length > 0) {
         const response = await siren?.deleteNotificationById(id);
@@ -60,7 +60,7 @@ const useSiren = () => {
     return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
-  const deleteNotificationsByDate = async (untilDate: string) => {
+  const deleteByDate = async (untilDate: string) => {
     if (siren && untilDate) {
       const response = await siren.deleteNotificationsByDate(untilDate);
 
@@ -76,7 +76,7 @@ const useSiren = () => {
     return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
-  const markNotificationsAsViewed = async (untilDate: string) => {
+  const markAllAsViewed = async (untilDate: string) => {
     if (siren && untilDate) {
       const response = await siren?.markNotificationsAsViewed(untilDate);
 
@@ -93,11 +93,11 @@ const useSiren = () => {
   };
 
   return {
-    markNotificationsAsReadByDate,
+    markAsReadByDate,
     markAsRead,
-    deleteNotification,
-    deleteNotificationsByDate,
-    markNotificationsAsViewed
+    deleteById,
+    deleteByDate,
+    markAllAsViewed
   };
 };
 
