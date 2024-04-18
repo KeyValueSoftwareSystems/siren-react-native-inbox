@@ -42,7 +42,13 @@ import TimerIcon from './timerIcon';
 
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps = {}, styles, onDelete, darkMode } = props;
-  const { hideAvatar, disableAutoMarkAsRead, hideDelete = false, onAvatarClick } = cardProps;
+  const {
+    hideAvatar,
+    disableAutoMarkAsRead,
+    hideDelete = false,
+    onAvatarClick,
+    deleteIcon = null
+  } = cardProps;
   const { markAsRead } = useSiren();
 
   const opacity = useRef(new Animated.Value(1)).current;
@@ -99,7 +105,6 @@ const Card = (props: NotificationCardProps): ReactElement => {
   }, [styles, darkMode, imageSource, onAvatarClick]);
 
   const onDeleteItem = async (): Promise<void> => {
-    
     const isSuccess = await onDelete(notification.id, false);
 
     if (isSuccess)
@@ -136,9 +141,10 @@ const Card = (props: NotificationCardProps): ReactElement => {
             <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
-            {!hideDelete && (
-              <CloseIcon onDelete={onDeleteItem} notification={notification} styles={styles} />
-            )}
+            {!hideDelete &&
+              (deleteIcon || (
+                <CloseIcon onDelete={onDeleteItem} notification={notification} styles={styles} />
+              ))}
           </View>
           {Boolean(notification.message?.subHeader) && (
             <Text numberOfLines={2} style={[style.cardSubTitle, styles.cardSubTitle]}>
@@ -163,18 +169,18 @@ const Card = (props: NotificationCardProps): ReactElement => {
 const style = StyleSheet.create({
   cardWrapper: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   cardContainer: {
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   cardIconContainer: {
     paddingLeft: 6,
-    paddingRight: 6,
+    paddingRight: 6
   },
   cardTitle: {
-    paddingBottom: 4,
+    paddingBottom: 4
   },
   icon: {
     width: '100%',
@@ -193,10 +199,10 @@ const style = StyleSheet.create({
     flex: 1,
     width: '100%',
     paddingRight: 6,
-    paddingLeft: 6,
+    paddingLeft: 6
   },
   cardDescription: {
-    paddingBottom: 10,
+    paddingBottom: 10
   },
   cardSubTitle: {
     paddingBottom: 6
@@ -204,7 +210,7 @@ const style = StyleSheet.create({
   cardFooterRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   dateStyle: {
     paddingLeft: 3

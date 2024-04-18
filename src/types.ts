@@ -83,6 +83,7 @@ type CardProps = {
   hideAvatar?: boolean;
   onAvatarClick?: (notification: NotificationDataType) => void;
   disableAutoMarkAsRead?: boolean;
+  deleteIcon?: JSX.Element;
   hideDelete?: boolean;
 };
 

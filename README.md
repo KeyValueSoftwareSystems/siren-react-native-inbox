@@ -223,6 +223,7 @@ Here are the custom style options for the notification inbox:
       hideAvatar?: boolean;
       onAvatarClick?: (notification: NotificationDataType) => void;
       disableAutoMarkAsRead?: boolean;
+      deleteIcon?: JSX.Element;
       hideDelete?: boolean;
     };
 ```
