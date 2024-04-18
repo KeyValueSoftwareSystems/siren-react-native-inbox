@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import Card from '../../src/components/card';
-import type { SirenStyleProps } from '../../src/types';
+import type { StyleProps } from '../../src/types';
 import type { NotificationDataType } from '@sirenapp/js-sdk/dist/esm/types';
 
 describe('Card Component', () => {
@@ -24,7 +24,7 @@ describe('Card Component', () => {
     requestId: ''
   };
 
-  const customStyles: Partial<SirenStyleProps> = {
+  const customStyles: Partial<StyleProps> = {
     cardContainer: {
       // Add your custom styles here
     }

@@ -1,7 +1,7 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 import { Constants } from '../utils';
 
 const { LIST_EMPTY_TEXT, LIST_EMPTY_DESCRIPTION } = Constants;
@@ -18,7 +18,7 @@ const { LIST_EMPTY_TEXT, LIST_EMPTY_DESCRIPTION } = Constants;
  * @param {Object} props.styles - Custom styles applied to the empty window.
  */
 const EmptyWindow = (props: {
-  styles: Partial<SirenStyleProps>;
+  styles: Partial<StyleProps>;
   darkMode: boolean;
 }): ReactElement => {
   const { styles, darkMode } = props;

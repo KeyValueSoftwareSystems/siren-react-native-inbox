@@ -204,7 +204,7 @@ export type NotificationCardProps = {
   notification: NotificationDataType;
   cardProps: CardProps;
   darkMode: boolean;
-  styles: Partial<SirenStyleProps>;
+  styles: Partial<StyleProps>;
   onDelete: (id: string, shouldUpdateList: boolean) => Promise<boolean>;
 };
 
@@ -217,7 +217,7 @@ export type UnviewedType = {
   unviewedCount: number;
 } | null;
 
-export type SirenStyleProps = {
+export type StyleProps = {
   container: ViewStyle | object;
   contentContainer: ViewStyle;
   headerContainer: ViewStyle;

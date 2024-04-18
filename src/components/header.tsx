@@ -1,7 +1,7 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 import { Constants } from '../utils';
 import ClearIcon from './clearIcon';
 import BackIcon from './backIcon';
@@ -30,7 +30,7 @@ import BackIcon from './backIcon';
 
 type HeaderProps = {
   title: string;
-  styles: Partial<SirenStyleProps>;
+  styles: Partial<StyleProps>;
   onPressClearAll: () => void;
   clearAllDisabled: boolean;
   hideClearAll?: boolean;

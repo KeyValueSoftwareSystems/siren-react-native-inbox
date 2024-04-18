@@ -1,9 +1,9 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 
-const ClearIcon = ({ styles }: { styles: Partial<SirenStyleProps> }): ReactElement => {
+const ClearIcon = ({ styles }: { styles: Partial<StyleProps> }): ReactElement => {
   const icon: JSX.Element[] = [];
 
   for (let i = 0; i < 3; i++)

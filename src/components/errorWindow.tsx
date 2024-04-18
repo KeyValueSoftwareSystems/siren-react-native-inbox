@@ -1,7 +1,7 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 import { Constants } from '../utils';
 import { ERROR_DESCRIPTION } from '../utils/constants';
 
@@ -21,7 +21,7 @@ const { ERROR_TEXT } = Constants;
  * @param {Function} props.onRetry - A callback function that is invoked when the user presses the refresh button.
  */
 const ErrorWindow = (props: {
-  styles: Partial<SirenStyleProps>;
+  styles: Partial<StyleProps>;
   darkMode: boolean;
   customErrorWindow?: JSX.Element | null;
 }): ReactElement => {
