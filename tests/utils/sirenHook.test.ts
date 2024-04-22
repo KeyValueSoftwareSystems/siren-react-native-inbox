@@ -1,6 +1,8 @@
+import type { Siren } from '@sirenapp/js-sdk';
+
 import { useSiren } from '../../src';
 import * as sirenProvider from '../../src/components/sirenProvider';
-import type { Siren } from '@sirenapp/js-sdk';
+import {VerificationStatus} from '../../src/utils/constants'
 
 const Response = {
   data: {
@@ -90,6 +92,7 @@ describe('useSiren hook', () => {
     // Mock useSirenContext
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
+      verificationStatus: VerificationStatus.SUCCESS
     });
 
     const { markAsRead } = useSiren();
@@ -102,11 +105,12 @@ describe('useSiren hook', () => {
   it('should call siren.markNotificationsAsReadByDate and update notifications list when siren exists and untilDate is provided', async () => {
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
+      verificationStatus: VerificationStatus.SUCCESS
     });
 
-    const { markNotificationsAsReadByDate } = useSiren();
+    const { markAsReadByDate } = useSiren();
     const untilDate = '2024-02-28T00:00:00Z';
-    const response = await markNotificationsAsReadByDate(untilDate);
+    const response = await markAsReadByDate(untilDate);
 
     expect(mockSiren.markNotificationsAsReadByDate).toHaveBeenCalledWith(untilDate);
     expect(response).toEqual(ActionResponse);
@@ -116,10 +120,11 @@ describe('useSiren hook', () => {
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
+      verificationStatus: VerificationStatus.SUCCESS
     });
 
-    const { deleteNotification } = useSiren();
-    const response = await deleteNotification('xyz');
+    const { deleteById } = useSiren();
+    const response = await deleteById('xyz');
 
     expect(mockSiren.deleteNotificationById).toHaveBeenCalledWith('xyz');
     expect(response).toEqual(ActionResponse);
@@ -129,11 +134,12 @@ describe('useSiren hook', () => {
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
+      verificationStatus: VerificationStatus.SUCCESS
     });
 
-    const { deleteNotificationsByDate } = useSiren();
+    const { deleteByDate } = useSiren();
     const untilDate = '2024-02-28T00:00:00Z';
-    const response = await deleteNotificationsByDate(untilDate);
+    const response = await deleteByDate(untilDate);
 
     expect(mockSiren.deleteNotificationsByDate).toHaveBeenCalledWith(untilDate);
     expect(response).toEqual(ActionResponse);
@@ -143,11 +149,12 @@ describe('useSiren hook', () => {
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
+      verificationStatus: VerificationStatus.SUCCESS
     });
 
-    const { markNotificationsAsViewed } = useSiren();
+    const { markAllAsViewed } = useSiren();
     const untilDate = '2024-02-28T00:00:00Z';
-    const response = await markNotificationsAsViewed(untilDate);
+    const response = await markAllAsViewed(untilDate);
 
     expect(mockSiren.markNotificationsAsViewed).toHaveBeenCalledWith(untilDate);
     expect(response).toEqual(MarkAsViewedResponse);

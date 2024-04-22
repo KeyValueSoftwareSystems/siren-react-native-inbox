@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import type { SirenStyleProps } from '../../dist/typescript/types';
+import type { StyleProps } from '../../src/types';
 import Header from '../../src/components/header';
 
 describe('Header', () => {
   it('renders with correct title', () => {
     const title = 'Notification Center';
-    const styles: Partial<SirenStyleProps> = {
+    const styles: Partial<StyleProps> = {
       container: undefined,
       contentContainer: undefined,
       headerContainer: undefined,

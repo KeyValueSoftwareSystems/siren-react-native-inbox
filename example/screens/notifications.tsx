@@ -52,7 +52,7 @@ function Notifications(): React.JSX.Element {
     backgroundColor: isDarkMode ? '#000' : '#FFF'
   };
 
-  const { markNotificationsAsReadByDate } = useSiren();
+  const { markAsReadByDate } = useSiren();
 
   const renderListEmpty = () => {
     return (
@@ -76,7 +76,9 @@ function Notifications(): React.JSX.Element {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.whiteLabel}>Back</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => markNotificationsAsReadByDate(String(new Date().getTime()))}>
+        <TouchableOpacity
+          onPress={() => markAsReadByDate(String(new Date().getTime()))}
+        >
           <Text style={styles.whiteLabel}>Mark allAsRead</Text>
         </TouchableOpacity>
       </View>
@@ -108,12 +110,9 @@ function Notifications(): React.JSX.Element {
         </View>
         {showTestingWindow && (
           <View style={styles.testingWindowInnerContainer}>
-            {renderButton(
-              `${showNetwork ? 'Hide' : 'Show'} network`,
-              () => {
-                setShowNetwork((showNetwork) => !showNetwork);
-              }
-            )}
+            {renderButton(`${showNetwork ? 'Hide' : 'Show'} network`, () => {
+              setShowNetwork((showNetwork) => !showNetwork);
+            })}
             {renderButton('Theme-Mode', () =>
               setSdkDarkModeEnabled((sdkDarkModeEnabled) => !sdkDarkModeEnabled)
             )}
@@ -163,29 +162,34 @@ function Notifications(): React.JSX.Element {
       />
       <View style={styles.contentContainer}>
         <SirenInbox
-          inboxHeaderProps={{
+          headerProps={{
             hideHeader: hideHeader,
             customHeader: showCustomHeader ? renderCustomHeader() : undefined,
             showBackButton: true,
             onBackPress: () => navigation.goBack(),
-            title: 'Siren Inbox',
+            title: 'Siren Inbox'
           }}
           darkMode={sdkDarkModeEnabled}
-          cardProps={{ hideAvatar: hideAvatar, disableAutoMarkAsRead: false, onAvatarClick: (notification: NotificationDataType) => console.log('avatar click', notification) }}
+          cardProps={{
+            hideAvatar: hideAvatar,
+            disableAutoMarkAsRead: false,
+            onAvatarClick: (notification: NotificationDataType) =>
+              console.log('avatar click', notification)
+          }}
           theme={windowThemes[windowThemeIndex]}
           customFooter={showCustomFooter ? renderCustomFooter() : undefined}
           listEmptyComponent={showCustomEmptyComponent ? renderListEmpty() : undefined}
           customStyles={{
             notificationCard: {
-              avatarSize: 30,
+              avatarSize: 30
             }
           }}
-          customNotificationCard={
+          customCard={
             showCustomNotificationCard
               ? (notification: NotificationDataType) => renderCustomNotificationCard(notification)
               : undefined
           }
-          onNotificationCardClick={(notification: NotificationDataType) => {
+          onCardClick={(notification: NotificationDataType) => {
             console.log('click on notification');
           }}
           onError={(error: SirenErrorType) => {

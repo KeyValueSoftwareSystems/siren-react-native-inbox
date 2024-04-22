@@ -1,9 +1,9 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 
-const BackIcon = ({ styles }: { styles: Partial<SirenStyleProps> }): ReactElement => {
+const BackIcon = ({ styles }: { styles: Partial<StyleProps> }): ReactElement => {
   return (
     <View style={style.backIconContainer}>
       <View style={[style.backIconLine1, styles.backIcon]} />

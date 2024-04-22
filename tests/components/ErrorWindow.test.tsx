@@ -2,13 +2,13 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import ErrorWindow from '../../src/components/errorWindow';
 import { Constants } from '../../src/utils';
-import type { SirenStyleProps } from '../../src/types';
+import type { StyleProps } from '../../src/types';
 
 const { ERROR_TEXT, ERROR_DESCRIPTION } = Constants;
 
 describe('ErrorWindow', () => {
   it('renders correctly', () => {
-    const customErrorStyles: Partial<SirenStyleProps> = {
+    const customErrorStyles: Partial<StyleProps> = {
       errorText: {
         color: '#FF0000',
         fontSize: 18,

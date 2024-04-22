@@ -1,10 +1,10 @@
 import React, { useEffect, type ReactElement, useRef } from 'react';
 import { Animated, Easing, FlatList, StyleSheet, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 
 type LoadingWindowProps = {
-  styles: Partial<SirenStyleProps>;
+  styles: Partial<StyleProps>;
   customLoader?: JSX.Element | null;
   hideAvatar?: boolean;
   hideDelete?: boolean;
