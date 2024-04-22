@@ -112,10 +112,10 @@ theme | Object for custom themes |  Theme | {} |
 customStyles | Object for custom styling |  CustomStyleProps | {} |
 darkMode |  Toggle to enable dark mode|  boolean | false |
 itemsPerFetch | Number of notifications fetch per api request (have a max cap of 50) |  number | 20 |
-cardProps | Props for customizing the notification cards | CardProps | { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false } |
-customCard | Function for rendering custom notification cards | (notification)=> JSX Element | null |
-onCardClick | Custom click handler for notification cards | (notification)=> void | ()=>null |
-listEmptyComponent | Custom component for empty notification list | JSX Element | null |
+cardProps | Props for customizing the cards | CardProps | { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false, deleteIcon: JSX.Element, onAvatarClick: ()=> null } |
+customCard | Function for rendering custom card | (notification)=> JSX Element | null |
+onCardClick | Custom click handler for card | (notification)=> void | ()=>null |
+listEmptyComponent | Custom component for empty list | JSX Element | null |
 headerProps | Props for customizing the header | HeaderProps | { title: "Notifications", hideHeader: false, hideClearAll: false, customHeader: null, showBackButton:false, backButton: null, onBackPress: ()=> null } |
 customFooter | Custom footer component | JSX Element | null |
 customLoader | Custom component to display the initial loading state| JSX Element | null |
@@ -171,9 +171,6 @@ Here are the custom style options for the notification inbox:
 
 ```js
     type CustomStyleProps = {
-      notificationIcon?: {
-        size?: number;
-      };
       window?: {
         width?: DimensionValue;
         height?: DimensionValue;
@@ -199,12 +196,6 @@ Here are the custom style options for the notification inbox:
         descriptionFontWeight?: TextStyle['fontWeight'];
         descriptionSize?: number;
         dateSize?: number;
-      };
-      badgeStyle?: {
-        size?: number;
-        textSize?: number;
-        top?: number;
-        right?: number;
       };
       deleteIcon?:{
         size?: number
