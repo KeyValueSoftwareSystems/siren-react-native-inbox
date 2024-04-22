@@ -58,6 +58,11 @@ export const levelLogFns = {
   [LogLevel.ERROR]: console.error
 };
 
+export enum EventType {
+  NOTIFICATION = "NOTIFICATIONS",
+  UNVIEWED_COUNT = "UNVIEWED_COUNT"
+}
+
 export enum eventTypes {
   MARK_ITEM_AS_VIEWED = 'MARK_ITEM_AS_VIEWED',
   MARK_ITEM_AS_READ = 'MARK_ITEM_AS_READ',

@@ -4,7 +4,6 @@ import PubSub from 'pubsub-js';
 import { Siren } from '@sirenapp/js-sdk';
 import type {
   InitConfigType,
-  NotificationDataType,
   NotificationsApiResponse,
   SirenErrorType,
   UnviewedCountApiResponse,
@@ -17,7 +16,8 @@ import {
   eventTypes,
   IN_APP_RECIPIENT_UNAUTHENTICATED,
   MAXIMUM_RETRY_COUNT,
-  VerificationStatus
+  VerificationStatus,
+  EventType
 } from '../utils/constants';
 import { useSiren } from '../utils';
 
@@ -74,10 +74,11 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   let retryCount = 0;
 
   const { markAllAsViewed } = useSiren();
-  
+
   const [siren, setSiren] = useState<Siren | null>(null);
-  const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>(VerificationStatus.PENDING);
-  
+  const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>(
+    VerificationStatus.PENDING
+  );
 
   useEffect(() => {
     if (config?.recipientId && config?.userToken) {
@@ -88,8 +89,8 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   }, [config]);
 
   const stopRealTimeFetch = (): void => {
-    siren?.stopRealTimeNotificationFetch();
-    siren?.stopRealTimeUnviewedCountFetch();
+    siren?.stopRealTimeFetch(EventType.NOTIFICATION);
+    siren?.stopRealTimeFetch(EventType.UNVIEWED_COUNT);
   };
 
   const sendResetDataEvents = () => {
@@ -104,27 +105,35 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(updateNotificationPayload));
   };
 
-  const onUnViewedCountReceived = (response: UnviewedCountApiResponse): void => {
-    const totalUnviewed = response?.data?.totalUnviewed;
-
-    const payload = {
-      unviewedCount: totalUnviewed,
-      action: eventTypes.UPDATE_NOTIFICATIONS_COUNT
-    };
-
-    PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(payload));
-  };
-
-  const onNotificationReceived = (response: NotificationsApiResponse): void => {
-    const responseData: NotificationDataType[] = response?.data || [];
-
-    if (isNonEmptyArray(responseData)) {
+  const onEventReceive = (
+    response: NotificationsApiResponse | UnviewedCountApiResponse = {},
+    eventType: EventType
+  ) => {
+    const responseData = response?.data;
+    
+    if (
+      eventType === EventType.NOTIFICATION &&
+      Array.isArray(responseData) &&
+      isNonEmptyArray(responseData)
+    ) {
       logger.info(`new notifications : ${JSON.stringify(responseData)}`);
-      
+
       markAllAsViewed(responseData[0].createdAt);
-      const payload = { newNotifications: response?.data, action: eventTypes.NEW_NOTIFICATIONS };    
+      const payload = { newNotifications: responseData, action: eventTypes.NEW_NOTIFICATIONS };
 
       PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+    } else if (
+      eventType === EventType.UNVIEWED_COUNT &&
+      responseData &&
+      'totalUnviewed' in responseData
+    ) {
+      const totalUnviewed = responseData.totalUnviewed;
+      const payload = {
+        unviewedCount: totalUnviewed,
+        action: eventTypes.UPDATE_NOTIFICATIONS_COUNT
+      };
+
+      PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(payload));
     }
   };
 
@@ -133,7 +142,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   };
 
 
-  const actionCallbacks = { onUnViewedCountReceived, onNotificationReceived, onStatusChange };
+  const actionCallbacks = { onEventReceive, onStatusChange };
 
   const getDataParams = () => {
     return {

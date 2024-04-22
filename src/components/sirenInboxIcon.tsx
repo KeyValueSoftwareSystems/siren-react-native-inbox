@@ -8,7 +8,7 @@ import { useSirenContext } from './sirenProvider';
 import type { SirenInboxIconProps } from '../types';
 import { CommonUtils, Constants } from '../utils';
 
-const { ThemeMode, defaultBadgeStyle, eventTypes, events, defaultStyles } = Constants;
+const { ThemeMode, defaultBadgeStyle, eventTypes, events, defaultStyles, EventType } = Constants;
 const { logger } = CommonUtils;
 
 /**
@@ -59,7 +59,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
 
   // Clean up - stop polling when component unmounts
   const cleanUp = () => () => {
-    siren?.stopRealTimeUnviewedCountFetch();
+    siren?.stopRealTimeFetch(EventType.UNVIEWED_COUNT);
     PubSub.unsubscribe(events.NOTIFICATION_COUNT_EVENT);
     seUnviewedCount(0);
   };
@@ -92,7 +92,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
       const unViewed: UnviewedCountReturnResponse | null =
         await siren.fetchUnviewedNotificationsCount();
 
-      siren.startRealTimeUnviewedCountFetch();
+      siren.startRealTimeFetch({eventType: EventType.UNVIEWED_COUNT});
       if (unViewed?.data) seUnviewedCount(unViewed.data?.unviewedCount || 0);
       if (unViewed?.error) onError(unViewed?.error);
     }
