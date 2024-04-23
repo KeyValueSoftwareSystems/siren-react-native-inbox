@@ -265,27 +265,6 @@ deleteById |  id | string  | Delete a notification by id |
 deleteByDate | startDate | ISO date string | Delete all notifications until given date |
 markAllAsViewed | startDate | ISO date string |Sets the viewed status of notifications to true until the given date |
 
-## 4. Error codes
-Given below are all possible error codes thrown by sdk:
-
-Error code  | Description |
---- | --- |
-AUTHENTICATION_FAILED | Failed to authenticate given credentials |
-TOKEN_VERIFICATION_FAILED | Verification of the given tokens has failed |
-TOKEN_VERIFICATION_PENDING | Authentication in progress |
-API_ERROR | Occurrence of an unexpected api error |
-UNVIEWED_COUNT_FETCH_FAILED | Failed to fetch unviewed notifications count |
-NOTIFICATION_FETCH_FAILED | Failed to fetch notifications |
-DELETE_FAILED | Failed to delete notification |
-MARK_AS_READ_FAILED | Failed to mark notification as read |
-BULK_DELETE_FAILED | Bulk deletion of notifications failed |
-MARK_ALL_AS_READ_FAILED | Failed to mark all notifications as read |
-MARK_ALL_AS_VIEWED_FAILED | Failed to mark notification as viewed |
-OUTSIDE_SIREN_CONTEXT | Attempting to invoke the functions outside the siren inbox context |
-MISSING_PARAMETER | The required parameter is missing |
-UNAUTHORIZED_OPERATION | This operation require valid credentials |
-INVALID_ERROR_FUNCTION | The error function passed to sdk is invalid |
-
 ## Example
 Here's a basic example to help you get started
 ```js
