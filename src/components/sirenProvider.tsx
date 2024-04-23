@@ -89,7 +89,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   }, [config]);
 
   const stopRealTimeFetch = (): void => {
-    siren?.stopRealTimeFetch(EventType.NOTIFICATION);
+    siren?.stopRealTimeFetch(EventType.NOTIFICATIONS);
     siren?.stopRealTimeFetch(EventType.UNVIEWED_COUNT);
   };
 
@@ -112,7 +112,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     const responseData = response?.data;
     
     if (
-      eventType === EventType.NOTIFICATION &&
+      eventType === EventType.NOTIFICATIONS &&
       Array.isArray(responseData) &&
       isNonEmptyArray(responseData)
     ) {

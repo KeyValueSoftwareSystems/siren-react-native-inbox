@@ -162,7 +162,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   // Clean up - stop polling when component unmounts
   const cleanUp = () => () => {
-    siren?.stopRealTimeFetch(EventType.NOTIFICATION);
+    siren?.stopRealTimeFetch(EventType.NOTIFICATIONS);
     setNotifications([]);
     PubSub.unsubscribe(events.NOTIFICATION_LIST_EVENT);
     handleMarkAllAsViewed();
@@ -177,7 +177,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
     if (siren) {
-      siren?.stopRealTimeFetch(EventType.NOTIFICATION);
+      siren?.stopRealTimeFetch(EventType.NOTIFICATIONS);
       const allNotifications = await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
 
@@ -185,7 +185,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         notificationParams.start = allNotifications[0].createdAt;
 
       if (verificationStatus === VerificationStatus.SUCCESS)
-        siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params: notificationParams});
+        siren?.startRealTimeFetch({eventType: EventType.NOTIFICATIONS, params: notificationParams});
     }
   };
 
@@ -267,7 +267,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         setNotifications([]);
         setIsLoading(true);
 
-        siren?.stopRealTimeFetch(EventType.NOTIFICATION);
+        siren?.stopRealTimeFetch(EventType.NOTIFICATIONS);
         const allNotifications = (await fetchNotifications(siren, true)) || [];
         const notificationParams: fetchProps = { size: notificationsPerPage };
 
@@ -275,7 +275,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           notificationParams.start = allNotifications[0].createdAt;
 
         if (verificationStatus === VerificationStatus.SUCCESS)
-          siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params:notificationParams});
+          siren?.startRealTimeFetch({eventType: EventType.NOTIFICATIONS, params:notificationParams});
       } catch (err) {
         setIsLoading(false);
         setIsError(true);
