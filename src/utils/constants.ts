@@ -18,7 +18,7 @@ export const COLORS = {
     neutralColor: '#232326',
     borderColor: '#344054',
     dateColor: '#98A2B3',
-    deleteIcon: '#98A2B3',
+    deleteIcon: '#D0D5DD',
     timerIcon: '#98A2B3',
     clearAllIcon: '#D0D5DD',
     infiniteLoader: '#F56630'
