@@ -225,8 +225,8 @@ export const applyTheme = (
     fontSize:
       customStyles.notificationCard?.subTitleSize || defaultStyles.notificationCard.subTitleSize,
     fontWeight:
-      customStyles.notificationCard?.subTitleFontWeight ||
-      defaultStyles.notificationCard.subTitleFontWeight,
+      customStyles.notificationCard?.subtitleFontWeight ||
+      defaultStyles.notificationCard.subtitleFontWeight,
     lineHeight:
       (customStyles.notificationCard?.subTitleSize || defaultStyles.notificationCard.subTitleSize) +
       8
