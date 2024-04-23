@@ -192,7 +192,7 @@ Here are the custom style options for the notification inbox:
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
         subtitleFontWeight?: TextStyle['fontWeight'];
-        subTitleSize?: number
+        subtitleSize?: number
         descriptionFontWeight?: TextStyle['fontWeight'];
         descriptionSize?: number;
         dateSize?: number;

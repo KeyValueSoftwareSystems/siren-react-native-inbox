@@ -223,12 +223,12 @@ export const applyTheme = (
       theme.colors?.textColor ||
       DefaultTheme[mode].notificationCard.subTitleColor,
     fontSize:
-      customStyles.notificationCard?.subTitleSize || defaultStyles.notificationCard.subTitleSize,
+      customStyles.notificationCard?.subtitleSize || defaultStyles.notificationCard.subtitleSize,
     fontWeight:
       customStyles.notificationCard?.subtitleFontWeight ||
       defaultStyles.notificationCard.subtitleFontWeight,
     lineHeight:
-      (customStyles.notificationCard?.subTitleSize || defaultStyles.notificationCard.subTitleSize) +
+      (customStyles.notificationCard?.subtitleSize || defaultStyles.notificationCard.subtitleSize) +
       8
   },
   cardDescription: {

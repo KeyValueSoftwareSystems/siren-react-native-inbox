@@ -125,7 +125,7 @@ export const defaultStyles = {
     titleFontWeight: '600',
     titleSize: 14,
     subtitleFontWeight: '500',
-    subTitleSize: 14,
+    subtitleSize: 14,
     descriptionSize: 14,
     descriptionFontWeight: '400',
     dateSize: 12
