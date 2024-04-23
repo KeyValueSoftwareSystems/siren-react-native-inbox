@@ -49,7 +49,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
     onAvatarClick,
     deleteIcon = null
   } = cardProps;
-  const { markAsRead } = useSiren();
+  const { markAsReadById } = useSiren();
 
   const opacity = useRef(new Animated.Value(1)).current;
 
@@ -73,7 +73,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
 
   const cardClick = (): void => {
     onCardClick(notification);
-    if (!disableAutoMarkAsRead) markAsRead(notification.id);
+    if (!disableAutoMarkAsRead) markAsReadById(notification.id);
   };
 
   const onError = (): void => {

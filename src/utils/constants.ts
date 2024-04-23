@@ -124,8 +124,8 @@ export const defaultStyles = {
     avatarSize: 40,
     titleFontWeight: '600',
     titleSize: 14,
-    subTitleFontWeight: '500',
-    subTitleSize: 14,
+    subtitleFontWeight: '500',
+    subtitleSize: 14,
     descriptionSize: 14,
     descriptionFontWeight: '400',
     dateSize: 12

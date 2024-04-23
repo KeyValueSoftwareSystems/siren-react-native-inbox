@@ -167,8 +167,8 @@ export type CustomStyleProps = {
     avatarSize?: number;
     titleFontWeight?: TextStyle['fontWeight'];
     titleSize?: number;
-    subTitleFontWeight?: TextStyle['fontWeight'];
-    subTitleSize?: number
+    subtitleFontWeight?: TextStyle['fontWeight'];
+    subtitleSize?: number
     descriptionFontWeight?: TextStyle['fontWeight'];
     descriptionSize?: number;
     dateSize?: number;
