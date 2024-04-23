@@ -6,7 +6,7 @@ import { useSirenContext } from '../components/sirenProvider';
 const useSiren = () => {
   const { siren } = useSirenContext();
 
-  const markAsRead = async (id: string) => {
+  const markAsReadById = async (id: string) => {
     if (siren)
       if (id?.length > 0) {
         const response = await siren?.markAsReadById(id);
@@ -94,7 +94,7 @@ const useSiren = () => {
 
   return {
     markAsReadByDate,
-    markAsRead,
+    markAsReadById,
     deleteById,
     deleteByDate,
     markAllAsViewed

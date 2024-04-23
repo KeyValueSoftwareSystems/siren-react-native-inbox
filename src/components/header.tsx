@@ -96,14 +96,16 @@ const style = StyleSheet.create({
     paddingRight: 18
   },
   clearIconContainer: {
+    width: '20%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
   },
   headerTitle: {
-    width: '70%'
+    width: '95%',
   },
   rowContainer: {
+    width: '80%',
     flexDirection: 'row',
     alignItems: 'center'
   },

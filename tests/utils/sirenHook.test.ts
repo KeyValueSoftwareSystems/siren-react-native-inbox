@@ -93,8 +93,8 @@ describe('useSiren hook', () => {
       verificationStatus: VerificationStatus.SUCCESS
     });
 
-    const { markAsRead } = useSiren();
-    const response = await markAsRead('xyz');
+    const { markAsReadById } = useSiren();
+    const response = await markAsReadById('xyz');
 
     expect(mockSiren.markAsReadById).toHaveBeenCalledWith('xyz');
     expect(response).toEqual(Response);
