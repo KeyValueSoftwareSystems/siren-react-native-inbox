@@ -240,10 +240,10 @@ Here are the custom style options for the notification inbox:
 import { useSiren } from '@sirenapp/react-native-inbox';
 
 function MyComponent() {
-  const { markAsRead, deleteById } = useSiren();
+  const { markAsReadById, deleteById } = useSiren();
 
   function handleMarkAsRead(id) {
-    markAsRead(id);
+    markAsReadById(id);
   }
 
   function handleDeleteNotification(id) {
@@ -260,7 +260,7 @@ function MyComponent() {
 Functions | Parameters | Type | Description |
 ----------|------------|-------|------------|
 markAsReadByDate | startDate | ISO date string | Sets the read status of notifications to true until the given date |
-markAsRead | id | string | Set read status of a notification to true          |
+markAsReadById | id | string | Set read status of a notification to true          |
 deleteById |  id | string  | Delete a notification by id |
 deleteByDate | startDate | ISO date string | Delete all notifications until given date |
 markAllAsViewed | startDate | ISO date string |Sets the viewed status of notifications to true until the given date |
