@@ -84,6 +84,8 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
       stopRealTimeFetch();
       sendResetDataEvents();
       initialize();
+    } else {
+      setVerificationStatus(VerificationStatus.FAILED);
     }
   }, [config]);
 

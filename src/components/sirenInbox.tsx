@@ -21,7 +21,8 @@ const {
   events,
   TOKEN_VERIFICATION_PENDING,
   MAXIMUM_ITEMS_PER_FETCH,
-  VerificationStatus
+  VerificationStatus,
+  errorMap
 } = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
 
@@ -127,7 +128,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
-    if (verificationStatus !== VerificationStatus.PENDING && siren) initialize();
+    if (verificationStatus !== VerificationStatus.PENDING && siren) {
+      initialize();
+    } else if(verificationStatus === VerificationStatus.FAILED) {
+      setIsError(true);
+      setIsLoading(false);
+      if (onError) onError(errorMap.MISSING_PARAMETER);
+    }
   }, [siren, verificationStatus]);
 
   useEffect(() => {
