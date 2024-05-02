@@ -47,7 +47,9 @@ const Card = (props: NotificationCardProps): ReactElement => {
     disableAutoMarkAsRead,
     hideDelete = false,
     onAvatarClick,
-    deleteIcon = null
+    deleteIcon = null,
+    hideMediaThumbnail = false,
+    onMediaThumbnailClick
   } = cardProps;
   const { markAsReadById } = useSiren();
 
@@ -62,11 +64,22 @@ const Card = (props: NotificationCardProps): ReactElement => {
       ? { uri: notification.message?.avatar?.imageUrl }
       : emptyState()
   );
+  
+  const [mediaSource, setMediaSource] = useState(
+    notification?.message?.thumbnailUrl?.length > 0
+      ? { uri: notification.message?.thumbnailUrl }
+      : emptyState()
+  );
 
   useEffect(() => {
     setImageSource(
       notification?.message?.avatar?.imageUrl?.length > 0
         ? { uri: notification.message?.avatar?.imageUrl }
+        : emptyState()
+    );
+    setMediaSource(
+      notification?.message?.thumbnailUrl?.length > 0
+        ? { uri: notification.message?.thumbnailUrl }
         : emptyState()
     );
   }, [notification, darkMode]);
@@ -82,6 +95,10 @@ const Card = (props: NotificationCardProps): ReactElement => {
 
   const avatarClick = () => {
     if (onAvatarClick) onAvatarClick(notification);
+  };
+
+  const mediaClick = () => {
+    if (onMediaThumbnailClick) onMediaThumbnailClick(notification);
   };
 
   const renderAvatar = useMemo((): JSX.Element => {
@@ -103,6 +120,23 @@ const Card = (props: NotificationCardProps): ReactElement => {
       </View>
     );
   }, [styles, darkMode, imageSource, onAvatarClick]);
+
+  const renderMediaThumbnail = useMemo((): JSX.Element => {
+    return (
+      <TouchableOpacity
+        style={style.mediaContainer}
+        disabled={Boolean(!onMediaThumbnailClick)}
+        onPress={mediaClick}
+      >
+        <Image
+          source={{ uri: mediaSource }}
+          resizeMode='cover'
+          style={style.icon}
+          onError={onError}
+        />
+      </TouchableOpacity>
+    );
+  }, [darkMode, mediaSource, onMediaThumbnailClick]);
 
   const onDeleteItem = async (): Promise<void> => {
     const isSuccess = await onDelete(notification.id, false);
@@ -151,9 +185,12 @@ const Card = (props: NotificationCardProps): ReactElement => {
               {notification.message?.subHeader}
             </Text>
           )}
-          <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
-            {notification.message?.body}
-          </Text>
+          {Boolean(notification.message?.body) && (
+            <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
+              {notification.message?.body}
+            </Text>
+          )}
+          {!hideMediaThumbnail && Boolean(notification.message?.thumbnailUrl) && renderMediaThumbnail}
           <View style={style.dateContainer}>
             <TimerIcon styles={styles} />
             <Text style={[style.dateStyle, styles.dateStyle]}>
@@ -228,6 +265,14 @@ const style = StyleSheet.create({
   },
   transparent: {
     backgroundColor: 'transparent'
+  },
+  mediaContainer: {
+    width: '100%',
+    height: 140,
+    borderRadius: 6,
+    marginBottom: 10,
+    overflow: 'hidden',
+    backgroundColor: '#D3D3D3'
   }
 });
 

@@ -85,6 +85,8 @@ type CardProps = {
   disableAutoMarkAsRead?: boolean;
   deleteIcon?: JSX.Element;
   hideDelete?: boolean;
+  hideMediaThumbnail?: boolean;
+  onMediaThumbnailClick?: (notification: NotificationDataType) => void;
 };
 
 /**
