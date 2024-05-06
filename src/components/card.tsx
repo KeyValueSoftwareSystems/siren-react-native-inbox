@@ -59,6 +59,10 @@ const Card = (props: NotificationCardProps): ReactElement => {
     return darkMode ? require('../assets/emptyDark.png') : require('../assets/emptyLight.png');
   };
 
+  const failedState = () => {
+    return darkMode ? require('../assets/failedImageDark.png') : require('../assets/failedImageLight.png');
+  };
+
   const [imageSource, setImageSource] = useState(
     notification?.message?.avatar?.imageUrl?.length > 0
       ? { uri: notification.message?.avatar?.imageUrl }
@@ -80,7 +84,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
     setMediaSource(
       notification?.message?.thumbnailUrl?.length > 0
         ? { uri: notification.message?.thumbnailUrl }
-        : emptyState()
+        : failedState()
     );
   }, [notification, darkMode]);
 
@@ -91,6 +95,10 @@ const Card = (props: NotificationCardProps): ReactElement => {
 
   const onError = (): void => {
     setImageSource(emptyState());
+  };
+
+  const onErrorMedia = (): void => {
+    setImageSource(failedState());
   };
 
   const avatarClick = () => {
@@ -132,7 +140,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
           source={{ uri: mediaSource }}
           resizeMode='cover'
           style={style.icon}
-          onError={onError}
+          onError={onErrorMedia}
         />
       </TouchableOpacity>
     );
@@ -268,7 +276,7 @@ const style = StyleSheet.create({
   },
   mediaContainer: {
     width: '100%',
-    height: 140,
+    height: 130,
     borderRadius: 6,
     marginBottom: 10,
     overflow: 'hidden',
