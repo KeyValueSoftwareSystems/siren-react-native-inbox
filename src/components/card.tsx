@@ -98,7 +98,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
   };
 
   const onErrorMedia = (): void => {
-    setImageSource(failedState());
+    setMediaSource(failedState());
   };
 
   const avatarClick = () => {
