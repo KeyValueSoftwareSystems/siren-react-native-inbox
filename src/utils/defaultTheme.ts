@@ -30,6 +30,7 @@ const defaultTheme = {
       subTitleColor: COLORS[ThemeMode.LIGHT].textColor,
       descriptionColor: COLORS[ThemeMode.LIGHT].textColor,
       dateColor: COLORS[ThemeMode.LIGHT].textColor,
+      mediaContainerBackground: '#F0F2F5'
     }
   },
   dark: {
@@ -60,7 +61,8 @@ const defaultTheme = {
       titleColor: COLORS[ThemeMode.DARK].textColor,
       subTitleColor: COLORS[ThemeMode.DARK].textColor,
       descriptionColor: COLORS[ThemeMode.DARK].textColor,
-      dateColor: COLORS[ThemeMode.DARK].dateColor
+      dateColor: COLORS[ThemeMode.DARK].dateColor,
+      mediaContainerBackground: '#4C4C4C'
     }
   }
 };

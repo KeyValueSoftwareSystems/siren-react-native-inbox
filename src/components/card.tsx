@@ -132,12 +132,12 @@ const Card = (props: NotificationCardProps): ReactElement => {
   const renderMediaThumbnail = useMemo((): JSX.Element => {
     return (
       <TouchableOpacity
-        style={style.mediaContainer}
+        style={[style.mediaContainer, styles.mediaContainer]}
         disabled={Boolean(!onMediaThumbnailClick)}
         onPress={mediaClick}
       >
         <Image
-          source={{ uri: mediaSource }}
+          source={mediaSource}
           resizeMode='cover'
           style={style.icon}
           onError={onErrorMedia}
