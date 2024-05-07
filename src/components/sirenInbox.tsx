@@ -134,7 +134,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       setIsError(true);
       setIsLoading(false);
       setNotifications([]);
-      if (onError) onError(errorMap.MISSING_PARAMETER);
+      if (onError) onError(errorMap.INVALID_CREDENTIALS);
     }
   }, [siren, verificationStatus]);
 
