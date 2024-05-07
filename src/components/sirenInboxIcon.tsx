@@ -8,7 +8,16 @@ import { useSirenContext } from './sirenProvider';
 import type { SirenInboxIconProps } from '../types';
 import { CommonUtils, Constants } from '../utils';
 
-const { ThemeMode, defaultBadgeStyle, eventTypes, events, defaultStyles, EventType } = Constants;
+const {
+  ThemeMode,
+  defaultBadgeStyle,
+  eventTypes,
+  events,
+  defaultStyles,
+  EventType,
+  VerificationStatus,
+  errorMap
+} = Constants;
 const { logger } = CommonUtils;
 
 /**
@@ -42,7 +51,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     onError = () => null
   } = props;
 
-  const { siren } = useSirenContext();
+  const { siren, verificationStatus } = useSirenContext();
 
   const [unviewedCount, seUnviewedCount] = useState<number>(0);
 
@@ -79,8 +88,10 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   }, []);
 
   useEffect(() => {
-    initialize();
-  }, [siren]);
+    if (verificationStatus !== VerificationStatus.PENDING && siren) initialize();
+    else if (verificationStatus === VerificationStatus.FAILED && onError)
+      onError(errorMap.MISSING_PARAMETER);
+  }, [siren, verificationStatus]);
 
   useEffect(() => {
     if (unviewedCount > 0) logger.info(`unviewed notification count : ${unviewedCount}`);

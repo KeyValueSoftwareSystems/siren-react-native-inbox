@@ -102,6 +102,11 @@ export const errorMap = {
     Type: 'ERROR',
     Code: 'MISSING_PARAMETER',
     Message: 'Missing required parameter'
+  },
+  INVALID_CREDENTIALS: {
+    Type: 'ERROR',
+    Code: 'INVALID_CREDENTIALS',
+    Message: 'Invalid credentials found. Please check your token and recipient ID'
   }
 };
 
