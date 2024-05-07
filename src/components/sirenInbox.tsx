@@ -128,11 +128,12 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
-    if (verificationStatus !== VerificationStatus.PENDING && siren) {
+    if (verificationStatus === VerificationStatus.SUCCESS && siren) {
       initialize();
     } else if(verificationStatus === VerificationStatus.FAILED) {
       setIsError(true);
       setIsLoading(false);
+      setNotifications([]);
       if (onError) onError(errorMap.MISSING_PARAMETER);
     }
   }, [siren, verificationStatus]);

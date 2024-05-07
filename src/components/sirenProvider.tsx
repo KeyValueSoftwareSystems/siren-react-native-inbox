@@ -158,6 +158,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
   // Function to initialize the Siren SDK and fetch notifications
   const initialize = (): void => {
+    setVerificationStatus(VerificationStatus.PENDING);
     const dataParams: InitConfigType = getDataParams();
     const siren = new Siren(dataParams);
 
