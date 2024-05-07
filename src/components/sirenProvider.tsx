@@ -4,9 +4,10 @@ import PubSub from 'pubsub-js';
 import { Siren } from '@sirenapp/js-sdk';
 import type {
   InitConfigType,
+  NotificationDataType,
   NotificationsApiResponse,
   SirenErrorType,
-  UnviewedCountApiResponse,
+  UnviewedCountApiResponse
 } from '@sirenapp/js-sdk/dist/esm/types';
 
 import type { SirenProviderConfigProps } from '../types';
@@ -107,36 +108,39 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(updateNotificationPayload));
   };
 
+  const onNewNotificationEvent = (responseData: NotificationDataType[]) => {
+    logger.info(`new notifications : ${JSON.stringify(responseData)}`);
+
+    markAllAsViewed(responseData[0].createdAt);
+    const payload = { newNotifications: responseData, action: eventTypes.NEW_NOTIFICATIONS };
+
+    PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+  };
+
+  const onTotalUnviewedCountEvent = (response: UnviewedCountApiResponse) => {
+    const totalUnviewed = response.data?.totalUnviewed;
+    const payload = {
+      unviewedCount: totalUnviewed,
+      action: eventTypes.UPDATE_NOTIFICATIONS_COUNT
+    };
+
+    PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(payload));
+  };
+
   const onEventReceive = (
     response: NotificationsApiResponse | UnviewedCountApiResponse = {},
     eventType: EventType
   ) => {
     const responseData = response?.data;
-    
-    if (
+    const isNewNotification =
       eventType === EventType.NOTIFICATION &&
       Array.isArray(responseData) &&
-      isNonEmptyArray(responseData)
-    ) {
-      logger.info(`new notifications : ${JSON.stringify(responseData)}`);
+      isNonEmptyArray(responseData);
+    const isNewTotalUnviewed =
+      eventType === EventType.UNVIEWED_COUNT && responseData && 'totalUnviewed' in responseData;
 
-      markAllAsViewed(responseData[0].createdAt);
-      const payload = { newNotifications: responseData, action: eventTypes.NEW_NOTIFICATIONS };
-
-      PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
-    } else if (
-      eventType === EventType.UNVIEWED_COUNT &&
-      responseData &&
-      'totalUnviewed' in responseData
-    ) {
-      const totalUnviewed = responseData.totalUnviewed;
-      const payload = {
-        unviewedCount: totalUnviewed,
-        action: eventTypes.UPDATE_NOTIFICATIONS_COUNT
-      };
-
-      PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(payload));
-    }
+    if (isNewNotification) onNewNotificationEvent(responseData);
+    else if (isNewTotalUnviewed) onTotalUnviewedCountEvent(response as UnviewedCountApiResponse);
   };
 
   const onStatusChange = (status: VerificationStatus) => {
