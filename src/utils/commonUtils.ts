@@ -1,7 +1,7 @@
 import type { NotificationDataType } from '@sirenapp/js-sdk/dist/esm/types';
 
 import { defaultStyles, eventTypes, levelLogFns, LogLevel, ThemeMode } from './constants';
-import type { SirenStyleProps, StyleProps, ThemeProps } from '../types';
+import type { StyleProps, CustomStyleProps, ThemeProps } from '../types';
 
 import { DefaultTheme } from './index';
 
@@ -92,9 +92,9 @@ export const logger = {
 
 export const applyTheme = (
   theme: ThemeProps = {},
-  customStyles: StyleProps = {},
+  customStyles: CustomStyleProps = {},
   mode: ThemeMode = ThemeMode.LIGHT
-): SirenStyleProps => ({
+): StyleProps => ({
   container: {
     backgroundColor:
       theme.windowContainer?.background ||
@@ -144,7 +144,7 @@ export const applyTheme = (
       theme.windowHeader?.headerActionColor ||
       theme.colors?.clearAllIcon ||
       DefaultTheme[mode].windowHeader.headerActionColor,
-    height: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.1,
+    height: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.12,
     borderRadius: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.12,
     marginTop: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.1,
     marginBottom: (customStyles.clearAllIcon?.size || defaultStyles.clearAllIcon.size) * 0.05,
@@ -213,7 +213,23 @@ export const applyTheme = (
     fontSize: customStyles.notificationCard?.titleSize || defaultStyles.notificationCard.titleSize,
     fontWeight:
       customStyles.notificationCard?.titleFontWeight ||
-      defaultStyles.notificationCard.titleFontWeight
+      defaultStyles.notificationCard.titleFontWeight,
+    lineHeight:
+      (customStyles.notificationCard?.titleSize || defaultStyles.notificationCard.titleSize) + 6
+  },
+  cardSubTitle: {
+    color:
+      theme.notificationCard?.subTitleColor ||
+      theme.colors?.textColor ||
+      DefaultTheme[mode].notificationCard.subTitleColor,
+    fontSize:
+      customStyles.notificationCard?.subtitleSize || defaultStyles.notificationCard.subtitleSize,
+    fontWeight:
+      customStyles.notificationCard?.subtitleFontWeight ||
+      defaultStyles.notificationCard.subtitleFontWeight,
+    lineHeight:
+      (customStyles.notificationCard?.subtitleSize || defaultStyles.notificationCard.subtitleSize) +
+      8
   },
   cardDescription: {
     color:
@@ -222,7 +238,13 @@ export const applyTheme = (
       DefaultTheme[mode].notificationCard.descriptionColor,
     fontSize:
       customStyles.notificationCard?.descriptionSize ||
-      defaultStyles.notificationCard.descriptionSize
+      defaultStyles.notificationCard.descriptionSize,
+    fontWeight:
+      customStyles.notificationCard?.descriptionFontWeight ||
+      defaultStyles.notificationCard.descriptionFontWeight,
+    lineHeight:
+      (customStyles.notificationCard?.descriptionSize ||
+        defaultStyles.notificationCard.descriptionSize) + 8
   },
   dateStyle: {
     color:
@@ -251,8 +273,9 @@ export const applyTheme = (
       theme.colors?.highlightedCardColor || DefaultTheme[mode].colors.highlightedCardColor
   },
   backIcon: {
-    backgroundColor: theme.windowHeader?.titleColor ||
-    theme.colors?.textColor ||
-    DefaultTheme[mode].windowHeader.titleColor,
+    backgroundColor:
+      theme.windowHeader?.titleColor ||
+      theme.colors?.textColor ||
+      DefaultTheme[mode].windowHeader.titleColor
   }
 });

@@ -6,7 +6,7 @@ import { useSirenContext } from '../components/sirenProvider';
 const useSiren = () => {
   const { siren } = useSirenContext();
 
-  const markAsRead = async (id: string) => {
+  const markAsReadById = async (id: string) => {
     if (siren)
       if (id?.length > 0) {
         const response = await siren?.markNotificationAsReadById(id);
@@ -25,7 +25,7 @@ const useSiren = () => {
     return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
-  const markNotificationsAsReadByDate = async (untilDate: string) => {
+  const markAsReadByDate = async (untilDate: string) => {
     if (siren && untilDate) {
       const response = await siren?.markNotificationsAsReadByDate(untilDate);
 
@@ -41,12 +41,12 @@ const useSiren = () => {
     return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
-  const deleteNotification = async (id: string) => {
+  const deleteById = async (id: string, shouldUpdateList: boolean = true) => {
     if (siren)
       if (id?.length > 0) {
         const response = await siren?.deleteNotificationById(id);
 
-        if (response?.data) {
+        if (response?.data && shouldUpdateList) {
           const payload = { id, action: eventTypes.DELETE_ITEM };
 
           PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
@@ -60,7 +60,7 @@ const useSiren = () => {
     return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
-  const deleteNotificationsByDate = async (untilDate: string) => {
+  const deleteByDate = async (untilDate: string) => {
     if (siren && untilDate) {
       const response = await siren.deleteNotificationsByDate(untilDate);
 
@@ -76,7 +76,7 @@ const useSiren = () => {
     return { error: errorMap.SIREN_OBJECT_NOT_FOUND };
   };
 
-  const markNotificationsAsViewed = async (untilDate: string) => {
+  const markAllAsViewed = async (untilDate: string) => {
     if (siren && untilDate) {
       const response = await siren?.markNotificationsAsViewed(untilDate);
 
@@ -93,11 +93,11 @@ const useSiren = () => {
   };
 
   return {
-    markNotificationsAsReadByDate,
-    markAsRead,
-    deleteNotification,
-    deleteNotificationsByDate,
-    markNotificationsAsViewed
+    markAsReadByDate,
+    markAsReadById,
+    deleteById,
+    deleteByDate,
+    markAllAsViewed
   };
 };
 

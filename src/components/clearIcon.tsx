@@ -1,9 +1,9 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 
-const ClearIcon = ({ styles }: { styles: Partial<SirenStyleProps> }): ReactElement => {
+const ClearIcon = ({ styles }: { styles: Partial<StyleProps> }): ReactElement => {
   const icon: JSX.Element[] = [];
 
   for (let i = 0; i < 3; i++)
@@ -16,11 +16,12 @@ const ClearIcon = ({ styles }: { styles: Partial<SirenStyleProps> }): ReactEleme
 
 const style = StyleSheet.create({
   clearIcon: {
-    width: '100%'
+    width: '100%',
   },
   clearIconContainer: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 0.5
   }
 });
 

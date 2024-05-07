@@ -67,7 +67,7 @@
     "source": "src",
     "output": "dist",
     "targets": [
-      "module",
+      ["module", { "sourceMaps": false }],
       "typescript"
     ]
   },

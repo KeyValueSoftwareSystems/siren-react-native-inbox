@@ -1,8 +1,9 @@
-import React, { useState, type ReactElement, useMemo, useEffect } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, type ReactElement, useMemo, useEffect, useRef } from 'react';
+import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import type { NotificationCardProps } from '../types';
 import { CommonUtils, useSiren } from '../utils';
+import { eventTypes, events } from '../utils/constants';
 import CloseIcon from './closeIcon';
 import TimerIcon from './timerIcon';
 
@@ -41,8 +42,16 @@ import TimerIcon from './timerIcon';
 
 const Card = (props: NotificationCardProps): ReactElement => {
   const { onCardClick, notification, cardProps = {}, styles, onDelete, darkMode } = props;
-  const { hideAvatar, disableAutoMarkAsRead, hideDelete = false } = cardProps;
-  const { markAsRead } = useSiren();
+  const {
+    hideAvatar,
+    disableAutoMarkAsRead,
+    hideDelete = false,
+    onAvatarClick,
+    deleteIcon = null
+  } = cardProps;
+  const { markAsReadById } = useSiren();
+
+  const opacity = useRef(new Animated.Value(1)).current;
 
   const emptyState = () => {
     return darkMode ? require('../assets/emptyDark.png') : require('../assets/emptyLight.png');
@@ -64,33 +73,58 @@ const Card = (props: NotificationCardProps): ReactElement => {
 
   const cardClick = (): void => {
     onCardClick(notification);
-    if (!disableAutoMarkAsRead) markAsRead(notification.id);
+    if (!disableAutoMarkAsRead) markAsReadById(notification.id);
   };
 
   const onError = (): void => {
     setImageSource(emptyState());
   };
 
+  const avatarClick = () => {
+    if (onAvatarClick) onAvatarClick(notification);
+  };
+
   const renderAvatar = useMemo((): JSX.Element => {
     return (
       <View style={style.cardIconContainer}>
-        <View style={[style.cardIconRound, styles.cardIconRound]}>
+        <TouchableOpacity
+          disabled={Boolean(!onAvatarClick)}
+          accessibilityLabel={`siren-notification-avatar-${notification.id}`}
+          onPress={avatarClick}
+          style={[style.cardIconRound, styles.cardIconRound]}
+        >
           <Image
             source={imageSource}
             resizeMode='cover'
             style={style.cardAvatarStyle}
             onError={onError}
           />
-        </View>
+        </TouchableOpacity>
       </View>
     );
-  }, [styles, darkMode, imageSource]);
+  }, [styles, darkMode, imageSource, onAvatarClick]);
+
+  const onDeleteItem = async (): Promise<void> => {
+    const isSuccess = await onDelete(notification.id, false);
+
+    if (isSuccess)
+      Animated.timing(opacity, {
+        toValue: 0.1,
+        duration: 300,
+        useNativeDriver: true
+      }).start(() => {
+        const payload = { id: notification.id, action: eventTypes.DELETE_ITEM };
+
+        PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+      });
+  };
 
   return (
     <TouchableOpacity
       onPress={cardClick}
       activeOpacity={0.6}
       testID='card-touchable'
+      accessibilityLabel={`siren-notification-card-${notification.id}`}
       style={[style.cardWrapper, styles.cardWrapper, !notification?.isRead && styles.highlighted]}
     >
       <View
@@ -100,19 +134,20 @@ const Card = (props: NotificationCardProps): ReactElement => {
           notification?.isRead && style.transparent
         ]}
       />
-      <View style={[style.cardContainer, styles.cardContainer]}>
+      <Animated.View style={[style.cardContainer, styles.cardContainer, { opacity }]}>
         {!hideAvatar && renderAvatar}
         <View style={style.cardContentContainer}>
           <View style={style.cardFooterRow}>
             <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
-            {!hideDelete && (
-              <CloseIcon onDelete={onDelete} notification={notification} styles={styles} />
-            )}
+            {!hideDelete &&
+              (deleteIcon || (
+                <CloseIcon onDelete={onDeleteItem} notification={notification} styles={styles} />
+              ))}
           </View>
           {Boolean(notification.message?.subHeader) && (
-            <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
+            <Text numberOfLines={2} style={[style.cardSubTitle, styles.cardSubTitle]}>
               {notification.message?.subHeader}
             </Text>
           )}
@@ -126,7 +161,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
             </Text>
           </View>
         </View>
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   );
 };
@@ -134,21 +169,18 @@ const Card = (props: NotificationCardProps): ReactElement => {
 const style = StyleSheet.create({
   cardWrapper: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: 2
+    alignItems: 'center'
   },
   cardContainer: {
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   cardIconContainer: {
     paddingLeft: 6,
-    paddingRight: 12,
-    paddingTop: 4
+    paddingRight: 6
   },
   cardTitle: {
-    paddingBottom: 4,
-    paddingTop: 4
+    paddingBottom: 4
   },
   icon: {
     width: '100%',
@@ -166,11 +198,14 @@ const style = StyleSheet.create({
   cardContentContainer: {
     flex: 1,
     width: '100%',
-    paddingRight: 6
+    paddingRight: 6,
+    paddingLeft: 6
   },
   cardDescription: {
-    fontWeight: '400',
     paddingBottom: 10
+  },
+  cardSubTitle: {
+    paddingBottom: 6
   },
   cardFooterRow: {
     flexDirection: 'row',
@@ -187,7 +222,9 @@ const style = StyleSheet.create({
   },
   activeCardMarker: {
     width: 4,
-    height: '100%'
+    height: '100%',
+    position: 'absolute',
+    zIndex: 2
   },
   transparent: {
     backgroundColor: 'transparent'

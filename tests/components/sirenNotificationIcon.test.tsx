@@ -6,6 +6,7 @@ import type { Siren } from '@sirenapp/js-sdk';
 import { SirenInboxIcon } from '../../src';
 import type { Theme } from '../../src/types';
 import * as sirenProvider from '../../src/components/sirenProvider';
+import {VerificationStatus} from '../../src/utils/constants'
 
 const UnviewedCountReturnResponse = {
   data: {
@@ -49,6 +50,7 @@ describe('SirenInboxIcon', () => {
 
   jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
     siren: mockSiren as Siren,
+    verificationStatus: VerificationStatus.PENDING
   });
 
   it('renders without crashing', () => {

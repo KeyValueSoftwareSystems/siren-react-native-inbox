@@ -10,7 +10,6 @@ describe('SirenInbox', () => {
   it('renders without crashing', () => {
     render(
       <SirenInbox
-        title='Notifications'
         darkMode={false}
         onError={(error) => console.log(error)}
       />
@@ -20,7 +19,7 @@ describe('SirenInbox', () => {
   test("should render custom header ", () => {
     const { getByTestId } = render(
       <SirenInbox
-        inboxHeaderProps={{customHeader: <View testID="custom-header"><Text>My notifications</Text></View>}}
+        headerProps={{customHeader: <View testID="custom-header"><Text>My notifications</Text></View>}}
       />
     );
 

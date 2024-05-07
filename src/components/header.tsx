@@ -1,7 +1,7 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 import { Constants } from '../utils';
 import ClearIcon from './clearIcon';
 import BackIcon from './backIcon';
@@ -30,7 +30,7 @@ import BackIcon from './backIcon';
 
 type HeaderProps = {
   title: string;
-  styles: Partial<SirenStyleProps>;
+  styles: Partial<StyleProps>;
   onPressClearAll: () => void;
   clearAllDisabled: boolean;
   hideClearAll?: boolean;
@@ -54,7 +54,7 @@ const Header = (props: HeaderProps): ReactElement => {
   const renderBackButton = () => {
     if (showBackButton)
       return (
-        <TouchableOpacity style={style.backIcon} onPress={onBackPress}>
+        <TouchableOpacity accessibilityLabel='siren-header-back' style={style.backIcon} onPress={onBackPress}>
           {backButton || <BackIcon styles={styles} />}
         </TouchableOpacity>
       );
@@ -73,11 +73,12 @@ const Header = (props: HeaderProps): ReactElement => {
       {!hideClearAll && (
         <TouchableOpacity
           disabled={clearAllDisabled}
+          accessibilityLabel='siren-header-clear-all'
           onPress={onPressClearAll}
-          style={style.clearIconContainer}
+          style={[style.clearIconContainer, clearAllDisabled && style.lowOpacity]}
         >
           <ClearIcon styles={styles} />
-          <Text style={styles.headerAction}>{Constants.CLEAR_ALL_LABEL}</Text>
+          <Text style={[styles.headerAction, style.headerAction]}>{Constants.CLEAR_ALL_LABEL}</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -91,22 +92,33 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 15
+    paddingLeft: 16,
+    paddingRight: 18
   },
   clearIconContainer: {
+    width: '20%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
   },
   headerTitle: {
-    width: '70%'
+    width: '95%',
   },
   rowContainer: {
+    width: '80%',
     flexDirection: 'row',
     alignItems: 'center'
   },
   backIcon: {
     paddingRight: 2
+  },
+  headerAction: {
+    fontSize: 14,
+    fontWeight: '500',
+    paddingLeft: 2
+  },
+  lowOpacity: {
+    opacity: 0.4
   }
 });
 

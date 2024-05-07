@@ -51,7 +51,7 @@ Below are optional props available for the icon component:
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
 theme | Object for custom themes |  Theme | {} |
-customStyles | Object for custom styling |  StyleProps | {} |
+customStyles | Object for custom styling |  CustomStyleProps | {} |
 notificationIcon | Option to use custom notification icon |  JSX Element | null |
 darkMode | Toggle to enable dark mode |  boolean | false |
 onError | Callback for handling errors | (error:  SirenErrorType)=> void | null |
@@ -80,7 +80,7 @@ Here are the available theme options:
 Here are the custom style options for the notification icon:
 ```js
 
-    type StyleProps = {
+    type CustomStyleProps = {
         notificationIcon?: {
           size?: number,
         };
@@ -109,14 +109,14 @@ Below are optional props available for the inbox component:
 Prop | Description | Type | Default value |
 --- | --- | --- | --- |
 theme | Object for custom themes |  Theme | {} |
-customStyles | Object for custom styling |  StyleProps | {} |
+customStyles | Object for custom styling |  CustomStyleProps | {} |
 darkMode |  Toggle to enable dark mode|  boolean | false |
 itemsPerFetch | Number of notifications fetch per api request (have a max cap of 50) |  number | 20 |
-cardProps | Props for customizing the notification cards | CardProps | { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false } |
-customNotificationCard | Function for rendering custom notification cards | (notification)=> JSX Element | null |
-onNotificationCardClick | Custom click handler for notification cards | (notification)=> void | ()=>null |
-listEmptyComponent | Custom component for empty notification list | JSX Element | null |
-inboxHeaderProps | Props for customizing the header | InboxHeaderProps | { title: "Notifications", hideHeader: false, hideClearAll: false, customHeader: null, showBackButton:false, backButton: null, onBackPress: ()=> null } |
+cardProps | Props for customizing the card | CardProps | { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false, deleteIcon: JSX.Element, onAvatarClick: ()=> null } |
+customCard | Function for rendering custom card | (notification)=> JSX Element | null |
+onCardClick | Custom click handler for card | (notification)=> void | ()=>null |
+listEmptyComponent | Custom component for empty list | JSX Element | null |
+headerProps | Props for customizing the header | HeaderProps | { title: "Notifications", hideHeader: false, hideClearAll: false, customHeader: null, showBackButton:false, backButton: null, onBackPress: ()=> null } |
 customFooter | Custom footer component | JSX Element | null |
 customLoader | Custom component to display the initial loading state| JSX Element | null |
 customErrorWindow | Custom error window | JSX Element | null |
@@ -151,7 +151,6 @@ Here are the available theme options:
             titleColor?: string;
             headerActionColor?: string;
             borderColor?: string;
-            borderWidth?: string;
         };
         windowContainer?: {
             background?: string;
@@ -160,8 +159,8 @@ Here are the available theme options:
             borderColor?: string;
             background?: string;
             titleColor?: string;
+            subTitleColor?: string;
             descriptionColor?: string;
-            dateColor?: string;
         };
     }
 ```
@@ -171,10 +170,7 @@ Here are the available theme options:
 Here are the custom style options for the notification inbox:
 
 ```js
-    type StyleProps = {
-      notificationIcon?: {
-        size?: number;
-      };
+    type CustomStyleProps = {
       window?: {
         width?: DimensionValue;
         height?: DimensionValue;
@@ -183,6 +179,8 @@ Here are the custom style options for the notification inbox:
         height?: number;
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
+        borderWidth?: string;
+        titlePadding?: number;
       }
       windowContainer?: {
         padding?: number;
@@ -193,14 +191,11 @@ Here are the custom style options for the notification inbox:
         avatarSize?: number;
         titleFontWeight?: TextStyle['fontWeight'];
         titleSize?: number;
+        subtitleFontWeight?: TextStyle['fontWeight'];
+        subtitleSize?: number
+        descriptionFontWeight?: TextStyle['fontWeight'];
         descriptionSize?: number;
         dateSize?: number;
-      };
-      badgeStyle?: {
-        size?: number;
-        textSize?: number;
-        top?: number;
-        right?: number;
       };
       deleteIcon?:{
         size?: number
@@ -217,14 +212,16 @@ Here are the custom style options for the notification inbox:
 ```js
     type CardProps = {
       hideAvatar?: boolean;
+      onAvatarClick?: (notification: NotificationDataType) => void;
       disableAutoMarkAsRead?: boolean;
+      deleteIcon?: JSX.Element;
       hideDelete?: boolean;
     };
 ```
 
-#### InboxHeaderProps
+#### HeaderProps
 ```js
-    type InboxHeaderProps = {
+    type HeaderProps = {
       title?: string;
       hideHeader?: boolean;
       hideClearAll?: boolean;
@@ -243,14 +240,14 @@ Here are the custom style options for the notification inbox:
 import { useSiren } from '@sirenapp/react-native-inbox';
 
 function MyComponent() {
-  const { markAsRead, deleteNotification } = useSiren();
+  const { markAsReadById, deleteById } = useSiren();
 
   function handleMarkAsRead(id) {
-    markAsRead(id);
+    markAsReadById(id);
   }
 
   function handleDeleteNotification(id) {
-    deleteNotification(id);
+    deleteById(id);
   }
 
   return (
@@ -262,23 +259,11 @@ function MyComponent() {
 
 Functions | Parameters | Type | Description |
 ----------|------------|-------|------------|
-markNotificationsAsReadByDate | startDate | ISO date string | Sets the read status of notifications to true until the given date |
-markAsRead | id | string | Set read status of a notification to true          |
-deleteNotification |  id | string  | Delete a notification by id |
-deleteNotificationsByDate | startDate | ISO date string | Delete all notifications until given date |
-markNotificationsAsViewed | startDate | ISO date string |Sets the viewed status of notifications to true until the given date |
-
-## 4. Error codes
-Given below are all possible error codes thrown by sdk:
-
-Error code  | Description |
---- | --- |
-INVALID_TOKEN | The token passed in the provider is invalid |
-INVALID_RECIPIENT_ID | The recipient id passed in the provider is invalid |
-TOKEN_VERIFICATION_FAILED | Verification of the given tokens has failed |
-GENERIC_API_ERROR | Occurrence of an unexpected api error |
-OUTSIDE_SIREN_CONTEXT | Attempting to invoke the functions outside the siren inbox context |
-MISSING_PARAMETER | The required parameter is missing |
+markAsReadByDate | startDate | ISO date string | Sets the read status of notifications to true until the given date |
+markAsReadById | id | string | Set read status of a notification to true          |
+deleteById |  id | string  | Delete a notification by id |
+deleteByDate | startDate | ISO date string | Delete all notifications until given date |
+markAllAsViewed | startDate | ISO date string |Sets the viewed status of notifications to true until the given date |
 
 ## Example
 Here's a basic example to help you get started
@@ -312,7 +297,6 @@ function MyContainer(): React.JSX.Element {
         darkMode={false}
       />
       <SirenInbox
-        title="Notifications"
         hideHeader={false}
         darkMode={false}
         cardProps={{hideAvatar: false, disableAutoMarkAsRead: false}}

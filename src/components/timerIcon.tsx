@@ -1,9 +1,9 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 
-const TimerIcon = ({ styles }: { styles: Partial<SirenStyleProps> }): ReactElement => {
+const TimerIcon = ({ styles }: { styles: Partial<StyleProps> }): ReactElement => {
   return (
     <View style={[style.timerIcon, styles.timerIcon]}>
       <View style={styles.timerIconLine} />

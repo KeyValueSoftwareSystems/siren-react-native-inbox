@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import type { NotificationDataType } from '@sirenapp/js-sdk/dist/esm/types';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 
 const CloseIcon = ({
   notification,
@@ -11,7 +11,7 @@ const CloseIcon = ({
   onDelete
 }: {
   notification: NotificationDataType;
-  styles: Partial<SirenStyleProps>;
+  styles: Partial<StyleProps>;
   onDelete: (id: string) => void;
 }): ReactElement => {
   const icon: JSX.Element[] = [];
@@ -34,6 +34,7 @@ const CloseIcon = ({
       onPress={() => onDelete(notification.id)}
       style={[style.closeButton, styles.closeButton]}
       testID='delete-button'
+      accessibilityLabel={`siren-notification-delete${notification.id}`}
     >
       <>{icon}</>
     </TouchableOpacity>
@@ -45,12 +46,12 @@ const style = StyleSheet.create({
     marginVertical: 2,
     width: '100%',
     borderRadius: 1,
-    position: 'absolute'
+    position: 'absolute',
   },
   closeButton: {
     overflow: 'hidden',
     justifyContent: 'center',
-    opacity: 0.8
+    opacity: 0.8,
   }
 });
 
