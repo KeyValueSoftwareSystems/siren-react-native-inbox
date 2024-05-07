@@ -7,7 +7,7 @@ import type {
   NotificationDataType,
   NotificationsApiResponse,
   SirenErrorType,
-  UnviewedCountApiResponse,
+  UnviewedCountApiResponse
 } from '@sirenapp/js-sdk/dist/esm/types';
 
 import type { SirenProviderConfigProps } from '../types';
@@ -74,10 +74,11 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   let retryCount = 0;
 
   const { markAllAsViewed } = useSiren();
-  
+
   const [siren, setSiren] = useState<Siren | null>(null);
-  const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>(VerificationStatus.PENDING);
-  
+  const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>(
+    VerificationStatus.PENDING
+  );
 
   useEffect(() => {
     if (config?.recipientId && config?.userToken) {
@@ -122,9 +123,9 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
     if (isNonEmptyArray(responseData)) {
       logger.info(`new notifications : ${JSON.stringify(responseData)}`);
-      
+
       markAllAsViewed(responseData[0].createdAt);
-      const payload = { newNotifications: response?.data, action: eventTypes.NEW_NOTIFICATIONS };    
+      const payload = { newNotifications: response?.data, action: eventTypes.NEW_NOTIFICATIONS };
 
       PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
     }
@@ -133,7 +134,6 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   const onStatusChange = (status: VerificationStatus) => {
     setVerificationStatus(status);
   };
-
 
   const actionCallbacks = { onUnViewedCountReceived, onNotificationReceived, onStatusChange };
 
@@ -147,7 +147,11 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   };
 
   const retryVerification = (error: SirenErrorType) => {
-    if (error.Code === IN_APP_RECIPIENT_UNAUTHENTICATED && retryCount < MAXIMUM_RETRY_COUNT)
+    if (
+      error.Code === IN_APP_RECIPIENT_UNAUTHENTICATED &&
+      retryCount < MAXIMUM_RETRY_COUNT &&
+      verificationStatus === VerificationStatus.FAILED
+    )
       setTimeout(() => {
         initialize();
         retryCount++;
