@@ -59,8 +59,8 @@ export const levelLogFns = {
 };
 
 export enum EventType {
-  NOTIFICATIONS = "NOTIFICATIONS",
-  UNVIEWED_COUNT = "UNVIEWED_COUNT"
+    NOTIFICATION = "NOTIFICATIONS",
+    UNVIEWED_COUNT = "UNVIEWED_COUNT"
 }
 
 export enum eventTypes {
