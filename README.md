@@ -248,10 +248,6 @@ function MyComponent() {
     markAsReadById(id);
   }
 
-  function handleDeleteNotification(id) {
-    deleteById(id);
-  }
-
   return (
     {/* Your component logic */}
   );
