@@ -247,4 +247,5 @@ export type StyleProps = {
   skeltonLoaderColor: ViewStyle;
   highlighted: ViewStyle;
   backIcon: ViewStyle;
+  mediaContainer: ViewStyle;
 };
