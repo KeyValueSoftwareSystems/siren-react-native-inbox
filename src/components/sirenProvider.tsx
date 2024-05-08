@@ -127,26 +127,36 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     PubSub.publish(events.NOTIFICATION_COUNT_EVENT, JSON.stringify(payload));
   };
 
+  const handleNotificationEvent = (response: NotificationsApiResponse) => {
+    const responseData = response?.data;
+
+    if (Array.isArray(responseData) && isNonEmptyArray(responseData))
+      onNewNotificationEvent(responseData);
+
+  };
+  const handleUnviewedCountEvent = (response: UnviewedCountApiResponse) => {
+    const responseData = response?.data;
+
+    if (responseData && 'totalUnviewed' in responseData)
+      onTotalUnviewedCountEvent(response);
+    
+  };
   const onEventReceive = (
     response: NotificationsApiResponse | UnviewedCountApiResponse = {},
     eventType: EventType
   ) => {
-    const responseData = response?.data;
-    const isNewNotification =
-      eventType === EventType.NOTIFICATION &&
-      Array.isArray(responseData) &&
-      isNonEmptyArray(responseData);
-    const isNewTotalUnviewed =
-      eventType === EventType.UNVIEWED_COUNT && responseData && 'totalUnviewed' in responseData;
-
-    if (isNewNotification) onNewNotificationEvent(responseData);
-    else if (isNewTotalUnviewed) onTotalUnviewedCountEvent(response as UnviewedCountApiResponse);
+    switch (eventType) {
+      case EventType.NOTIFICATION:
+        handleNotificationEvent(response as NotificationsApiResponse);
+        break;
+      case EventType.UNVIEWED_COUNT:
+        handleUnviewedCountEvent(response as UnviewedCountApiResponse);
+        break;
+    }
   };
-
   const onStatusChange = (status: VerificationStatus) => {
     setVerificationStatus(status);
   };
-
 
   const actionCallbacks = { onEventReceive, onStatusChange };
 
