@@ -9,7 +9,7 @@ const useSiren = () => {
   const markAsReadById = async (id: string) => {
     if (siren)
       if (id?.length > 0) {
-        const response = await siren?.markNotificationAsReadById(id);
+        const response = await siren?.markAsReadById(id);
 
         if (response?.data) {
           const payload = { id, action: eventTypes.MARK_ITEM_AS_READ };
@@ -27,7 +27,7 @@ const useSiren = () => {
 
   const markAsReadByDate = async (untilDate: string) => {
     if (siren && untilDate) {
-      const response = await siren?.markNotificationsAsReadByDate(untilDate);
+      const response = await siren?.markAsReadByDate(untilDate);
 
       if (response?.data) {
         const payload = { action: eventTypes.MARK_ALL_AS_READ };
@@ -44,7 +44,7 @@ const useSiren = () => {
   const deleteById = async (id: string, shouldUpdateList: boolean = true) => {
     if (siren)
       if (id?.length > 0) {
-        const response = await siren?.deleteNotificationById(id);
+        const response = await siren?.deleteById(id);
 
         if (response?.data && shouldUpdateList) {
           const payload = { id, action: eventTypes.DELETE_ITEM };
@@ -62,7 +62,7 @@ const useSiren = () => {
 
   const deleteByDate = async (untilDate: string) => {
     if (siren && untilDate) {
-      const response = await siren.deleteNotificationsByDate(untilDate);
+      const response = await siren.deleteByDate(untilDate);
 
       if (response?.data) {
         const payload = { action: eventTypes.DELETE_ALL_ITEM };
@@ -78,7 +78,7 @@ const useSiren = () => {
 
   const markAllAsViewed = async (untilDate: string) => {
     if (siren && untilDate) {
-      const response = await siren?.markNotificationsAsViewed(untilDate);
+      const response = await siren?.markAllAsViewed(untilDate);
 
       if (response?.data) {
         const payload = { unviewedCount: 0, action: eventTypes.UPDATE_NOTIFICATIONS_COUNT };
