@@ -9,7 +9,8 @@ export const COLORS = {
     deleteIcon: '#34405499',
     timerIcon: '#667185',
     clearAllIcon: '#667185',
-    infiniteLoader: '#F56630'
+    infiniteLoader: '#F56630',
+    imageBackground: '#F0F2F5'
   },
   dark: {
     primaryColor: '#FA9874',
@@ -21,7 +22,8 @@ export const COLORS = {
     deleteIcon: '#D0D5DD',
     timerIcon: '#98A2B3',
     clearAllIcon: '#D0D5DD',
-    infiniteLoader: '#F56630'
+    infiniteLoader: '#F56630',
+    imageBackground: '#4C4C4C'
   }
 };
 
