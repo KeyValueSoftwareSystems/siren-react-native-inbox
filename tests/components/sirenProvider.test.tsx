@@ -24,16 +24,14 @@ describe('SirenProvider', () => {
       </SirenProvider>
     );
     const mocErrorFn = jest.fn();
-    const mockNotificationHandler = jest.fn();
-    const mockCountHandler = jest.fn();
+    const mockEventHandler = jest.fn();
 
     const sirenObject = new Siren({
       token: 'user-token',
       recipientId: 'recipient-id',
       onError: mocErrorFn,
       actionCallbacks: {
-        onNotificationReceived: mockNotificationHandler,
-        onUnViewedCountReceived: mockCountHandler
+        onEventReceive: mockEventHandler,
       }
     });
 

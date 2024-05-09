@@ -18,7 +18,7 @@ export const COLORS = {
     neutralColor: '#232326',
     borderColor: '#344054',
     dateColor: '#98A2B3',
-    deleteIcon: '#98A2B3',
+    deleteIcon: '#D0D5DD',
     timerIcon: '#98A2B3',
     clearAllIcon: '#D0D5DD',
     infiniteLoader: '#F56630'
@@ -57,6 +57,11 @@ export const levelLogFns = {
   [LogLevel.INFO]: console.log,
   [LogLevel.ERROR]: console.error
 };
+
+export enum EventType {
+    NOTIFICATION = "NOTIFICATIONS",
+    UNVIEWED_COUNT = "UNVIEWED_COUNT"
+}
 
 export enum eventTypes {
   MARK_ITEM_AS_VIEWED = 'MARK_ITEM_AS_VIEWED',
