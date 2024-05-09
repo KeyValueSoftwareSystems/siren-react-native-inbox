@@ -170,7 +170,11 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   };
 
   const retryVerification = (error: SirenErrorType) => {
-    if (error.Code === IN_APP_RECIPIENT_UNAUTHENTICATED && retryCount < MAXIMUM_RETRY_COUNT)
+    if (
+      error.Code === IN_APP_RECIPIENT_UNAUTHENTICATED &&
+      retryCount < MAXIMUM_RETRY_COUNT &&
+      verificationStatus === VerificationStatus.FAILED
+    )
       setTimeout(() => {
         initialize();
         retryCount++;
@@ -181,6 +185,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
   // Function to initialize the Siren SDK and fetch notifications
   const initialize = (): void => {
+    setVerificationStatus(VerificationStatus.PENDING);
     const dataParams: InitConfigType = getDataParams();
     const siren = new Siren(dataParams);
 

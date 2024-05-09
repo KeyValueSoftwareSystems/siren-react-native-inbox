@@ -149,7 +149,7 @@ export const defaultStyles = {
   deleteIcon: {
     size: 14
   },
-  dateIcon: {
+  timerIcon: {
     size: 12
   },
   clearAllIcon: {

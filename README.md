@@ -200,7 +200,7 @@ Here are the custom style options for the notification inbox:
       deleteIcon?:{
         size?: number
       };
-      dateIcon?:{
+      timerIcon?:{
         size?: number
       };
       clearAllIcon?:{

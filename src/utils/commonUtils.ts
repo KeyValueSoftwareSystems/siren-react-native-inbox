@@ -157,23 +157,23 @@ export const applyTheme = (
   },
   timerIcon: {
     borderColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon,
-    width: customStyles.dateIcon?.size || defaultStyles.dateIcon.size,
-    height: customStyles.dateIcon?.size || defaultStyles.dateIcon.size,
-    borderRadius: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) / 2,
-    borderWidth: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1,
-    padding: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1
+    width: customStyles.timerIcon?.size || defaultStyles.timerIcon.size,
+    height: customStyles.timerIcon?.size || defaultStyles.timerIcon.size,
+    borderRadius: (customStyles.timerIcon?.size || defaultStyles.timerIcon.size) / 2,
+    borderWidth: (customStyles.timerIcon?.size || defaultStyles.timerIcon.size) * 0.1,
+    padding: (customStyles.timerIcon?.size || defaultStyles.timerIcon.size) * 0.1
   },
   timerIconLine: {
     backgroundColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon,
-    height: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.36,
-    width: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1
+    height: (customStyles.timerIcon?.size || defaultStyles.timerIcon.size) * 0.36,
+    width: (customStyles.timerIcon?.size || defaultStyles.timerIcon.size) * 0.1
   },
   timerIconLine2: {
     backgroundColor: theme.colors?.timerIcon || DefaultTheme[mode].colors.timerIcon,
-    height: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.28,
-    width: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1,
-    marginLeft: (customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.22,
-    marginTop: -(customStyles.dateIcon?.size || defaultStyles.dateIcon.size) * 0.1
+    height: (customStyles.timerIcon?.size || defaultStyles.timerIcon.size) * 0.28,
+    width: (customStyles.timerIcon?.size || defaultStyles.timerIcon.size) * 0.1,
+    marginLeft: (customStyles.timerIcon?.size || defaultStyles.timerIcon.size) * 0.22,
+    marginTop: -(customStyles.timerIcon?.size || defaultStyles.timerIcon.size) * 0.1
   },
   cardContainer: {
     padding: customStyles.notificationCard?.padding || defaultStyles.notificationCard.padding
