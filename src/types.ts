@@ -182,7 +182,7 @@ export type CustomStyleProps = {
   deleteIcon?:{
     size?: number
   };
-  dateIcon?:{
+  timerIcon?:{
     size?: number
   };
   clearAllIcon?:{
