@@ -60,32 +60,25 @@ const Card = (props: NotificationCardProps): ReactElement => {
   };
 
   const failedState = () => {
-    return darkMode ? require('../assets/failedImageDark.png') : require('../assets/failedImageLight.png');
+    return darkMode
+      ? require('../assets/failedImageDark.png')
+      : require('../assets/failedImageLight.png');
   };
 
+  const avatarUrl = notification?.message?.avatar?.imageUrl || '';
+  const thumbnailUrl = notification?.message?.thumbnailUrl || '';
+
   const [imageSource, setImageSource] = useState(
-    notification?.message?.avatar?.imageUrl?.length > 0
-      ? { uri: notification.message?.avatar?.imageUrl }
-      : emptyState()
+    avatarUrl?.length > 0 ? { uri: avatarUrl } : emptyState()
   );
-  
+
   const [mediaSource, setMediaSource] = useState(
-    notification?.message?.thumbnailUrl?.length > 0
-      ? { uri: notification.message?.thumbnailUrl }
-      : emptyState()
+    thumbnailUrl?.length > 0 ? { uri: thumbnailUrl } : emptyState()
   );
 
   useEffect(() => {
-    setImageSource(
-      notification?.message?.avatar?.imageUrl?.length > 0
-        ? { uri: notification.message?.avatar?.imageUrl }
-        : emptyState()
-    );
-    setMediaSource(
-      notification?.message?.thumbnailUrl?.length > 0
-        ? { uri: notification.message?.thumbnailUrl }
-        : failedState()
-    );
+    setImageSource(avatarUrl?.length > 0 ? { uri: avatarUrl } : emptyState());
+    setMediaSource(thumbnailUrl?.length > 0 ? { uri: thumbnailUrl } : failedState());
   }, [notification, darkMode]);
 
   const cardClick = (): void => {
@@ -136,12 +129,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
         disabled={Boolean(!onMediaThumbnailClick)}
         onPress={mediaClick}
       >
-        <Image
-          source={mediaSource}
-          resizeMode='cover'
-          style={style.icon}
-          onError={onErrorMedia}
-        />
+        <Image source={mediaSource} resizeMode='cover' style={style.icon} onError={onErrorMedia} />
       </TouchableOpacity>
     );
   }, [darkMode, mediaSource, onMediaThumbnailClick]);
@@ -198,7 +186,9 @@ const Card = (props: NotificationCardProps): ReactElement => {
               {notification.message?.body}
             </Text>
           )}
-          {!hideMediaThumbnail && Boolean(notification.message?.thumbnailUrl) && renderMediaThumbnail}
+          {!hideMediaThumbnail &&
+            Boolean(notification.message?.thumbnailUrl) &&
+            renderMediaThumbnail}
           <View style={style.dateContainer}>
             <TimerIcon styles={styles} />
             <Text style={[style.dateStyle, styles.dateStyle]}>
