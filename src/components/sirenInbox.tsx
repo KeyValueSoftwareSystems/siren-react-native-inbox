@@ -105,7 +105,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch
   );
 
-  const { siren, verificationStatus } = useSirenContext();
+  const { siren, verificationStatus, id } = useSirenContext();
 
   const { deleteById, deleteByDate, markAllAsViewed } = useSiren();
 
@@ -123,7 +123,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const disableCardDelete = useRef(false);
 
   useEffect(() => {
-    PubSub.subscribe(events.NOTIFICATION_LIST_EVENT, notificationSubscriber);
+    PubSub.subscribe(`${events.NOTIFICATION_LIST_EVENT}${id}`, notificationSubscriber);
 
     return cleanUp();
   }, []);
@@ -173,7 +173,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const cleanUp = () => () => {
     siren?.stopRealTimeFetch(EventType.NOTIFICATION);
     setNotifications([]);
-    PubSub.unsubscribe(events.NOTIFICATION_LIST_EVENT);
+    PubSub.unsubscribe(`${events.NOTIFICATION_LIST_EVENT}${id}`);
     handleMarkAllAsViewed();
   };
 
