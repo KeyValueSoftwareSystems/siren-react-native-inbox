@@ -4,6 +4,7 @@ import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react
 import type { NotificationCardProps } from '../types';
 import { CommonUtils, useSiren } from '../utils';
 import { eventTypes, events } from '../utils/constants';
+import { useSirenContext } from './sirenProvider';
 import CloseIcon from './closeIcon';
 import TimerIcon from './timerIcon';
 
@@ -52,6 +53,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
     onMediaThumbnailClick
   } = cardProps;
   const { markAsReadById } = useSiren();
+  const { id: providerId } = useSirenContext();
 
   const opacity = useRef(new Animated.Value(1)).current;
 
@@ -145,7 +147,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
       }).start(() => {
         const payload = { id: notification.id, action: eventTypes.DELETE_ITEM };
 
-        PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+        PubSub.publish(`${events.NOTIFICATION_LIST_EVENT}${providerId}`, JSON.stringify(payload));
       });
   };
 
