@@ -277,5 +277,8 @@ export const applyTheme = (
       theme.windowHeader?.titleColor ||
       theme.colors?.textColor ||
       DefaultTheme[mode].windowHeader.titleColor
-  }
+  },
+  mediaContainer: {
+    backgroundColor: DefaultTheme[mode].notificationCard.mediaContainerBackground
+  },
 });

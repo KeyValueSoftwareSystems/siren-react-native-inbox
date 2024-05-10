@@ -216,6 +216,8 @@ Here are the custom style options for the notification inbox:
       disableAutoMarkAsRead?: boolean;
       deleteIcon?: JSX.Element;
       hideDelete?: boolean;
+      hideMediaThumbnail?: boolean;
+      onMediaThumbnailClick?: (notification: NotificationDataType) => void;
     };
 ```
 

@@ -77,7 +77,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     cardProps = {
       hideAvatar: false,
       disableAutoMarkAsRead: false,
-      hideDelete: false
+      hideDelete: false,
+      hideMediaThumbnail: false,
     },
     listEmptyComponent = null,
     headerProps = {},
