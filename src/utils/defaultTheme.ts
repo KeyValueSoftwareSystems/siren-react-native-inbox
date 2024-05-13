@@ -31,6 +31,14 @@ const defaultTheme = {
       descriptionColor: COLORS[ThemeMode.LIGHT].textColor,
       dateColor: COLORS[ThemeMode.LIGHT].textColor,
       mediaContainerBackground: COLORS[ThemeMode.LIGHT].imageBackground,
+    },
+    tabs: {
+      containerBackgroundColor: COLORS[ThemeMode.LIGHT].neutralColor,
+      activeTabBackgroundColor: COLORS[ThemeMode.LIGHT].neutralColor,
+      inactiveTabBackgroundColor: COLORS[ThemeMode.LIGHT].neutralColor,
+      activeTabTextColor: COLORS[ThemeMode.LIGHT].primaryColor,
+      inactiveTabTextColor: COLORS[ThemeMode.LIGHT].textColor,
+      indicatorColor: COLORS[ThemeMode.LIGHT].primaryColor,
     }
   },
   dark: {
@@ -63,6 +71,14 @@ const defaultTheme = {
       descriptionColor: COLORS[ThemeMode.DARK].textColor,
       dateColor: COLORS[ThemeMode.DARK].dateColor,
       mediaContainerBackground: COLORS[ThemeMode.DARK].imageBackground,
+    },
+    tabs: {
+      containerBackgroundColor: COLORS[ThemeMode.LIGHT].neutralColor,
+      activeTabBackgroundColor: COLORS[ThemeMode.LIGHT].neutralColor,
+      inactiveTabBackgroundColor: COLORS[ThemeMode.LIGHT].neutralColor,
+      activeTabTextColor: COLORS[ThemeMode.LIGHT].primaryColor,
+      inactiveTabTextColor: COLORS[ThemeMode.LIGHT].textColor,
+      indicatorColor: COLORS[ThemeMode.LIGHT].primaryColor,
     }
   }
 };

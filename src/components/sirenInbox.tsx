@@ -5,15 +5,16 @@ import PubSub from 'pubsub-js';
 import type { Siren } from '@sirenapp/js-sdk';
 import type { NotificationDataType, SirenErrorType } from '@sirenapp/js-sdk/dist/esm/types';
 
+import { useSirenContext } from './sirenProvider';
+import type { SirenInboxProps } from '../types';
+import { CommonUtils, Constants, useSiren } from '../utils';
 import Card from './card';
 import EmptyWindow from './emptyWindow';
 import ErrorWindow from './errorWindow';
 import Header from './header';
 import LoadingWindow from './loadingWindow';
 import Spinner from './spinner';
-import { useSirenContext } from './sirenProvider';
-import type { SirenInboxProps } from '../types';
-import { CommonUtils, Constants, useSiren } from '../utils';
+import Tabs from './tabs';
 
 const {
   DEFAULT_WINDOW_TITLE,
@@ -78,7 +79,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       hideAvatar: false,
       disableAutoMarkAsRead: false,
       hideDelete: false,
-      hideMediaThumbnail: false,
+      hideMediaThumbnail: false
     },
     listEmptyComponent = null,
     headerProps = {},
@@ -88,7 +89,15 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     customCard = null,
     onCardClick = () => null,
     onError = () => {},
-    itemsPerFetch = 20
+    itemsPerFetch = 20,
+    hideTab = false,
+    tabProps = {
+      tabs: [
+        { key: 'All', title: 'All' },
+        { key: 'Unread', title: 'Unread' }
+      ],
+      activeTab: 0
+    }
   } = props;
 
   const {
@@ -132,7 +141,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     // Initialize Siren SDK and start polling notifications
     if (verificationStatus === VerificationStatus.SUCCESS && siren) {
       initialize();
-    } else if(verificationStatus === VerificationStatus.FAILED) {
+    } else if (verificationStatus === VerificationStatus.FAILED) {
       setIsError(true);
       setIsLoading(false);
       setNotifications([]);
@@ -194,7 +203,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         notificationParams.start = allNotifications[0].createdAt;
 
       if (verificationStatus === VerificationStatus.SUCCESS)
-        siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params: notificationParams});
+        siren?.startRealTimeFetch({
+          eventType: EventType.NOTIFICATION,
+          params: notificationParams
+        });
     }
   };
 
@@ -284,7 +296,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           notificationParams.start = allNotifications[0].createdAt;
 
         if (verificationStatus === VerificationStatus.SUCCESS)
-          siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params:notificationParams});
+          siren?.startRealTimeFetch({
+            eventType: EventType.NOTIFICATION,
+            params: notificationParams
+          });
       } catch (err) {
         setIsLoading(false);
         setIsError(true);
@@ -330,7 +345,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       disableCardDelete.current = true;
 
       const response = await deleteById(id, shouldUpdateList);
-      
+
       if (response?.data) isSuccess = true;
       processError(response?.error);
       disableCardDelete.current = false;
@@ -404,6 +419,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     );
   };
 
+  const renderTabs = (): JSX.Element | null => {
+    return <Tabs tabs={tabProps.tabs} activeIndex={tabProps.activeTab} styles={styles} />;
+  };
+
   const keyExtractor = (item: NotificationDataType) => item.id;
 
   const renderList = (): JSX.Element => {
@@ -428,6 +447,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   return (
     <View style={[style.container, styles.container]}>
       {renderHeader()}
+      {!hideTab && renderTabs()}
       {isNonEmptyArray(notifications) ? renderList() : renderListEmpty()}
       {customFooter || null}
     </View>

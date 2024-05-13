@@ -27,6 +27,8 @@ export type SirenInboxProps = {
   customLoader?: JSX.Element;
   customErrorWindow?: JSX.Element;
   itemsPerFetch?: number;
+  hideTab?: boolean;
+  tabProps?: TabProps;
   customCard?: (notification: NotificationDataType) => JSX.Element;
   onCardClick?: (notification: NotificationDataType) => void;
   onError?: (error: SirenErrorType) => void;
@@ -143,6 +145,14 @@ export type ThemeProps = {
     descriptionColor?: string;
     dateColor?: string;
   };
+  tabs?: {
+    containerBackgroundColor?: string;
+    activeTabBackgroundColor?: string;
+    inactiveTabBackgroundColor?: string;
+    activeTabTextColor?: string;
+    inactiveTabTextColor?: string;
+    indicatorColor?: string;
+  };
 };
 
 export type CustomStyleProps = {
@@ -170,7 +180,7 @@ export type CustomStyleProps = {
     titleFontWeight?: TextStyle['fontWeight'];
     titleSize?: number;
     subtitleFontWeight?: TextStyle['fontWeight'];
-    subtitleSize?: number
+    subtitleSize?: number;
     descriptionFontWeight?: TextStyle['fontWeight'];
     descriptionSize?: number;
     dateSize?: number;
@@ -181,14 +191,22 @@ export type CustomStyleProps = {
     top?: number;
     right?: number;
   };
-  deleteIcon?:{
-    size?: number
+  deleteIcon?: {
+    size?: number;
   };
-  timerIcon?:{
-    size?: number
+  timerIcon?: {
+    size?: number;
   };
-  clearAllIcon?:{
-    size?: number
+  clearAllIcon?: {
+    size?: number;
+  };
+  tabs?: {
+    containerHeight?: number;
+    activeTabTextSize?: number;
+    inactiveTabTextSize?: number;
+    activeTabTextWeight?: TextStyle['fontWeight'];
+    inactiveTabTextWeight?: TextStyle['fontWeight'];
+    indicatorHeight?: number;
   };
 };
 
@@ -248,4 +266,15 @@ export type StyleProps = {
   highlighted: ViewStyle;
   backIcon: ViewStyle;
   mediaContainer: ViewStyle;
+  tabContainer: ViewStyle;
+  activeTab: ViewStyle;
+  inActiveTab: ViewStyle;
+  activeTabText: TextStyle | object;
+  inActiveTabText: TextStyle | object;
+  activeIndicator: ViewStyle;
+};
+
+export type TabProps = {
+  tabs: Array<{ key: string; title: string }>;
+  activeTab: number;
 };

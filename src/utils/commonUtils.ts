@@ -281,4 +281,32 @@ export const applyTheme = (
   mediaContainer: {
     backgroundColor: DefaultTheme[mode].notificationCard.mediaContainerBackground
   },
+  tabContainer: {
+    backgroundColor:
+      theme.tabs?.containerBackgroundColor || DefaultTheme[mode].tabs.containerBackgroundColor,
+    borderBottomColor: theme.colors?.borderColor || DefaultTheme[mode].colors.borderColor,
+    height: customStyles.tabs?.containerHeight || defaultStyles.tabs.containerHeight
+  },
+  activeTab: {
+    backgroundColor:
+      theme.tabs?.activeTabBackgroundColor || DefaultTheme[mode].tabs.activeTabBackgroundColor
+  },
+  inActiveTab: {
+    backgroundColor:
+      theme.tabs?.inactiveTabBackgroundColor || DefaultTheme[mode].tabs.inactiveTabBackgroundColor
+  },
+  activeTabText: {
+    color: theme.tabs?.activeTabTextColor || DefaultTheme[mode].tabs.activeTabTextColor,
+    fontSize: customStyles.tabs?.activeTabTextSize || defaultStyles.tabs.activeTabTextSize,
+    fontWeight: customStyles.tabs?.activeTabTextWeight || defaultStyles.tabs.activeTabTextWeight
+  },
+  inActiveTabText: {
+    color: theme.tabs?.inactiveTabTextColor || DefaultTheme[mode].tabs.inactiveTabTextColor,
+    fontSize: customStyles.tabs?.inactiveTabTextSize || defaultStyles.tabs.inactiveTabTextSize,
+    fontWeight: customStyles.tabs?.inactiveTabTextWeight || defaultStyles.tabs.inactiveTabTextWeight
+  },
+  activeIndicator: {
+    backgroundColor: theme.tabs?.indicatorColor || DefaultTheme[mode].tabs.indicatorColor,
+    height: customStyles.tabs?.indicatorHeight || defaultStyles.tabs.indicatorHeight
+  }
 });
