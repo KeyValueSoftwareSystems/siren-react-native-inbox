@@ -32,6 +32,7 @@ type fetchProps = {
   size: number;
   end?: string;
   start?: string;
+  isRead?: boolean;
 };
 
 type NotificationFetchParams = {
@@ -39,6 +40,7 @@ type NotificationFetchParams = {
   end?: string;
   start?: string;
   sort?: 'createdAt' | 'updatedAt';
+  isRead?: boolean;
 };
 
 /**
@@ -94,7 +96,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     tabProps = {
       tabs: [
         { key: 'All', title: 'All' },
-        { key: 'Unread', title: 'Unread' }
+        { key: 'Unread', title: 'Unread' },
+        { key: 'NewNotification', title: 'NewNotification' }
       ],
       activeTab: 0
     }
@@ -122,6 +125,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [filterType, setFilterType] = useState<string>(tabProps.tabs[tabProps.activeTab].key);
   const [eventListenerData, setEventListenerData] = useState<{
     id?: string;
     action: string;
@@ -147,7 +151,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       setNotifications([]);
       if (onError) onError(errorMap.INVALID_CREDENTIALS);
     }
-  }, [siren, verificationStatus]);
+  }, [siren, verificationStatus, filterType]);
 
   useEffect(() => {
     if (eventListenerData) {
@@ -202,6 +206,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       if (isNonEmptyArray(allNotifications))
         notificationParams.start = allNotifications[0].createdAt;
 
+      if (filterType === 'Unread') notificationParams.isRead = false;
+
       if (verificationStatus === VerificationStatus.SUCCESS)
         siren?.startRealTimeFetch({
           eventType: EventType.NOTIFICATION,
@@ -213,8 +219,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const generateNotificationParams = (attachEndDate: boolean): fetchProps => {
     const notificationParams: NotificationFetchParams = {
       size: notificationsPerPage,
-      sort: 'createdAt'
+      sort: 'createdAt',
     };
+
+    if(filterType === 'Unread') notificationParams.isRead = false;
 
     if (attachEndDate) notificationParams.end = notifications[notifications.length - 1].createdAt;
 
@@ -279,6 +287,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     [theme, darkMode, customStyles]
   );
 
+  const onPressTab = (index: number, key: string) => {
+    setFilterType(key);
+  }
+
   // Refresh notifications
   const onRefresh = async (): Promise<void> => {
     if (siren)
@@ -294,6 +306,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
         if (isNonEmptyArray(allNotifications))
           notificationParams.start = allNotifications[0].createdAt;
+
+        if (filterType === 'Unread') notificationParams.isRead = false;
 
         if (verificationStatus === VerificationStatus.SUCCESS)
           siren?.startRealTimeFetch({
@@ -420,7 +434,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   const renderTabs = (): JSX.Element | null => {
-    return <Tabs tabs={tabProps.tabs} activeIndex={tabProps.activeTab} styles={styles} />;
+    return <Tabs tabs={tabProps.tabs} activeIndex={tabProps.activeTab} styles={styles} onPressTab={onPressTab} />;
   };
 
   const keyExtractor = (item: NotificationDataType) => item.id;

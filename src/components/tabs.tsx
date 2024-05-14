@@ -1,5 +1,13 @@
-import React, { useState, type ReactElement } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState, type ReactElement } from 'react';
+import {
+  Animated,
+  type LayoutChangeEvent,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 
 import type { StyleProps } from '../types';
 
@@ -27,36 +35,75 @@ type TabProps = {
 
 const Tabs = (props: TabProps): ReactElement => {
   const { tabs, activeIndex = 0, styles, onPressTab = () => null } = props;
+  const translateX = useRef(new Animated.Value(0)).current;
 
   const [activeTabIndex, setActiveTabIndex] = useState(activeIndex);
+  const [tabTitleWidths, setTabTitleWidths] = useState<number[]>([]);
+
+  useEffect(() => {
+    moveIndicator();
+  }, [activeTabIndex]);
 
   const onPressTabItem = (index: number, key: string) => {
     setActiveTabIndex(index);
     onPressTab(index, key);
   };
 
+  const getIndicatorPosition = () => {
+    let position = 5;
+
+    for (let i = 0; i < activeTabIndex; i++)
+      position += tabTitleWidths[i] + 10;
+
+    return position;
+  };
+
+  const moveIndicator = () => {
+    Animated.timing(translateX, {
+      toValue: getIndicatorPosition(),
+      duration: 300,
+      useNativeDriver: true
+    }).start();
+  };
+
+  const onTabTitleLayout = (index: number, event: LayoutChangeEvent) => {
+    const { width } = event.nativeEvent.layout;
+
+    const updatedWidths = [...tabTitleWidths];
+    
+    updatedWidths[index] = width;
+    setTabTitleWidths(updatedWidths);
+  };
+
   return (
     <View style={[style.tabContainer, styles.tabContainer]}>
-      {tabs.map((tab, index) => (
-        <TouchableOpacity
-          key={tab?.key}
-          activeOpacity={0.8}
-          style={[style.tab, activeTabIndex === index ? styles.activeTab : styles.inActiveTab]}
-          onPress={() => onPressTabItem(index, tab?.key)}
-        >
-          <Text
-            style={[
-              style.tabText,
-              activeTabIndex === index ? styles.activeTabText : styles.inActiveTabText
-            ]}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {tabs.map((tab, index) => (
+          <TouchableOpacity
+            key={tab?.key}
+            activeOpacity={0.8}
+            style={[style.tab, activeTabIndex === index ? styles.activeTab : styles.inActiveTab]}
+            onPress={() => onPressTabItem(index, tab?.key)}
+            onLayout={(event) => onTabTitleLayout(index, event)}
           >
-            {tab.title}
-          </Text>
-          {activeTabIndex === index && (
-            <View style={[style.activeIndicator, styles.activeIndicator]} />
-          )}
-        </TouchableOpacity>
-      ))}
+            <Text
+              style={[
+                style.tabText,
+                activeTabIndex === index ? styles.activeTabText : styles.inActiveTabText
+              ]}
+            >
+              {tab.title}
+            </Text>
+          </TouchableOpacity>
+        ))}
+        <Animated.View
+          style={[
+            style.activeIndicator,
+            styles.activeIndicator,
+            { transform: [{ translateX }], width: tabTitleWidths[activeTabIndex] }
+          ]}
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -82,7 +129,6 @@ const style = StyleSheet.create({
     fontSize: 14
   },
   activeIndicator: {
-    width: '100%',
     height: 3,
     backgroundColor: '#000',
     position: 'absolute',
