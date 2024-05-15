@@ -11,7 +11,7 @@ import type {
 } from '@sirenapp/js-sdk/dist/esm/types';
 
 import type { SirenProviderConfigProps } from '../types';
-import { isNonEmptyArray, logger } from '../utils/commonUtils';
+import { generateUniqueId, isNonEmptyArray, logger } from '../utils/commonUtils';
 import {
   events,
   eventTypes,
@@ -75,10 +75,6 @@ export const useSirenContext = (): SirenContextProp => useContext(SirenContext);
  */
 const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   let retryCount = 0;
-
-  const generateUniqueId = (): string => {
-    return Math.random().toString(36).substring(2, 15);
-  };
 
   const { markAllAsViewed } = useSiren();
 
