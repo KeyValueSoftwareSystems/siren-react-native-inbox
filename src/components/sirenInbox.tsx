@@ -22,6 +22,7 @@ const {
   TOKEN_VERIFICATION_PENDING,
   MAXIMUM_ITEMS_PER_FETCH,
   VerificationStatus,
+  EventType,
   errorMap
 } = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
@@ -76,7 +77,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     cardProps = {
       hideAvatar: false,
       disableAutoMarkAsRead: false,
-      hideDelete: false
+      hideDelete: false,
+      hideMediaThumbnail: false,
     },
     listEmptyComponent = null,
     headerProps = {},
@@ -103,7 +105,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch
   );
 
-  const { siren, verificationStatus } = useSirenContext();
+  const { siren, verificationStatus, id } = useSirenContext();
 
   const { deleteById, deleteByDate, markAllAsViewed } = useSiren();
 
@@ -121,19 +123,20 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const disableCardDelete = useRef(false);
 
   useEffect(() => {
-    PubSub.subscribe(events.NOTIFICATION_LIST_EVENT, notificationSubscriber);
+    PubSub.subscribe(`${events.NOTIFICATION_LIST_EVENT}${id}`, notificationSubscriber);
 
     return cleanUp();
   }, []);
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
-    if (verificationStatus !== VerificationStatus.PENDING && siren) {
+    if (verificationStatus === VerificationStatus.SUCCESS && siren) {
       initialize();
     } else if(verificationStatus === VerificationStatus.FAILED) {
       setIsError(true);
       setIsLoading(false);
-      if (onError) onError(errorMap.MISSING_PARAMETER);
+      setNotifications([]);
+      if (onError) onError(errorMap.INVALID_CREDENTIALS);
     }
   }, [siren, verificationStatus]);
 
@@ -149,7 +152,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     }
   }, [eventListenerData]);
 
-  const handleMarkNotificationsAsViewed = async (newNotifications = notifications) => {
+  const handleMarkAllAsViewed = async (newNotifications = notifications) => {
     const currentTimestamp = new Date().getTime();
     const isoString = new Date(currentTimestamp).toISOString();
     const response = await markAllAsViewed(
@@ -168,10 +171,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   // Clean up - stop polling when component unmounts
   const cleanUp = () => () => {
-    siren?.stopRealTimeNotificationFetch();
+    siren?.stopRealTimeFetch(EventType.NOTIFICATION);
     setNotifications([]);
-    PubSub.unsubscribe(events.NOTIFICATION_LIST_EVENT);
-    handleMarkNotificationsAsViewed();
+    PubSub.unsubscribe(`${events.NOTIFICATION_LIST_EVENT}${id}`);
+    handleMarkAllAsViewed();
   };
 
   const notificationSubscriber = async (type: string, dataString: string) => {
@@ -183,7 +186,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
     if (siren) {
-      siren?.stopRealTimeNotificationFetch();
+      siren?.stopRealTimeFetch(EventType.NOTIFICATION);
       const allNotifications = await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
 
@@ -191,7 +194,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         notificationParams.start = allNotifications[0].createdAt;
 
       if (verificationStatus === VerificationStatus.SUCCESS)
-        siren?.startRealTimeNotificationFetch(notificationParams);
+        siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params: notificationParams});
     }
   };
 
@@ -214,7 +217,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (nonEmptyResponse) {
       const updatedNotifications = isResetList ? responseData : [...notifications, ...responseData];
 
-      isResetList && handleMarkNotificationsAsViewed(updatedNotifications);
+      isResetList && handleMarkAllAsViewed(updatedNotifications);
       setNotifications(updatedNotifications);
 
       return updatedNotifications;
@@ -273,7 +276,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         setNotifications([]);
         setIsLoading(true);
 
-        siren?.stopRealTimeNotificationFetch();
+        siren?.stopRealTimeFetch(EventType.NOTIFICATION);
         const allNotifications = (await fetchNotifications(siren, true)) || [];
         const notificationParams: fetchProps = { size: notificationsPerPage };
 
@@ -281,7 +284,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           notificationParams.start = allNotifications[0].createdAt;
 
         if (verificationStatus === VerificationStatus.SUCCESS)
-          siren?.startRealTimeNotificationFetch(notificationParams);
+          siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params:notificationParams});
       } catch (err) {
         setIsLoading(false);
         setIsError(true);

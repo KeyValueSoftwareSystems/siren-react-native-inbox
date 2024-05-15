@@ -4,6 +4,7 @@ import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react
 import type { NotificationCardProps } from '../types';
 import { CommonUtils, useSiren } from '../utils';
 import { eventTypes, events } from '../utils/constants';
+import { useSirenContext } from './sirenProvider';
 import CloseIcon from './closeIcon';
 import TimerIcon from './timerIcon';
 
@@ -47,9 +48,12 @@ const Card = (props: NotificationCardProps): ReactElement => {
     disableAutoMarkAsRead,
     hideDelete = false,
     onAvatarClick,
-    deleteIcon = null
+    deleteIcon = null,
+    hideMediaThumbnail = false,
+    onMediaThumbnailClick
   } = cardProps;
   const { markAsReadById } = useSiren();
+  const { id: providerId } = useSirenContext();
 
   const opacity = useRef(new Animated.Value(1)).current;
 
@@ -57,18 +61,26 @@ const Card = (props: NotificationCardProps): ReactElement => {
     return darkMode ? require('../assets/emptyDark.png') : require('../assets/emptyLight.png');
   };
 
+  const failedState = () => {
+    return darkMode
+      ? require('../assets/failedImageDark.png')
+      : require('../assets/failedImageLight.png');
+  };
+
+  const avatarUrl = notification?.message?.avatar?.imageUrl || '';
+  const thumbnailUrl = notification?.message?.thumbnailUrl || '';
+
   const [imageSource, setImageSource] = useState(
-    notification?.message?.avatar?.imageUrl?.length > 0
-      ? { uri: notification.message?.avatar?.imageUrl }
-      : emptyState()
+    avatarUrl?.length > 0 ? { uri: avatarUrl } : emptyState()
+  );
+
+  const [mediaSource, setMediaSource] = useState(
+    thumbnailUrl?.length > 0 ? { uri: thumbnailUrl } : emptyState()
   );
 
   useEffect(() => {
-    setImageSource(
-      notification?.message?.avatar?.imageUrl?.length > 0
-        ? { uri: notification.message?.avatar?.imageUrl }
-        : emptyState()
-    );
+    setImageSource(avatarUrl?.length > 0 ? { uri: avatarUrl } : emptyState());
+    setMediaSource(thumbnailUrl?.length > 0 ? { uri: thumbnailUrl } : failedState());
   }, [notification, darkMode]);
 
   const cardClick = (): void => {
@@ -80,8 +92,16 @@ const Card = (props: NotificationCardProps): ReactElement => {
     setImageSource(emptyState());
   };
 
+  const onErrorMedia = (): void => {
+    setMediaSource(failedState());
+  };
+
   const avatarClick = () => {
     if (onAvatarClick) onAvatarClick(notification);
+  };
+
+  const mediaClick = () => {
+    if (onMediaThumbnailClick) onMediaThumbnailClick(notification);
   };
 
   const renderAvatar = useMemo((): JSX.Element => {
@@ -104,6 +124,18 @@ const Card = (props: NotificationCardProps): ReactElement => {
     );
   }, [styles, darkMode, imageSource, onAvatarClick]);
 
+  const renderMediaThumbnail = useMemo((): JSX.Element => {
+    return (
+      <TouchableOpacity
+        style={[style.mediaContainer, styles.mediaContainer]}
+        disabled={Boolean(!onMediaThumbnailClick)}
+        onPress={mediaClick}
+      >
+        <Image source={mediaSource} resizeMode='cover' style={style.icon} onError={onErrorMedia} />
+      </TouchableOpacity>
+    );
+  }, [darkMode, mediaSource, onMediaThumbnailClick]);
+
   const onDeleteItem = async (): Promise<void> => {
     const isSuccess = await onDelete(notification.id, false);
 
@@ -115,7 +147,7 @@ const Card = (props: NotificationCardProps): ReactElement => {
       }).start(() => {
         const payload = { id: notification.id, action: eventTypes.DELETE_ITEM };
 
-        PubSub.publish(events.NOTIFICATION_LIST_EVENT, JSON.stringify(payload));
+        PubSub.publish(`${events.NOTIFICATION_LIST_EVENT}${providerId}`, JSON.stringify(payload));
       });
   };
 
@@ -141,19 +173,28 @@ const Card = (props: NotificationCardProps): ReactElement => {
             <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
-            {!hideDelete &&
-              (deleteIcon || (
-                <CloseIcon onDelete={onDeleteItem} notification={notification} styles={styles} />
-              ))}
+            {!hideDelete && (
+              <CloseIcon
+                onDelete={onDeleteItem}
+                customIcon={deleteIcon}
+                notification={notification}
+                styles={styles}
+              />
+            )}
           </View>
           {Boolean(notification.message?.subHeader) && (
             <Text numberOfLines={2} style={[style.cardSubTitle, styles.cardSubTitle]}>
               {notification.message?.subHeader}
             </Text>
           )}
-          <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
-            {notification.message?.body}
-          </Text>
+          {Boolean(notification.message?.body) && (
+            <Text numberOfLines={2} style={[style.cardDescription, styles.cardDescription]}>
+              {notification.message?.body}
+            </Text>
+          )}
+          {!hideMediaThumbnail &&
+            Boolean(notification.message?.thumbnailUrl) &&
+            renderMediaThumbnail}
           <View style={style.dateContainer}>
             <TimerIcon styles={styles} />
             <Text style={[style.dateStyle, styles.dateStyle]}>
@@ -228,6 +269,14 @@ const style = StyleSheet.create({
   },
   transparent: {
     backgroundColor: 'transparent'
+  },
+  mediaContainer: {
+    width: '100%',
+    height: 130,
+    borderRadius: 6,
+    marginBottom: 10,
+    overflow: 'hidden',
+    backgroundColor: '#D3D3D3'
   }
 });
 

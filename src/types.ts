@@ -85,6 +85,8 @@ type CardProps = {
   disableAutoMarkAsRead?: boolean;
   deleteIcon?: JSX.Element;
   hideDelete?: boolean;
+  hideMediaThumbnail?: boolean;
+  onMediaThumbnailClick?: (notification: NotificationDataType) => void;
 };
 
 /**
@@ -182,7 +184,7 @@ export type CustomStyleProps = {
   deleteIcon?:{
     size?: number
   };
-  dateIcon?:{
+  timerIcon?:{
     size?: number
   };
   clearAllIcon?:{
@@ -245,4 +247,5 @@ export type StyleProps = {
   skeltonLoaderColor: ViewStyle;
   highlighted: ViewStyle;
   backIcon: ViewStyle;
+  mediaContainer: ViewStyle;
 };

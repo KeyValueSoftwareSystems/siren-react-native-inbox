@@ -9,7 +9,8 @@ export const COLORS = {
     deleteIcon: '#34405499',
     timerIcon: '#667185',
     clearAllIcon: '#667185',
-    infiniteLoader: '#F56630'
+    infiniteLoader: '#F56630',
+    imageBackground: '#F0F2F5'
   },
   dark: {
     primaryColor: '#FA9874',
@@ -18,10 +19,11 @@ export const COLORS = {
     neutralColor: '#232326',
     borderColor: '#344054',
     dateColor: '#98A2B3',
-    deleteIcon: '#98A2B3',
+    deleteIcon: '#D0D5DD',
     timerIcon: '#98A2B3',
     clearAllIcon: '#D0D5DD',
-    infiniteLoader: '#F56630'
+    infiniteLoader: '#F56630',
+    imageBackground: '#4C4C4C'
   }
 };
 
@@ -57,6 +59,11 @@ export const levelLogFns = {
   [LogLevel.INFO]: console.log,
   [LogLevel.ERROR]: console.error
 };
+
+export enum EventType {
+    NOTIFICATION = "NOTIFICATIONS",
+    UNVIEWED_COUNT = "UNVIEWED_COUNT"
+}
 
 export enum eventTypes {
   MARK_ITEM_AS_VIEWED = 'MARK_ITEM_AS_VIEWED',
@@ -142,7 +149,7 @@ export const defaultStyles = {
   deleteIcon: {
     size: 14
   },
-  dateIcon: {
+  timerIcon: {
     size: 12
   },
   clearAllIcon: {

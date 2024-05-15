@@ -112,7 +112,7 @@ theme | Object for custom themes |  Theme | {} |
 customStyles | Object for custom styling |  CustomStyleProps | {} |
 darkMode |  Toggle to enable dark mode|  boolean | false |
 itemsPerFetch | Number of notifications fetch per api request (have a max cap of 50) |  number | 20 |
-cardProps | Props for customizing the card | CardProps | { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false, deleteIcon: JSX.Element, onAvatarClick: ()=> null } |
+cardProps | Props for customizing the card | CardProps | { hideAvatar: false, disableAutoMarkAsRead: false, hideDelete: false, deleteIcon: JSX.Element, onAvatarClick: ()=> null, hideMediaThumbnailL: false, onMediaThumbnailClick: ()=> null} |
 customCard | Function for rendering custom card | (notification)=> JSX Element | null |
 onCardClick | Custom click handler for card | (notification)=> void | ()=>null |
 listEmptyComponent | Custom component for empty list | JSX Element | null |
@@ -200,7 +200,7 @@ Here are the custom style options for the notification inbox:
       deleteIcon?:{
         size?: number
       };
-      dateIcon?:{
+      timerIcon?:{
         size?: number
       };
       clearAllIcon?:{
@@ -216,6 +216,8 @@ Here are the custom style options for the notification inbox:
       disableAutoMarkAsRead?: boolean;
       deleteIcon?: JSX.Element;
       hideDelete?: boolean;
+      hideMediaThumbnail?: boolean;
+      onMediaThumbnailClick?: (notification: NotificationDataType) => void;
     };
 ```
 
@@ -244,10 +246,6 @@ function MyComponent() {
 
   function handleMarkAsRead(id) {
     markAsReadById(id);
-  }
-
-  function handleDeleteNotification(id) {
-    deleteById(id);
   }
 
   return (
