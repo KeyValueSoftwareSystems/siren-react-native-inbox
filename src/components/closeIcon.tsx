@@ -8,10 +8,12 @@ import type { StyleProps } from '../types';
 const CloseIcon = ({
   notification,
   styles,
+  customIcon,
   onDelete
 }: {
   notification: NotificationDataType;
   styles: Partial<StyleProps>;
+  customIcon?: ReactElement | null;
   onDelete: (id: string) => void;
 }): ReactElement => {
   const icon: JSX.Element[] = [];
@@ -36,7 +38,7 @@ const CloseIcon = ({
       testID='delete-button'
       accessibilityLabel={`siren-notification-delete${notification.id}`}
     >
-      <>{icon}</>
+      <>{customIcon || icon}</>
     </TouchableOpacity>
   );
 };
