@@ -8,7 +8,16 @@ import { useSirenContext } from './sirenProvider';
 import type { SirenInboxIconProps } from '../types';
 import { CommonUtils, Constants } from '../utils';
 
-const { ThemeMode, defaultBadgeStyle, eventTypes, events, defaultStyles } = Constants;
+const {
+  ThemeMode,
+  defaultBadgeStyle,
+  eventTypes,
+  events,
+  defaultStyles,
+  EventType,
+  VerificationStatus,
+  errorMap
+} = Constants;
 const { logger } = CommonUtils;
 
 /**
@@ -42,7 +51,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     onError = () => null
   } = props;
 
-  const { siren } = useSirenContext();
+  const { siren, verificationStatus, id } = useSirenContext();
 
   const [unviewedCount, seUnviewedCount] = useState<number>(0);
 
@@ -59,8 +68,8 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
 
   // Clean up - stop polling when component unmounts
   const cleanUp = () => () => {
-    siren?.stopRealTimeUnviewedCountFetch();
-    PubSub.unsubscribe(events.NOTIFICATION_COUNT_EVENT);
+    siren?.stopRealTimeFetch(EventType.UNVIEWED_COUNT);
+    PubSub.unsubscribe(`${events.NOTIFICATION_COUNT_EVENT}${id}`);
     seUnviewedCount(0);
   };
 
@@ -73,14 +82,16 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   };
 
   useEffect(() => {
-    PubSub.subscribe(events.NOTIFICATION_COUNT_EVENT, notificationSubscriber);
+    PubSub.subscribe(`${events.NOTIFICATION_COUNT_EVENT}${id}`, notificationSubscriber);
 
     return cleanUp();
   }, []);
 
   useEffect(() => {
-    initialize();
-  }, [siren]);
+    if (verificationStatus !== VerificationStatus.PENDING && siren) initialize();
+    else if (verificationStatus === VerificationStatus.FAILED && onError)
+      onError(errorMap.MISSING_PARAMETER);
+  }, [siren, verificationStatus]);
 
   useEffect(() => {
     if (unviewedCount > 0) logger.info(`unviewed notification count : ${unviewedCount}`);
@@ -92,7 +103,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
       const unViewed: UnviewedCountReturnResponse | null =
         await siren.fetchUnviewedNotificationsCount();
 
-      siren.startRealTimeUnviewedCountFetch();
+      siren.startRealTimeFetch({eventType: EventType.UNVIEWED_COUNT});
       if (unViewed?.data) seUnviewedCount(unViewed.data?.unviewedCount || 0);
       if (unViewed?.error) onError(unViewed?.error);
     }
@@ -151,6 +162,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   return (
     <TouchableOpacity
       testID='notification-icon'
+      accessibilityLabel='siren-notification-icon'
       disabled={disabled}
       onPress={onPress}
       style={[styles.iconContainer, container]}

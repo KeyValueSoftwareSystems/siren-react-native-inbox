@@ -6,6 +6,7 @@ import type { Siren } from '@sirenapp/js-sdk';
 import { SirenInboxIcon } from '../../src';
 import type { Theme } from '../../src/types';
 import * as sirenProvider from '../../src/components/sirenProvider';
+import {VerificationStatus} from '../../src/utils/constants'
 
 const UnviewedCountReturnResponse = {
   data: {
@@ -33,22 +34,21 @@ describe('SirenInboxIcon', () => {
 
   const notificationIcon = <Image source={require('../../src/assets/bellLight.png')} />;
   const mockSiren:Pick<Siren, keyof Siren> = {
-    markNotificationAsReadById: jest.fn(),
-    markNotificationsAsReadByDate: jest.fn(),
-    deleteNotificationById: jest.fn(),
-    deleteNotificationsByDate: jest.fn(),
-    markNotificationsAsViewed: jest.fn(),
+    markAsReadById: jest.fn(),
+    markAsReadByDate: jest.fn(),
+    deleteById: jest.fn(),
+    deleteByDate: jest.fn(),
+    markAllAsViewed: jest.fn(),
     verifyToken: jest.fn(),
     fetchUnviewedNotificationsCount: jest.fn(async () => UnviewedCountReturnResponse),
     fetchAllNotifications: jest.fn(),
-    startRealTimeNotificationFetch: jest.fn(),
-    stopRealTimeNotificationFetch: jest.fn(),
-    startRealTimeUnviewedCountFetch: jest.fn(),
-    stopRealTimeUnviewedCountFetch: jest.fn(),
+    startRealTimeFetch: jest.fn(),
+    stopRealTimeFetch: jest.fn(),
   };
 
   jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
     siren: mockSiren as Siren,
+    verificationStatus: VerificationStatus.PENDING
   });
 
   it('renders without crashing', () => {

@@ -10,8 +10,6 @@ describe('SirenInbox', () => {
   it('renders without crashing', () => {
     render(
       <SirenInbox
-        title='Notifications'
-        hideHeader={false}
         darkMode={false}
         onError={(error) => console.log(error)}
       />
@@ -21,7 +19,7 @@ describe('SirenInbox', () => {
   test("should render custom header ", () => {
     const { getByTestId } = render(
       <SirenInbox
-        customHeader={<View testID="custom-header"><Text>My notifications</Text></View>}
+        headerProps={{customHeader: <View testID="custom-header"><Text>My notifications</Text></View>}}
       />
     );
 
@@ -30,7 +28,7 @@ describe('SirenInbox', () => {
   test("should render custom footer ", () => {
     const { getByTestId } = render(
       <SirenInbox
-        customHeader={<View testID="custom-footer"><Text>My notifications</Text></View>}
+        customFooter={<View testID="custom-footer"><Text>My notifications</Text></View>}
       />
     );
 

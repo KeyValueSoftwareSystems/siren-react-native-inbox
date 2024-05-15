@@ -27,8 +27,10 @@ const defaultTheme = {
       borderColor: COLORS[ThemeMode.LIGHT].borderColor,
       background: COLORS[ThemeMode.LIGHT].neutralColor,
       titleColor: COLORS[ThemeMode.LIGHT].textColor,
+      subTitleColor: COLORS[ThemeMode.LIGHT].textColor,
       descriptionColor: COLORS[ThemeMode.LIGHT].textColor,
       dateColor: COLORS[ThemeMode.LIGHT].textColor,
+      mediaContainerBackground: COLORS[ThemeMode.LIGHT].imageBackground,
     }
   },
   dark: {
@@ -57,8 +59,10 @@ const defaultTheme = {
       borderColor: COLORS[ThemeMode.DARK].borderColor,
       background: COLORS[ThemeMode.DARK].neutralColor,
       titleColor: COLORS[ThemeMode.DARK].textColor,
+      subTitleColor: COLORS[ThemeMode.DARK].textColor,
       descriptionColor: COLORS[ThemeMode.DARK].textColor,
-      dateColor: COLORS[ThemeMode.DARK].dateColor
+      dateColor: COLORS[ThemeMode.DARK].dateColor,
+      mediaContainerBackground: COLORS[ThemeMode.DARK].imageBackground,
     }
   }
 };

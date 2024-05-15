@@ -21,7 +21,9 @@ const {
   events,
   TOKEN_VERIFICATION_PENDING,
   MAXIMUM_ITEMS_PER_FETCH,
-  VerificationStatus
+  VerificationStatus,
+  EventType,
+  errorMap
 } = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
 
@@ -49,7 +51,6 @@ type NotificationFetchParams = {
  * };
  * <SirenInbox
  *   theme={theme}
- *   title="Notifications"
  *   hideHeader={false}
  *   darkMode={true}
  *   onError={(error) => console.log(error)}
@@ -57,45 +58,56 @@ type NotificationFetchParams = {
  *
  * @param {Object} props - The props for the SirenInbox component.
  * @param {Object} [props.theme={}] - Theme object for custom styling.
- * @param {string} [props.title=DEFAULT_WINDOW_TITLE] - Title of the notification window.
- * @param {boolean} [props.hideHeader=false] - Flag to hide or show the header.
  * @param {boolean} [props.darkMode=false] - Flag to enable dark mode.
  * @param {Object} [props.cardProps={ hideAvatar: false, showMedia: true }] - Props for customizing the notification cards.
  * @param {JSX.Element} [props.listEmptyComponent=null] - Custom component to display when the notification list is empty.
- * @param {JSX.Element} [props.customHeader=null] - Custom header component.
+ * @param {CardProps} [props.headerProps] - Object containing props related to the inbox header
  * @param {JSX.Element} [props.customFooter=null] - Custom footer component.
  * @param {JSX.Element} [props.customLoader=null] - Custom loader component.
  * @param {JSX.Element} [props.customErrorWindow=null] - Custom error component.
- * @param {Function} [props.customNotificationCard=null] - Custom function for rendering notification cards.
- * @param {Function} [props.onNotificationCardClick=() => null] - Callback for handling notification card clicks.
+ * @param {Function} [props.customCard=null] - Custom function for rendering notification cards.
+ * @param {Function} [props.onCardClick=() => null] - Callback for handling notification card clicks.
  * @param {Function} [props.onError] - Callback for handling errors.
  */
 const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const {
     theme = { dark: {}, light: {} },
     customStyles = {},
-    title = DEFAULT_WINDOW_TITLE,
-    hideHeader = false,
     darkMode = false,
-    cardProps = { hideAvatar: false, showMedia: true },
+    cardProps = {
+      hideAvatar: false,
+      disableAutoMarkAsRead: false,
+      hideDelete: false,
+      hideMediaThumbnail: false,
+    },
     listEmptyComponent = null,
-    customHeader = null,
+    headerProps = {},
     customFooter = null,
     customLoader = null,
     customErrorWindow = null,
-    customNotificationCard = null,
-    onNotificationCardClick = () => null,
+    customCard = null,
+    onCardClick = () => null,
     onError = () => {},
-    hideClearAll = false,
     itemsPerFetch = 20
   } = props;
 
-  const notificationsPerPage =
-    itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch;
+  const {
+    title = DEFAULT_WINDOW_TITLE,
+    hideHeader,
+    hideClearAll,
+    customHeader,
+    showBackButton,
+    backButton,
+    onBackPress
+  } = headerProps;
+  const notificationsPerPage = Math.max(
+    0,
+    itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch
+  );
 
-  const { siren, verificationStatus } = useSirenContext();
+  const { siren, verificationStatus, id } = useSirenContext();
 
-  const { deleteNotification, deleteNotificationsByDate, markNotificationsAsViewed } = useSiren();
+  const { deleteById, deleteByDate, markAllAsViewed } = useSiren();
 
   const [notifications, setNotifications] = useState<NotificationDataType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -111,14 +123,21 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const disableCardDelete = useRef(false);
 
   useEffect(() => {
-    PubSub.subscribe(events.NOTIFICATION_LIST_EVENT, notificationSubscriber);
+    PubSub.subscribe(`${events.NOTIFICATION_LIST_EVENT}${id}`, notificationSubscriber);
 
     return cleanUp();
   }, []);
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
-    if (verificationStatus !== VerificationStatus.PENDING && siren) initialize();
+    if (verificationStatus === VerificationStatus.SUCCESS && siren) {
+      initialize();
+    } else if(verificationStatus === VerificationStatus.FAILED) {
+      setIsError(true);
+      setIsLoading(false);
+      setNotifications([]);
+      if (onError) onError(errorMap.INVALID_CREDENTIALS);
+    }
   }, [siren, verificationStatus]);
 
   useEffect(() => {
@@ -133,12 +152,14 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     }
   }, [eventListenerData]);
 
-  const handleMarkNotificationsAsViewed = async (newNotifications = notifications) => {
-    if (isNonEmptyArray(newNotifications)) {
-      const response = await markNotificationsAsViewed(newNotifications[0].createdAt);
+  const handleMarkAllAsViewed = async (newNotifications = notifications) => {
+    const currentTimestamp = new Date().getTime();
+    const isoString = new Date(currentTimestamp).toISOString();
+    const response = await markAllAsViewed(
+      isNonEmptyArray(newNotifications) ? newNotifications[0].createdAt : isoString
+    );
 
-      processError(response?.error);
-    }
+    processError(response?.error);
   };
 
   const processError = (error?: SirenErrorType | null) => {
@@ -150,10 +171,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   // Clean up - stop polling when component unmounts
   const cleanUp = () => () => {
-    siren?.stopRealTimeNotificationFetch();
+    siren?.stopRealTimeFetch(EventType.NOTIFICATION);
     setNotifications([]);
-    PubSub.unsubscribe(events.NOTIFICATION_LIST_EVENT);
-    handleMarkNotificationsAsViewed();
+    PubSub.unsubscribe(`${events.NOTIFICATION_LIST_EVENT}${id}`);
+    handleMarkAllAsViewed();
   };
 
   const notificationSubscriber = async (type: string, dataString: string) => {
@@ -165,7 +186,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
     if (siren) {
-      siren?.stopRealTimeNotificationFetch();
+      siren?.stopRealTimeFetch(EventType.NOTIFICATION);
       const allNotifications = await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
 
@@ -173,7 +194,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         notificationParams.start = allNotifications[0].createdAt;
 
       if (verificationStatus === VerificationStatus.SUCCESS)
-        siren?.startRealTimeNotificationFetch(notificationParams);
+        siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params: notificationParams});
     }
   };
 
@@ -196,7 +217,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (nonEmptyResponse) {
       const updatedNotifications = isResetList ? responseData : [...notifications, ...responseData];
 
-      isResetList && handleMarkNotificationsAsViewed(updatedNotifications);
+      isResetList && handleMarkAllAsViewed(updatedNotifications);
       setNotifications(updatedNotifications);
 
       return updatedNotifications;
@@ -255,7 +276,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         setNotifications([]);
         setIsLoading(true);
 
-        siren?.stopRealTimeNotificationFetch();
+        siren?.stopRealTimeFetch(EventType.NOTIFICATION);
         const allNotifications = (await fetchNotifications(siren, true)) || [];
         const notificationParams: fetchProps = { size: notificationsPerPage };
 
@@ -263,7 +284,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           notificationParams.start = allNotifications[0].createdAt;
 
         if (verificationStatus === VerificationStatus.SUCCESS)
-          siren?.startRealTimeNotificationFetch(notificationParams);
+          siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params:notificationParams});
       } catch (err) {
         setIsLoading(false);
         setIsError(true);
@@ -285,25 +306,42 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
         );
 
-      return listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />;
+      return (
+        <View style={style.container} accessibilityLabel='siren-empty-state'>
+          {listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />}
+        </View>
+      );
     }
 
-    return <LoadingWindow styles={styles} customLoader={customLoader} />;
+    return (
+      <LoadingWindow
+        styles={styles}
+        customLoader={customLoader}
+        hideAvatar={cardProps?.hideAvatar}
+        hideDelete={cardProps?.hideDelete}
+      />
+    );
   };
 
-  const onDelete = async (id: string): Promise<void> => {
+  const onDelete = async (id: string, shouldUpdateList: boolean): Promise<boolean> => {
+    let isSuccess = false;
+
     if (!disableCardDelete.current) {
       disableCardDelete.current = true;
-      const response = await deleteNotification(id);
 
+      const response = await deleteById(id, shouldUpdateList);
+      
+      if (response?.data) isSuccess = true;
       processError(response?.error);
       disableCardDelete.current = false;
     }
+
+    return isSuccess;
   };
 
   const onPressClearAll = async (): Promise<void> => {
     if (isNonEmptyArray(notifications)) {
-      const response = await deleteNotificationsByDate(notifications[0].createdAt);
+      const response = await deleteByDate(notifications[0].createdAt);
 
       if (response?.error) {
         processError(response?.error);
@@ -318,7 +356,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const renderDefaultNotificationCard = (item: NotificationDataType) => {
     return (
       <Card
-        onCardClick={onNotificationCardClick}
+        onCardClick={onCardClick}
         notification={item}
         cardProps={cardProps}
         styles={styles}
@@ -330,7 +368,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   // Render notification card
   const renderCard = ({ item }: { item: NotificationDataType }): JSX.Element => {
-    if (customNotificationCard) return customNotificationCard(item);
+    if (customCard) return customCard(item);
 
     return renderDefaultNotificationCard(item);
   };
@@ -349,35 +387,40 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   const renderHeader = (): JSX.Element | null => {
+    if (hideHeader) return null;
+    if (customHeader) return customHeader;
 
-    if (!hideHeader) {
-      if (customHeader) return customHeader;
-
-      return (
-        <Header
-          title={title}
-          styles={styles}
-          onPressClearAll={onPressClearAll}
-          hideClearAll={hideClearAll}
-          clearAllDisabled={!isNonEmptyArray(notifications)}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <Header
+        title={title}
+        styles={styles}
+        onPressClearAll={onPressClearAll}
+        hideClearAll={hideClearAll}
+        clearAllDisabled={!isNonEmptyArray(notifications)}
+        showBackButton={showBackButton}
+        backButton={backButton}
+        onBackPress={onBackPress}
+      />
+    );
   };
+
+  const keyExtractor = (item: NotificationDataType) => item.id;
 
   const renderList = (): JSX.Element => {
     return (
       <FlatList
         data={notifications}
         renderItem={renderCard}
-        keyExtractor={(item) => item.id}
+        keyExtractor={keyExtractor}
         onRefresh={onRefresh}
         refreshing={false}
         contentContainerStyle={styles.contentContainer}
         onEndReached={onEndReached}
         ListFooterComponent={renderListFooter}
+        removeClippedSubviews
+        maxToRenderPerBatch={20}
+        windowSize={3}
+        accessibilityLabel='siren-notification-list'
       />
     );
   };

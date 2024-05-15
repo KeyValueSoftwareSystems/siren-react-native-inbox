@@ -1,7 +1,7 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 import { Constants } from '../utils';
 import { ERROR_DESCRIPTION } from '../utils/constants';
 
@@ -21,7 +21,7 @@ const { ERROR_TEXT } = Constants;
  * @param {Function} props.onRetry - A callback function that is invoked when the user presses the refresh button.
  */
 const ErrorWindow = (props: {
-  styles: Partial<SirenStyleProps>;
+  styles: Partial<StyleProps>;
   darkMode: boolean;
   customErrorWindow?: JSX.Element | null;
 }): ReactElement => {
@@ -31,7 +31,7 @@ const ErrorWindow = (props: {
   const iconStyle = { opacity: darkMode ? 0.6 : 1 };
 
   return (
-    <View style={[style.container, styles.container]}>
+    <View accessibilityLabel='siren-error-state' style={[style.container, styles.container]}>
       {customErrorWindow || (
         <>
           <View style={[style.iconContainer, containerStyle]}>

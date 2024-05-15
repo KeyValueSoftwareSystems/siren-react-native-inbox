@@ -1,11 +1,13 @@
 import React, { useEffect, type ReactElement, useRef } from 'react';
 import { Animated, Easing, FlatList, StyleSheet, View } from 'react-native';
 
-import type { SirenStyleProps } from '../types';
+import type { StyleProps } from '../types';
 
 type LoadingWindowProps = {
-  styles: Partial<SirenStyleProps>;
+  styles: Partial<StyleProps>;
   customLoader?: JSX.Element | null;
+  hideAvatar?: boolean;
+  hideDelete?: boolean;
 };
 /**
  * Displays a loading indicator within a window,
@@ -19,9 +21,11 @@ type LoadingWindowProps = {
  * @param {Object} props - The properties passed to the component.
  * @param {Object} props.styles - Custom styles applied to the loading window container.
  * @param {Object} props.customLoader - Custom loader to be displayed within the loading window container.
+ * @param {Object} props.hideAvatar - Flag for hide avatar placeholder circle from loading window card.
+ * @param {Object} props.hideDelete - Flag for hide delete icon placeholder square from loading window card.
  */
 const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
-  const { styles, customLoader } = props;
+  const { styles, customLoader, hideAvatar, hideDelete } = props;
 
   const pulseAnim = useRef(new Animated.Value(0)).current;
 
@@ -59,9 +63,11 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
   const renderSkeltonCard = ({ index }: { index: number }) => {
     return (
       <View key={index} style={[styles.cardContainer, style.cardContainer]}>
-        <Animated.View
-          style={[styles.skeltonLoaderColor, style.loadingCircle, { opacity: opacityAnim }]}
-        />
+        {!hideAvatar && (
+          <Animated.View
+            style={[styles.skeltonLoaderColor, style.loadingCircle, { opacity: opacityAnim }]}
+          />
+        )}
         <View style={style.rectangleContainer}>
           <Animated.View
             style={[styles.skeltonLoaderColor, style.loadingRectangle1, { opacity: opacityAnim }]}
@@ -85,9 +91,11 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
             />
           </View>
         </View>
-        <Animated.View
-          style={[styles.skeltonLoaderColor, style.loadingSquire, { opacity: opacityAnim }]}
-        />
+        {!hideDelete && (
+          <Animated.View
+            style={[styles.skeltonLoaderColor, style.loadingSquire, { opacity: opacityAnim }]}
+          />
+        )}
       </View>
     );
   };
@@ -112,7 +120,7 @@ const style = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 12,
+    padding: 14,
     paddingHorizontal: 16,
     borderBottomColor: '#98A2B3',
     borderBottomWidth: 0.4,
@@ -132,7 +140,7 @@ const style = StyleSheet.create({
     flex: 1,
     height: 40,
     borderRadius: 5,
-    marginBottom: 4,
+    marginBottom: 4
   },
   loadingRectangle3: {
     marginRight: 16,

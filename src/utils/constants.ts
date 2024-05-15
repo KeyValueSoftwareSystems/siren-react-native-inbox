@@ -1,6 +1,6 @@
 export const COLORS = {
   light: {
-    primaryColor: '#F56630',
+    primaryColor: '#FA9874',
     highlightedCardColor: '#FFECE5',
     textColor: '#344054',
     neutralColor: '#FFFFFF',
@@ -9,19 +9,21 @@ export const COLORS = {
     deleteIcon: '#34405499',
     timerIcon: '#667185',
     clearAllIcon: '#667185',
-    infiniteLoader: '#F56630'
+    infiniteLoader: '#F56630',
+    imageBackground: '#F0F2F5'
   },
   dark: {
-    primaryColor: '#F56630',
+    primaryColor: '#FA9874',
     highlightedCardColor: '#2E2D30',
     textColor: '#FFFFFF',
     neutralColor: '#232326',
     borderColor: '#344054',
     dateColor: '#98A2B3',
-    deleteIcon: '#98A2B3',
+    deleteIcon: '#D0D5DD',
     timerIcon: '#98A2B3',
     clearAllIcon: '#D0D5DD',
-    infiniteLoader: '#F56630'
+    infiniteLoader: '#F56630',
+    imageBackground: '#4C4C4C'
   }
 };
 
@@ -57,6 +59,11 @@ export const levelLogFns = {
   [LogLevel.INFO]: console.log,
   [LogLevel.ERROR]: console.error
 };
+
+export enum EventType {
+    NOTIFICATION = "NOTIFICATIONS",
+    UNVIEWED_COUNT = "UNVIEWED_COUNT"
+}
 
 export enum eventTypes {
   MARK_ITEM_AS_VIEWED = 'MARK_ITEM_AS_VIEWED',
@@ -96,7 +103,12 @@ export const errorMap = {
   MISSING_PARAMETER: {
     Type: 'ERROR',
     Code: 'MISSING_PARAMETER',
-    Message: 'Missing Parameter'
+    Message: 'Missing required parameter'
+  },
+  INVALID_CREDENTIALS: {
+    Type: 'ERROR',
+    Code: 'INVALID_CREDENTIALS',
+    Message: 'Invalid credentials found. Please check your token and recipient ID'
   }
 };
 
@@ -110,8 +122,8 @@ export const defaultStyles = {
   },
   windowHeader: {
     height: 50,
-    titleFontWeight: '500',
-    titleSize: 20,
+    titleFontWeight: '600',
+    titleSize: 18,
     titlePadding: 0,
     borderWidth: 0.6
   },
@@ -119,12 +131,15 @@ export const defaultStyles = {
     padding: 0
   },
   notificationCard: {
-    padding: 10,
+    padding: 12,
     borderWidth: 0.6,
     avatarSize: 40,
-    titleFontWeight: '500',
-    titleSize: 16,
+    titleFontWeight: '600',
+    titleSize: 14,
+    subtitleFontWeight: '500',
+    subtitleSize: 14,
     descriptionSize: 14,
+    descriptionFontWeight: '400',
     dateSize: 12
   },
   badgeStyle: {
@@ -132,9 +147,9 @@ export const defaultStyles = {
     textSize: 10
   },
   deleteIcon: {
-    size: 16
+    size: 14
   },
-  dateIcon: {
+  timerIcon: {
     size: 12
   },
   clearAllIcon: {

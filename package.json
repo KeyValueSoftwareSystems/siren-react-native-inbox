@@ -29,7 +29,7 @@
     "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix",
     "build": "bob build",
-    "test-build": "npm run build && npm pack && mv siren-react-native-inbox-1.0.0.tgz example/siren-sdk01.tgz && cd example && npm install",
+    "test-build": "npm run build && npm pack && mv sirenapp-react-native-inbox-0.0.1.tgz example/siren-sdk01.tgz && cd example && npm install",
     "test": "npx jest",
     "coverage": "npm run test -- --coverage"
   },
@@ -67,7 +67,7 @@
     "source": "src",
     "output": "dist",
     "targets": [
-      "module",
+      ["module", { "sourceMaps": false }],
       "typescript"
     ]
   },
@@ -78,6 +78,6 @@
   ],
   "dependencies": {
     "pubsub-js": "^1.9.4",
-    "@sirenapp/js-sdk": "^1.0.0"
+    "@sirenapp/js-sdk": "^1.1.0"
   }
 }

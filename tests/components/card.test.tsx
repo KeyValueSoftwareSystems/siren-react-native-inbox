@@ -1,7 +1,7 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import Card from '../../src/components/card';
-import type { SirenStyleProps } from '../../src/types';
+import type { StyleProps } from '../../src/types';
 import type { NotificationDataType } from '@sirenapp/js-sdk/dist/esm/types';
 
 describe('Card Component', () => {
@@ -24,7 +24,7 @@ describe('Card Component', () => {
     requestId: ''
   };
 
-  const customStyles: Partial<SirenStyleProps> = {
+  const customStyles: Partial<StyleProps> = {
     cardContainer: {
       // Add your custom styles here
     }
@@ -39,7 +39,8 @@ describe('Card Component', () => {
         onCardClick={onCardClickMock}
         onDelete={onDeleteMock}
         notification={notification}
-        cardProps={{ hideAvatar: false, showMedia: true }}
+        darkMode
+        cardProps={{ hideAvatar: false }}
         styles={customStyles}
       />
     );
@@ -54,10 +55,11 @@ describe('Card Component', () => {
 
     const { getByTestId } = render(
       <Card
+        darkMode
         onCardClick={onCardClickMock}
         onDelete={onDeleteMock}
         notification={notification}
-        cardProps={{ hideAvatar: false, showMedia: true }}
+        cardProps={{ hideAvatar: false }}
         styles={customStyles}
       />
     );
@@ -66,7 +68,7 @@ describe('Card Component', () => {
     expect(onCardClickMock).toHaveBeenCalledWith(notification);
   });
 
-  it('should invoke onDelete callback with correct notification id when delete button is pressed', () => {
+  it('should invoke onDelete callback with correct notification id when delete button is pressed', async () => {
     const onCardClickMock = jest.fn();
     const onDeleteMock = jest.fn();
 
@@ -75,12 +77,16 @@ describe('Card Component', () => {
         onCardClick={onCardClickMock}
         onDelete={onDeleteMock}
         notification={notification}
-        cardProps={{ hideAvatar: false, showMedia: true }}
+        darkMode
+        cardProps={{ hideAvatar: false}}
         styles={customStyles}
       />
     );
-
-    fireEvent.press(getByTestId('delete-button'));
-    expect(onDeleteMock).toHaveBeenCalledWith(notification.id);
+    await act(async () => {
+      fireEvent.press(getByTestId('delete-button'));
+      await waitFor(() => {
+        expect(onDeleteMock).toHaveBeenCalledWith(notification.id, false);
+      });
+    });
   });
 });

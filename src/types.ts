@@ -12,26 +12,23 @@ import type { NotificationDataType, SirenErrorType } from '@sirenapp/js-sdk/dist
  * @property {JSX.Element} [listEmptyComponent] - Custom UI to display when the notification list is empty.
  * @property {JSX.Element} [customFooter] - Custom UI for the notification panel's footer.
  * @property {JSX.Element} [customHeader] - Custom UI for the notification panel's header.
- * @property {(notification: NotificationResponseDataItem) => JSX.Element} [customNotificationCard] - Function to render custom notification cards.
- * @property {(notification: NotificationResponseDataItem) => void} [onNotificationCardClick] - Handler for notification card clicks.
+ * @property {(notification: NotificationResponseDataItem) => JSX.Element} [customCard] - Function to render custom notification cards.
+ * @property {(notification: NotificationResponseDataItem) => void} [onCardClick] - Handler for notification card clicks.
  * @property {(error: SirenErrorType) => void} [onError] - Callback for handling errors.
  */
 export type SirenInboxProps = {
   theme?: Theme;
-  customStyles?: StyleProps;
-  title?: string;
-  hideHeader?: boolean;
+  customStyles?: CustomStyleProps;
   darkMode?: boolean;
   cardProps?: CardProps;
   listEmptyComponent?: JSX.Element;
   customFooter?: JSX.Element;
-  customHeader?: JSX.Element;
+  headerProps?: HeaderProps;
   customLoader?: JSX.Element;
   customErrorWindow?: JSX.Element;
-  hideClearAll?: boolean;
   itemsPerFetch?: number;
-  customNotificationCard?: (notification: NotificationDataType) => JSX.Element;
-  onNotificationCardClick?: (notification: NotificationDataType) => void;
+  customCard?: (notification: NotificationDataType) => JSX.Element;
+  onCardClick?: (notification: NotificationDataType) => void;
   onError?: (error: SirenErrorType) => void;
 };
 
@@ -45,13 +42,23 @@ export type SirenInboxProps = {
  */
 export type SirenInboxIconProps = {
   theme?: Theme;
-  customStyles?: StyleProps;
+  customStyles?: CustomStyleProps;
   notificationIcon?: JSX.Element;
   onError?: (error: SirenErrorType) => void;
   darkMode?: boolean;
   onPress?: () => void;
   disabled?: boolean;
   hideBadge?: boolean;
+};
+
+export type HeaderProps = {
+  title?: string;
+  hideHeader?: boolean;
+  hideClearAll?: boolean;
+  customHeader?: JSX.Element;
+  showBackButton?: boolean;
+  backButton?: JSX.Element;
+  onBackPress?: () => void;
 };
 
 /**
@@ -74,7 +81,12 @@ export type SirenProviderConfigProps = {
  */
 type CardProps = {
   hideAvatar?: boolean;
-  showMedia?: boolean;
+  onAvatarClick?: (notification: NotificationDataType) => void;
+  disableAutoMarkAsRead?: boolean;
+  deleteIcon?: JSX.Element;
+  hideDelete?: boolean;
+  hideMediaThumbnail?: boolean;
+  onMediaThumbnailClick?: (notification: NotificationDataType) => void;
 };
 
 /**
@@ -119,7 +131,6 @@ export type ThemeProps = {
     titleColor?: string;
     headerActionColor?: string;
     borderColor?: string;
-    borderWidth?: string;
   };
   windowContainer?: {
     background?: string;
@@ -128,14 +139,13 @@ export type ThemeProps = {
     borderColor?: string;
     background?: string;
     titleColor?: string;
+    subTitleColor?: string;
     descriptionColor?: string;
     dateColor?: string;
-    timeIconSize?: number;
-    deleteIconSize?: number;
   };
 };
 
-export type StyleProps = {
+export type CustomStyleProps = {
   notificationIcon?: {
     size?: number;
   };
@@ -159,6 +169,9 @@ export type StyleProps = {
     avatarSize?: number;
     titleFontWeight?: TextStyle['fontWeight'];
     titleSize?: number;
+    subtitleFontWeight?: TextStyle['fontWeight'];
+    subtitleSize?: number
+    descriptionFontWeight?: TextStyle['fontWeight'];
     descriptionSize?: number;
     dateSize?: number;
   };
@@ -171,7 +184,7 @@ export type StyleProps = {
   deleteIcon?:{
     size?: number
   };
-  dateIcon?:{
+  timerIcon?:{
     size?: number
   };
   clearAllIcon?:{
@@ -193,8 +206,8 @@ export type NotificationCardProps = {
   notification: NotificationDataType;
   cardProps: CardProps;
   darkMode: boolean;
-  styles: Partial<SirenStyleProps>;
-  onDelete: (id: string) => void;
+  styles: Partial<StyleProps>;
+  onDelete: (id: string, shouldUpdateList: boolean) => Promise<boolean>;
 };
 
 /**
@@ -206,7 +219,7 @@ export type UnviewedType = {
   unviewedCount: number;
 } | null;
 
-export type SirenStyleProps = {
+export type StyleProps = {
   container: ViewStyle | object;
   contentContainer: ViewStyle;
   headerContainer: ViewStyle;
@@ -217,7 +230,8 @@ export type SirenStyleProps = {
   cardContainer: ViewStyle;
   cardIconRound: ViewStyle;
   cardTitle: TextStyle | object;
-  cardDescription: TextStyle;
+  cardSubTitle: TextStyle | object;
+  cardDescription: TextStyle | object;
   dateStyle: TextStyle;
   emptyText: TextStyle;
   errorText: TextStyle;
@@ -232,4 +246,6 @@ export type SirenStyleProps = {
   timerIconLine2: ViewStyle;
   skeltonLoaderColor: ViewStyle;
   highlighted: ViewStyle;
+  backIcon: ViewStyle;
+  mediaContainer: ViewStyle;
 };
