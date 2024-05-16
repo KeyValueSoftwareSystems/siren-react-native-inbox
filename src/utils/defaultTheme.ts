@@ -73,12 +73,12 @@ const defaultTheme = {
       mediaContainerBackground: COLORS[ThemeMode.DARK].imageBackground,
     },
     tabs: {
-      containerBackgroundColor: COLORS[ThemeMode.LIGHT].neutralColor,
-      activeTabBackgroundColor: COLORS[ThemeMode.LIGHT].neutralColor,
-      inactiveTabBackgroundColor: COLORS[ThemeMode.LIGHT].neutralColor,
-      activeTabTextColor: COLORS[ThemeMode.LIGHT].primaryColor,
-      inactiveTabTextColor: COLORS[ThemeMode.LIGHT].textColor,
-      indicatorColor: COLORS[ThemeMode.LIGHT].primaryColor,
+      containerBackgroundColor: COLORS[ThemeMode.DARK].neutralColor,
+      activeTabBackgroundColor: COLORS[ThemeMode.DARK].neutralColor,
+      inactiveTabBackgroundColor: COLORS[ThemeMode.DARK].neutralColor,
+      activeTabTextColor: COLORS[ThemeMode.DARK].primaryColor,
+      inactiveTabTextColor: COLORS[ThemeMode.DARK].textColor,
+      indicatorColor: COLORS[ThemeMode.DARK].primaryColor,
     }
   }
 };

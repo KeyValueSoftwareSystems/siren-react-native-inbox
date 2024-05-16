@@ -44,6 +44,10 @@ const Tabs = (props: TabProps): ReactElement => {
     moveIndicator();
   }, [activeTabIndex]);
 
+  useEffect(() => {
+    setActiveTabIndex(activeIndex);
+  },[activeIndex]);
+
   const onPressTabItem = (index: number, key: string) => {
     setActiveTabIndex(index);
     onPressTab(index, key);

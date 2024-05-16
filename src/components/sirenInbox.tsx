@@ -1,5 +1,5 @@
 import React, { type ReactElement, useEffect, useMemo, useState, useRef } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { Animated, FlatList, PanResponder, StyleSheet, View } from 'react-native';
 
 import PubSub from 'pubsub-js';
 import type { Siren } from '@sirenapp/js-sdk';
@@ -96,8 +96,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     tabProps = {
       tabs: [
         { key: 'All', title: 'All' },
-        { key: 'Unread', title: 'Unread' },
-        { key: 'NewNotification', title: 'NewNotification' }
+        { key: 'Unread', title: 'Unread' }
       ],
       activeTab: 0
     }
@@ -126,6 +125,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const [endReached, setEndReached] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [filterType, setFilterType] = useState<string>(tabProps.tabs[tabProps.activeTab].key);
+  const [activeTab, setActiveTab] = useState<number>(tabProps.activeTab);
   const [eventListenerData, setEventListenerData] = useState<{
     id?: string;
     action: string;
@@ -134,12 +134,38 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   } | null>(null);
 
   const disableCardDelete = useRef(false);
+  const pan = useRef(new Animated.ValueXY()).current;
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {useNativeDriver: false}),
+      onPanResponderRelease: (e) => {
+        Animated.timing(pan, {
+          toValue: { x: 0, y: 0 },
+          duration: 300,
+          useNativeDriver: false
+        }).start();
+
+        if(e.nativeEvent.pageX === 0)
+          setFilterType(tabProps.tabs[1].key);
+        else 
+          setFilterType(tabProps.tabs[0].key);
+      }
+    })
+  ).current;
+
 
   useEffect(() => {
     PubSub.subscribe(`${events.NOTIFICATION_LIST_EVENT}${id}`, notificationSubscriber);
 
     return cleanUp();
   }, []);
+
+  useEffect(() => {
+    const updatedActiveIndex = tabProps.tabs.findIndex((tab) => tab.key === filterType);
+
+    setActiveTab(updatedActiveIndex);
+  },[filterType]);
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
@@ -199,6 +225,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
     if (siren) {
+      setNotifications([]);
       siren?.stopRealTimeFetch(EventType.NOTIFICATION);
       const allNotifications = await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
@@ -289,7 +316,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const onPressTab = (index: number, key: string) => {
     setFilterType(key);
-  }
+    setActiveTab(index);
+  };
 
   // Refresh notifications
   const onRefresh = async (): Promise<void> => {
@@ -434,7 +462,14 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   const renderTabs = (): JSX.Element | null => {
-    return <Tabs tabs={tabProps.tabs} activeIndex={tabProps.activeTab} styles={styles} onPressTab={onPressTab} />;
+    return (
+      <Tabs
+        tabs={tabProps.tabs}
+        activeIndex={activeTab}
+        styles={styles}
+        onPressTab={onPressTab}
+      />
+    );
   };
 
   const keyExtractor = (item: NotificationDataType) => item.id;
@@ -462,7 +497,14 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     <View style={[style.container, styles.container]}>
       {renderHeader()}
       {!hideTab && renderTabs()}
-      {isNonEmptyArray(notifications) ? renderList() : renderListEmpty()}
+      <Animated.View
+        style={{
+          transform: [{ translateX: pan.x }]
+        }}
+        {...panResponder.panHandlers}
+      >
+        {isNonEmptyArray(notifications) ? renderList() : renderListEmpty()}
+      </Animated.View>
       {customFooter || null}
     </View>
   );
