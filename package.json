@@ -1,6 +1,6 @@
 {
   "name": "@sirenapp/react-native-inbox",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React Native SDK tailored for creating and managing in-app notification inboxes.",
   "main": "dist/module/index",
   "types": "dist/typescript/index.d.ts",
@@ -67,7 +67,12 @@
     "source": "src",
     "output": "dist",
     "targets": [
-      ["module", { "sourceMaps": false }],
+      [
+        "module",
+        {
+          "sourceMaps": false
+        }
+      ],
       "typescript"
     ]
   },
