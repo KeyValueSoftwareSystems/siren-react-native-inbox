@@ -173,10 +173,14 @@ const Card = (props: NotificationCardProps): ReactElement => {
             <Text numberOfLines={2} style={[styles.cardTitle, style.cardTitle]}>
               {notification.message?.header}
             </Text>
-            {!hideDelete &&
-              (deleteIcon || (
-                <CloseIcon onDelete={onDeleteItem} notification={notification} styles={styles} />
-              ))}
+            {!hideDelete && (
+              <CloseIcon
+                onDelete={onDeleteItem}
+                customIcon={deleteIcon}
+                notification={notification}
+                styles={styles}
+              />
+            )}
           </View>
           {Boolean(notification.message?.subHeader) && (
             <Text numberOfLines={2} style={[style.cardSubTitle, styles.cardSubTitle]}>

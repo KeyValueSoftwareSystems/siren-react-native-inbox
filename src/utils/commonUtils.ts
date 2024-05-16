@@ -8,6 +8,10 @@ import { DefaultTheme } from './index';
 export const isNonEmptyArray = (arr?: unknown[] | null) =>
   Boolean(arr && typeof arr === 'object' && arr instanceof Array && arr.length > 0);
 
+export const generateUniqueId = (): string => {
+  return Math.random().toString(36).substring(2, 15);
+};
+
 export const updateNotifications = (
   eventData: {
     id?: string;
