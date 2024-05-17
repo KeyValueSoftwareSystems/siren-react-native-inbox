@@ -138,7 +138,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {useNativeDriver: false}),
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+        useNativeDriver: false
+      }),
       onPanResponderRelease: (e) => {
         Animated.timing(pan, {
           toValue: { x: 0, y: 0 },
@@ -146,14 +148,11 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           useNativeDriver: false
         }).start();
 
-        if(e.nativeEvent.pageX === 0)
-          setFilterType(tabProps.tabs[1].key);
-        else 
-          setFilterType(tabProps.tabs[0].key);
+        if (e.nativeEvent.pageX === 0) setFilterType(tabProps.tabs[1].key);
+        else setFilterType(tabProps.tabs[0].key);
       }
     })
   ).current;
-
 
   useEffect(() => {
     PubSub.subscribe(`${events.NOTIFICATION_LIST_EVENT}${id}`, notificationSubscriber);
@@ -165,7 +164,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     const updatedActiveIndex = tabProps.tabs.findIndex((tab) => tab.key === filterType);
 
     setActiveTab(updatedActiveIndex);
-  },[filterType]);
+  }, [filterType]);
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
@@ -246,10 +245,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const generateNotificationParams = (attachEndDate: boolean): fetchProps => {
     const notificationParams: NotificationFetchParams = {
       size: notificationsPerPage,
-      sort: 'createdAt',
+      sort: 'createdAt'
     };
 
-    if(filterType === 'Unread') notificationParams.isRead = false;
+    if (filterType === 'Unread') notificationParams.isRead = false;
 
     if (attachEndDate) notificationParams.end = notifications[notifications.length - 1].createdAt;
 
@@ -463,12 +462,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const renderTabs = (): JSX.Element | null => {
     return (
-      <Tabs
-        tabs={tabProps.tabs}
-        activeIndex={activeTab}
-        styles={styles}
-        onPressTab={onPressTab}
-      />
+      <Tabs tabs={tabProps.tabs} activeIndex={activeTab} styles={styles} onPressTab={onPressTab} />
     );
   };
 
@@ -498,9 +492,12 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       {renderHeader()}
       {!hideTab && renderTabs()}
       <Animated.View
-        style={{
-          transform: [{ translateX: pan.x }]
-        }}
+        style={[
+          style.swipeContainer,
+          {
+            transform: [{ translateX: pan.x }]
+          }
+        ]}
         {...panResponder.panHandlers}
       >
         {isNonEmptyArray(notifications) ? renderList() : renderListEmpty()}
@@ -513,6 +510,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 const style = StyleSheet.create({
   container: {
     minWidth: 300,
+    flex: 1
+  },
+  swipeContainer: {
     flex: 1
   }
 });
