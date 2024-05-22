@@ -134,22 +134,25 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   } | null>(null);
 
   const disableCardDelete = useRef(false);
+  const SWIPE_THRESHOLD= 50;
   const pan = useRef(new Animated.ValueXY()).current;
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+      onPanResponderMove: Animated.event([null, { dx: pan.x}], {
         useNativeDriver: false
       }),
       onPanResponderRelease: (e) => {
+        const { locationX, pageX } = e.nativeEvent;
+        const dx = locationX - pageX;
+
+        if (Math.abs(dx) > SWIPE_THRESHOLD)
+          setFilterType(dx > 0 ? tabProps.tabs[0].key : tabProps.tabs[1].key); // Set filter based on swipe direction (right: All, left: Unread)
         Animated.timing(pan, {
           toValue: { x: 0, y: 0 },
           duration: 300,
           useNativeDriver: false
         }).start();
-
-        if (e.nativeEvent.pageX === 0) setFilterType(tabProps.tabs[1].key);
-        else setFilterType(tabProps.tabs[0].key);
       }
     })
   ).current;
@@ -482,6 +485,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         removeClippedSubviews
         maxToRenderPerBatch={20}
         windowSize={3}
+        showsVerticalScrollIndicator={false}
         accessibilityLabel='siren-notification-list'
       />
     );

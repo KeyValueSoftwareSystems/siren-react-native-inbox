@@ -103,7 +103,11 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
   return (
     <View style={style.container}>
       {customLoader || (
-        <FlatList data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} renderItem={renderSkeltonCard} />
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+          renderItem={renderSkeltonCard}
+        />
       )}
     </View>
   );
