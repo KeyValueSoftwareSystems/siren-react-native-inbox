@@ -337,7 +337,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   };
 
   // Render empty window, error window, or custom empty component
-  const renderListEmpty = (): JSX.Element | null => {
+  const renderListEmpty = (): JSX.Element => {
     if (!isLoading) {
       if (isError)
         return (
@@ -442,11 +442,17 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     );
   };
 
+  const getScreens = (): JSX.Element[] => {
+    return tabProps.tabs.map((tab, index) => {
+      return renderList(activeTab === index, tab.key);
+    });
+  };
+
   const renderTabs = (): JSX.Element | null => {
     return (
       <Tabs
         tabs={tabProps.tabs}
-        screens={[renderList(), renderList2(), renderList3()]}
+        screens={getScreens()}
         activeIndex={activeTab}
         styles={styles}
         onChangeTabItem={onChangeTab}
@@ -456,62 +462,23 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const keyExtractor = (item: NotificationDataType) => item.id;
 
-  const renderList = (): JSX.Element => {
-    if(notifications.length <= 0) 
-      renderListEmpty();
-    
-    return (
-      <FlatList
-        key={1}
-        data={notifications}
-        renderItem={renderCard}
-        keyExtractor={keyExtractor}
-        onRefresh={onRefresh}
-        refreshing={false}
-        contentContainerStyle={styles.contentContainer}
-        onEndReached={onEndReached}
-        ListFooterComponent={renderListFooter}
-        removeClippedSubviews
-        maxToRenderPerBatch={20}
-        windowSize={3}
-        showsVerticalScrollIndicator={false}
-        accessibilityLabel='siren-notification-list'
-      />
-    );
-  };
+  const renderList = (isActiveTab: boolean, key: string): JSX.Element => {
+    if (!isActiveTab)
+      return (
+        <LoadingWindow
+          styles={styles}
+          customLoader={customLoader}
+          hideAvatar={cardProps?.hideAvatar}
+          hideDelete={cardProps?.hideDelete}
+        />
+      );
 
-  const renderList2 = (): JSX.Element => {
-    if(notifications.length <= 0) 
-      renderListEmpty();
+    if (notifications.length === 0) return renderListEmpty();
 
     return (
       <FlatList
-        key={2}
-        data={notifications}
-        renderItem={renderCard}
-        keyExtractor={keyExtractor}
-        onRefresh={onRefresh}
-        refreshing={false}
-        contentContainerStyle={styles.contentContainer}
-        onEndReached={onEndReached}
-        ListFooterComponent={renderListFooter}
-        removeClippedSubviews
-        maxToRenderPerBatch={20}
-        windowSize={3}
-        showsVerticalScrollIndicator={false}
-        accessibilityLabel='siren-notification-list'
-      />
-    );
-  };
-
-  const renderList3 = (): JSX.Element => {
-    if(notifications.length <= 0) 
-      renderListEmpty();
-
-    return (
-      <FlatList
-        key={3}
-        data={notifications}
+        key={key}
+        data={isActiveTab ? notifications : []}
         renderItem={renderCard}
         keyExtractor={keyExtractor}
         onRefresh={onRefresh}
