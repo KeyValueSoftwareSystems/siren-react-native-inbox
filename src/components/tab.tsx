@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import type { StyleProps } from '../types';
+import TabContainer from './tabContainer';
 
 /**
  *
@@ -30,11 +31,22 @@ type TabProps = {
   activeIndex?: number;
   tabs: Array<{ key: string; title: string }>;
   styles: Partial<StyleProps>;
-  onPressTab?: (index: number, key: string) => void;
+  onChangeTabItem?: (index: number, key: string) => void;
+  screens?: ReactElement[];
 };
 
+const defaultScreens = ['red', 'green', 'blue'].map((color) => (
+  <View key={1} style={[{width: '100%', height: '100%', backgroundColor: color }]} />
+));
+
 const Tabs = (props: TabProps): ReactElement => {
-  const { tabs, activeIndex = 0, styles, onPressTab = () => null } = props;
+  const {
+    tabs,
+    activeIndex = 0,
+    styles,
+    onChangeTabItem = () => null,
+    screens = defaultScreens
+  } = props;
   const translateX = useRef(new Animated.Value(0)).current;
 
   const [activeTabIndex, setActiveTabIndex] = useState(activeIndex);
@@ -46,18 +58,17 @@ const Tabs = (props: TabProps): ReactElement => {
 
   useEffect(() => {
     setActiveTabIndex(activeIndex);
-  },[activeIndex]);
+  }, [activeIndex]);
 
-  const onPressTabItem = (index: number, key: string) => {
+  const onChangeTab = (index: number) => {
     setActiveTabIndex(index);
-    onPressTab(index, key);
+    onChangeTabItem(index, tabs[index].key);
   };
 
   const getIndicatorPosition = () => {
     let position = 5;
 
-    for (let i = 0; i < activeTabIndex; i++)
-      position += tabTitleWidths[i] + 10;
+    for (let i = 0; i < activeTabIndex; i++) position += tabTitleWidths[i] + 10;
 
     return position;
   };
@@ -74,45 +85,55 @@ const Tabs = (props: TabProps): ReactElement => {
     const { width } = event.nativeEvent.layout;
 
     const updatedWidths = [...tabTitleWidths];
-    
+
     updatedWidths[index] = width;
     setTabTitleWidths(updatedWidths);
   };
 
   return (
-    <View style={[style.tabContainer, styles.tabContainer]}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {tabs.map((tab, index) => (
-          <TouchableOpacity
-            key={tab?.key}
-            activeOpacity={0.8}
-            style={[style.tab, activeTabIndex === index ? styles.activeTab : styles.inActiveTab]}
-            onPress={() => onPressTabItem(index, tab?.key)}
-            onLayout={(event) => onTabTitleLayout(index, event)}
-          >
-            <Text
-              style={[
-                style.tabText,
-                activeTabIndex === index ? styles.activeTabText : styles.inActiveTabText
-              ]}
+    <View style={style.container}>
+      <View style={[style.tabContainer, styles.tabContainer]}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {tabs.map((tab, index) => (
+            <TouchableOpacity
+              key={tab?.key}
+              activeOpacity={0.8}
+              style={[style.tab, activeTabIndex === index ? styles.activeTab : styles.inActiveTab]}
+              onPress={() => onChangeTab(index)}
+              onLayout={(event) => onTabTitleLayout(index, event)}
             >
-              {tab.title}
-            </Text>
-          </TouchableOpacity>
-        ))}
-        <Animated.View
-          style={[
-            style.activeIndicator,
-            styles.activeIndicator,
-            { transform: [{ translateX }], width: tabTitleWidths[activeTabIndex] }
-          ]}
-        />
-      </ScrollView>
+              <Text
+                style={[
+                  style.tabText,
+                  activeTabIndex === index ? styles.activeTabText : styles.inActiveTabText
+                ]}
+              >
+                {tab.title}
+              </Text>
+            </TouchableOpacity>
+          ))}
+          <Animated.View
+            style={[
+              style.activeIndicator,
+              styles.activeIndicator,
+              { transform: [{ translateX }], width: tabTitleWidths[activeTabIndex] }
+            ]}
+          />
+        </ScrollView>
+      </View>
+      <View style={style.container}>
+        <TabContainer onChangeTab={onChangeTab} screens={screens} />
+      </View>
     </View>
   );
 };
 
 const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    height: '100%',
+    width: '100%'
+  },
   tabContainer: {
     width: '100%',
     flexDirection: 'row',

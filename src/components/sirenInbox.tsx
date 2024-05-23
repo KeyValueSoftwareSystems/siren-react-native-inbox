@@ -1,5 +1,5 @@
 import React, { type ReactElement, useEffect, useMemo, useState, useRef } from 'react';
-import { Animated, FlatList, PanResponder, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import PubSub from 'pubsub-js';
 import type { Siren } from '@sirenapp/js-sdk';
@@ -14,7 +14,7 @@ import ErrorWindow from './errorWindow';
 import Header from './header';
 import LoadingWindow from './loadingWindow';
 import Spinner from './spinner';
-import Tabs from './tabs';
+import Tabs from './tab';
 
 const {
   DEFAULT_WINDOW_TITLE,
@@ -96,7 +96,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     tabProps = {
       tabs: [
         { key: 'All', title: 'All' },
-        { key: 'Unread', title: 'Unread' }
+        { key: 'Unread', title: 'Unread' },
+        { key: 'newNotifications', title: 'NewNotifications' }
       ],
       activeTab: 0
     }
@@ -134,28 +135,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   } | null>(null);
 
   const disableCardDelete = useRef(false);
-  const SWIPE_THRESHOLD= 50;
-  const pan = useRef(new Animated.ValueXY()).current;
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, { dx: pan.x}], {
-        useNativeDriver: false
-      }),
-      onPanResponderRelease: (e) => {
-        const { locationX, pageX } = e.nativeEvent;
-        const dx = locationX - pageX;
-
-        if (Math.abs(dx) > SWIPE_THRESHOLD)
-          setFilterType(dx > 0 ? tabProps.tabs[0].key : tabProps.tabs[1].key); // Set filter based on swipe direction (right: All, left: Unread)
-        Animated.timing(pan, {
-          toValue: { x: 0, y: 0 },
-          duration: 300,
-          useNativeDriver: false
-        }).start();
-      }
-    })
-  ).current;
 
   useEffect(() => {
     PubSub.subscribe(`${events.NOTIFICATION_LIST_EVENT}${id}`, notificationSubscriber);
@@ -316,7 +295,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     [theme, darkMode, customStyles]
   );
 
-  const onPressTab = (index: number, key: string) => {
+  const onChangeTab = (index: number, key: string) => {
     setFilterType(key);
     setActiveTab(index);
   };
@@ -465,15 +444,73 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const renderTabs = (): JSX.Element | null => {
     return (
-      <Tabs tabs={tabProps.tabs} activeIndex={activeTab} styles={styles} onPressTab={onPressTab} />
+      <Tabs
+        tabs={tabProps.tabs}
+        screens={[renderList(), renderList2(), renderList3()]}
+        activeIndex={activeTab}
+        styles={styles}
+        onChangeTabItem={onChangeTab}
+      />
     );
   };
 
   const keyExtractor = (item: NotificationDataType) => item.id;
 
   const renderList = (): JSX.Element => {
+    if(notifications.length <= 0) 
+      renderListEmpty();
+    
     return (
       <FlatList
+        key={1}
+        data={notifications}
+        renderItem={renderCard}
+        keyExtractor={keyExtractor}
+        onRefresh={onRefresh}
+        refreshing={false}
+        contentContainerStyle={styles.contentContainer}
+        onEndReached={onEndReached}
+        ListFooterComponent={renderListFooter}
+        removeClippedSubviews
+        maxToRenderPerBatch={20}
+        windowSize={3}
+        showsVerticalScrollIndicator={false}
+        accessibilityLabel='siren-notification-list'
+      />
+    );
+  };
+
+  const renderList2 = (): JSX.Element => {
+    if(notifications.length <= 0) 
+      renderListEmpty();
+
+    return (
+      <FlatList
+        key={2}
+        data={notifications}
+        renderItem={renderCard}
+        keyExtractor={keyExtractor}
+        onRefresh={onRefresh}
+        refreshing={false}
+        contentContainerStyle={styles.contentContainer}
+        onEndReached={onEndReached}
+        ListFooterComponent={renderListFooter}
+        removeClippedSubviews
+        maxToRenderPerBatch={20}
+        windowSize={3}
+        showsVerticalScrollIndicator={false}
+        accessibilityLabel='siren-notification-list'
+      />
+    );
+  };
+
+  const renderList3 = (): JSX.Element => {
+    if(notifications.length <= 0) 
+      renderListEmpty();
+
+    return (
+      <FlatList
+        key={3}
         data={notifications}
         renderItem={renderCard}
         keyExtractor={keyExtractor}
@@ -495,17 +532,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     <View style={[style.container, styles.container]}>
       {renderHeader()}
       {!hideTab && renderTabs()}
-      <Animated.View
-        style={[
-          style.swipeContainer,
-          {
-            transform: [{ translateX: pan.x }]
-          }
-        ]}
-        {...panResponder.panHandlers}
-      >
-        {isNonEmptyArray(notifications) ? renderList() : renderListEmpty()}
-      </Animated.View>
       {customFooter || null}
     </View>
   );
