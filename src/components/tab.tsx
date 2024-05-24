@@ -35,8 +35,10 @@ type TabProps = {
   screens?: ReactElement[];
 };
 
-const defaultScreens = ['red', 'green', 'blue'].map((color) => (
-  <View key={1} style={[{width: '100%', height: '100%', backgroundColor: color }]} />
+const defaultScreensColors = ['red', 'green', 'blue'];
+
+const defaultScreens = defaultScreensColors.map((color, index) => (
+  <View key={index} style={ {backgroundColor: color , width: '100%', height: '100%'}} />
 ));
 
 const Tabs = (props: TabProps): ReactElement => {
@@ -48,6 +50,7 @@ const Tabs = (props: TabProps): ReactElement => {
     screens = defaultScreens
   } = props;
   const translateX = useRef(new Animated.Value(0)).current;
+  const scaleWidth = useRef(new Animated.Value(0)).current;
 
   const [activeTabIndex, setActiveTabIndex] = useState(activeIndex);
   const [tabTitleWidths, setTabTitleWidths] = useState<number[]>([]);
@@ -69,16 +72,27 @@ const Tabs = (props: TabProps): ReactElement => {
     let position = 5;
 
     for (let i = 0; i < activeTabIndex; i++) position += tabTitleWidths[i] + 10;
+    position += (tabTitleWidths[activeTabIndex] || 0) / 2;
 
     return position;
   };
 
   const moveIndicator = () => {
-    Animated.timing(translateX, {
-      toValue: getIndicatorPosition(),
-      duration: 300,
-      useNativeDriver: true
-    }).start();
+    const position = getIndicatorPosition();
+    const width = tabTitleWidths[activeTabIndex] || 0;
+
+    Animated.parallel([
+      Animated.timing(translateX, {
+        toValue: position,
+        duration: 200,
+        useNativeDriver: true
+      }),
+      Animated.timing(scaleWidth, {
+        toValue: width,
+        duration: 200,
+        useNativeDriver: true
+      })
+    ]).start();
   };
 
   const onTabTitleLayout = (index: number, event: LayoutChangeEvent) => {
@@ -88,10 +102,15 @@ const Tabs = (props: TabProps): ReactElement => {
 
     updatedWidths[index] = width;
     setTabTitleWidths(updatedWidths);
+
+    if (activeIndex === index) {
+      scaleWidth.setValue(width * 2);
+      translateX.setValue(getIndicatorPosition());
+    }
   };
 
-  return (
-    <View style={style.container}>
+  const renderTabHeader = () => {
+    return (
       <View style={[style.tabContainer, styles.tabContainer]}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {tabs.map((tab, index) => (
@@ -116,13 +135,20 @@ const Tabs = (props: TabProps): ReactElement => {
             style={[
               style.activeIndicator,
               styles.activeIndicator,
-              { transform: [{ translateX }], width: tabTitleWidths[activeTabIndex] }
+              { transform: [{ translateX }, { scaleX: scaleWidth }] }
             ]}
           />
         </ScrollView>
       </View>
+    );
+  };
+
+  return (
+    <View style={style.container}>
+      {renderTabHeader()}
+
       <View style={style.container}>
-        <TabContainer onChangeTab={onChangeTab} screens={screens} />
+        <TabContainer activeScreenIndex={activeTabIndex}  onChangeTab={onChangeTab} screens={screens} />
       </View>
     </View>
   );
@@ -154,6 +180,7 @@ const style = StyleSheet.create({
     fontSize: 14
   },
   activeIndicator: {
+    width: 1,
     height: 3,
     backgroundColor: '#000',
     position: 'absolute',

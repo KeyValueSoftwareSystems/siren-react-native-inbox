@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Dimensions, StyleSheet, View, Animated, PanResponder } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -13,15 +13,22 @@ const getClosestSnapPoint = (value: number, points: number[]) => {
 
 const TabContainer = ({
   screens = [<View />],
-
+  activeScreenIndex,
   onChangeTab
 }: {
   screens?: React.ReactNode[];
+  activeScreenIndex: number;
   onChangeTab: (index: number) => void;
 }) => {
   const translateX = useRef(new Animated.Value(0)).current;
   const offsetX = useRef(0);
   const index = useRef(0);
+
+  useEffect(() => {
+    translateX.setValue(-activeScreenIndex * width);
+    offsetX.current = -activeScreenIndex * width;
+    index.current = activeScreenIndex;
+  }, [activeScreenIndex]);
 
   const snapPoints = screens.map((_, i) => i * -width);
 
@@ -43,7 +50,7 @@ const TabContainer = ({
         
         Animated.timing(translateX, {
           toValue,
-          duration: 300,
+          duration: 200,
           useNativeDriver: false
         }).start(() => {
           offsetX.current = toValue;

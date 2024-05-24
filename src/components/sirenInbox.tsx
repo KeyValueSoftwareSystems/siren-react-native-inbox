@@ -336,31 +336,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (fetchMore) fetchNotifications(siren, false);
   };
 
-  // Render empty window, error window, or custom empty component
-  const renderListEmpty = (): JSX.Element => {
-    if (!isLoading) {
-      if (isError)
-        return (
-          <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
-        );
-
-      return (
-        <View style={style.container} accessibilityLabel='siren-empty-state'>
-          {listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />}
-        </View>
-      );
-    }
-
-    return (
-      <LoadingWindow
-        styles={styles}
-        customLoader={customLoader}
-        hideAvatar={cardProps?.hideAvatar}
-        hideDelete={cardProps?.hideDelete}
-      />
-    );
-  };
-
   const onDelete = async (id: string, shouldUpdateList: boolean): Promise<boolean> => {
     let isSuccess = false;
 
@@ -463,17 +438,31 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const keyExtractor = (item: NotificationDataType) => item.id;
 
   const renderList = (isActiveTab: boolean, key: string): JSX.Element => {
-    if (!isActiveTab)
+    if (isLoading || !isActiveTab)
       return (
-        <LoadingWindow
-          styles={styles}
-          customLoader={customLoader}
-          hideAvatar={cardProps?.hideAvatar}
-          hideDelete={cardProps?.hideDelete}
-        />
+        <View style={style.tabContainer}>
+          <LoadingWindow
+            styles={styles}
+            customLoader={customLoader}
+            hideAvatar={cardProps?.hideAvatar}
+            hideDelete={cardProps?.hideDelete}
+          />
+        </View>
+      );
+    
+    if (isError)
+      return (
+        <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
       );
 
-    if (notifications.length === 0) return renderListEmpty();
+    if (!isNonEmptyArray(notifications))
+      return (
+        <View style={style.tabContainer}>
+          <View style={style.container} accessibilityLabel='siren-empty-state'>
+            {listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />}
+          </View>
+        </View>
+      );
 
     return (
       <FlatList
@@ -511,6 +500,10 @@ const style = StyleSheet.create({
   },
   swipeContainer: {
     flex: 1
+  },
+  tabContainer: {
+    width: '100%',
+    height: '100%'
   }
 });
 
