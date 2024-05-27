@@ -207,6 +207,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const initialize = async (): Promise<void> => {
     if (siren) {
       setNotifications([]);
+      setEndReached(false);
       siren?.stopRealTimeFetch(EventType.NOTIFICATION);
       const allNotifications = await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
