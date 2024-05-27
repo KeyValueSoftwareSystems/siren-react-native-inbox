@@ -439,7 +439,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const keyExtractor = (item: NotificationDataType) => item.id;
 
   const renderList = (isActiveTab: boolean, key: string): JSX.Element => {
-    if (isLoading || !isActiveTab)
+    if ((isLoading && !isNonEmptyArray(notifications))  || !isActiveTab)
       return (
         <View style={style.tabContainer}>
           <LoadingWindow
