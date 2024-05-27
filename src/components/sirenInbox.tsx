@@ -296,6 +296,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   );
 
   const onChangeTab = (index: number, key: string) => {
+    setIsLoading(true);
     setFilterType(key);
     setActiveTab(index);
   };
