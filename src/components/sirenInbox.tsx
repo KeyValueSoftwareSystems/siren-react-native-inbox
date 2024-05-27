@@ -300,6 +300,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     setIsLoading(true);
     setFilterType(key);
     setActiveTab(index);
+    setNotifications([]);
+    setEndReached(false);
   };
 
   // Refresh notifications
