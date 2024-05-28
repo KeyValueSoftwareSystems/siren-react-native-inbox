@@ -6,11 +6,15 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Dimensions,
+  type NativeSyntheticEvent,
+  type NativeScrollEvent
 } from 'react-native';
 
 import type { StyleProps } from '../types';
-import TabContainer from './tabContainer';
+
+const { width } = Dimensions.get('window');
 
 /**
  *
@@ -19,12 +23,15 @@ import TabContainer from './tabContainer';
  * <Tabs
  *   activeIndex={0}
  *   tabs={[{ key: 'All', title: 'All' }, { key: 'Unread', title: 'Unread ' }]}
+ *   onChangeTabItem={(index, key) => console.log(index, key)}
  * />
  *
  * @param {Object} props - The properties passed to the Tab component.
  * @param {number} props.activeIndex - activeIndex control the tab selection.
  * @param {Object} props.styles - Custom styles to apply to the header component.
- * @param {Array} props.tabs - List of tab items to be renderd.
+ * @param {Array} props.tabs - List of tab items to be rendered.
+ * @param {Function} props.onChangeTabItem - Callback function to handle tab item change.
+ * @param {Array} props.screens - List of screens to be rendered.
  */
 
 type TabProps = {
@@ -35,10 +42,11 @@ type TabProps = {
   screens?: ReactElement[];
 };
 
-const defaultScreensColors = ['red', 'green', 'blue'];
+const defaultScreensColors = ['#b91919', '#2E8B57', '#0047AB'];
+const defaultWidth = '100%';
 
 const defaultScreens = defaultScreensColors.map((color, index) => (
-  <View key={index} style={ {backgroundColor: color , width: '100%', height: '100%'}} />
+  <View key={index} style={{ backgroundColor: color, width: defaultWidth, height: defaultWidth }} />
 ));
 
 const Tabs = (props: TabProps): ReactElement => {
@@ -51,6 +59,7 @@ const Tabs = (props: TabProps): ReactElement => {
   } = props;
   const translateX = useRef(new Animated.Value(0)).current;
   const scaleWidth = useRef(new Animated.Value(0)).current;
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const [activeTabIndex, setActiveTabIndex] = useState(activeIndex);
   const [tabTitleWidths, setTabTitleWidths] = useState<number[]>([]);
@@ -62,6 +71,18 @@ const Tabs = (props: TabProps): ReactElement => {
   useEffect(() => {
     setActiveTabIndex(activeIndex);
   }, [activeIndex]);
+
+  useEffect(() => {
+    if (scrollViewRef.current)
+      scrollViewRef.current.scrollTo({ x: activeTabIndex * width, animated: true });
+  }, [activeTabIndex]);
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const contentOffsetX = event.nativeEvent.contentOffset.x;
+    const index = Math.round(contentOffsetX / width);
+
+    if (index !== activeTabIndex) onChangeTab(index);
+  };
 
   const onChangeTab = (index: number) => {
     setActiveTabIndex(index);
@@ -143,17 +164,34 @@ const Tabs = (props: TabProps): ReactElement => {
     );
   };
 
+  const renderTabContainer = () => {
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={16}
+          onMomentumScrollEnd={handleScroll}
+        >
+          {screens.map((screen, index) => (
+            <View key={index} style={style.tabScreen}>
+              {screen}
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
   return (
     <View style={style.container}>
       {renderTabHeader()}
-
-      <View style={style.container}>
-        <TabContainer activeScreenIndex={activeTabIndex}  onChangeTab={onChangeTab} screens={screens} />
-      </View>
+      {renderTabContainer()}
     </View>
   );
 };
-
 const style = StyleSheet.create({
   container: {
     flex: 1,
@@ -185,6 +223,10 @@ const style = StyleSheet.create({
     backgroundColor: '#000',
     position: 'absolute',
     bottom: 0
+  },
+  tabScreen: {
+    width,
+    overflow: 'hidden'
   }
 });
 

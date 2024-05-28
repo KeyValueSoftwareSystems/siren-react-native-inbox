@@ -1,9 +1,8 @@
 import React, { type ReactElement, useEffect, useMemo, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-
-import PubSub from 'pubsub-js';
 import type { Siren } from '@sirenapp/js-sdk';
 import type { NotificationDataType, SirenErrorType } from '@sirenapp/js-sdk/dist/esm/types';
+import PubSub from 'pubsub-js';
 
 import { useSirenContext } from './sirenProvider';
 import type { SirenInboxProps } from '../types';
@@ -96,8 +95,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     tabProps = {
       tabs: [
         { key: 'All', title: 'All' },
-        { key: 'Unread', title: 'Unread' },
-        { key: 'newNotifications', title: 'NewNotifications' }
+        { key: 'Unread', title: 'Unread' }
       ],
       activeTab: 0
     }
