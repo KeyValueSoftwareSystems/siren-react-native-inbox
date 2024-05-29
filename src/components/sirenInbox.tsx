@@ -439,8 +439,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   const keyExtractor = (item: NotificationDataType) => item.id;
 
-  const renderList = (isActiveTab: boolean, key: string): JSX.Element => {
-    if ((isLoading && !isNonEmptyArray(notifications))  || !isActiveTab)
+  const renderEmptyState = (isActiveTab: boolean): JSX.Element => {
+    if (isLoading || !isActiveTab)
       return (
         <View style={style.tabContainer}>
           <LoadingWindow
@@ -451,21 +451,24 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
           />
         </View>
       );
-    
-    if (isError && !isNonEmptyArray(notifications))
+
+    if (isError)
       return (
         <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
       );
 
-    if (!isNonEmptyArray(notifications))
-      return (
-        <View style={style.tabContainer}>
-          <View style={style.container} accessibilityLabel='siren-empty-state'>
-            {listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />}
-          </View>
+    return (
+      <View style={style.tabContainer}>
+        <View style={style.container} accessibilityLabel='siren-empty-state'>
+          {listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />}
         </View>
-      );
+      </View>
+    );
+  };
 
+  const renderList = (isActiveTab: boolean, key: string): JSX.Element => {
+    if (!isNonEmptyArray(notifications) || !isActiveTab) return renderEmptyState(isActiveTab);
+    
     return (
       <FlatList
         key={key}
