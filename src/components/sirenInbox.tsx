@@ -452,7 +452,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         </View>
       );
     
-    if (isError)
+    if (isError && !isNonEmptyArray(notifications))
       return (
         <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
       );
