@@ -90,7 +90,7 @@ const Tabs = (props: TabProps): ReactElement => {
   };
 
   const getIndicatorPosition = () => {
-    let position = 5;
+    let position = 0;
 
     for (let i = 0; i < activeTabIndex; i++) position += tabTitleWidths[i] + 10;
     position += (tabTitleWidths[activeTabIndex] || 0) / 2;
@@ -138,7 +138,11 @@ const Tabs = (props: TabProps): ReactElement => {
             <TouchableOpacity
               key={tab?.key}
               activeOpacity={0.8}
-              style={[style.tab, activeTabIndex === index ? styles.activeTab : styles.inActiveTab]}
+              style={[
+                style.tab,
+                styles.tab,
+                activeTabIndex === index ? styles.activeTab : styles.inActiveTab
+              ]}
               onPress={() => onChangeTab(index)}
               onLayout={(event) => onTabTitleLayout(index, event)}
             >
@@ -209,7 +213,6 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     minWidth: 30,
-    marginHorizontal: 5
   },
   tabText: {
     color: '#000',

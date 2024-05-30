@@ -291,6 +291,9 @@ export const applyTheme = (
     borderBottomColor: theme.colors?.borderColor || DefaultTheme[mode].colors.borderColor,
     height: customStyles.tabs?.containerHeight || defaultStyles.tabs.containerHeight
   },
+  tab: {
+    paddingHorizontal: customStyles.tabs?.tabPadding || defaultStyles.tabs.tabPadding,
+  },
   activeTab: {
     backgroundColor:
       theme.tabs?.activeTabBackgroundColor || DefaultTheme[mode].tabs.activeTabBackgroundColor

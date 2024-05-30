@@ -162,5 +162,6 @@ export const defaultStyles = {
     activeTabTextWeight: '500',
     inactiveTabTextWeight: '500',
     indicatorHeight: 3,
+    tabPadding: 5,
   },
 };

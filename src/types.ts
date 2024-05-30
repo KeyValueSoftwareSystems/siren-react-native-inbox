@@ -207,6 +207,7 @@ export type CustomStyleProps = {
     activeTabTextWeight?: TextStyle['fontWeight'];
     inactiveTabTextWeight?: TextStyle['fontWeight'];
     indicatorHeight?: number;
+    tabPadding?: number;
   };
 };
 
@@ -267,6 +268,7 @@ export type StyleProps = {
   backIcon: ViewStyle;
   mediaContainer: ViewStyle;
   tabContainer: ViewStyle;
+  tab: ViewStyle;
   activeTab: ViewStyle;
   inActiveTab: ViewStyle;
   activeTabText: TextStyle | object;
