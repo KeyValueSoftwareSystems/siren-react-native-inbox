@@ -65,8 +65,9 @@ const Tabs = (props: TabProps): ReactElement => {
   const [tabTitleWidths, setTabTitleWidths] = useState<number[]>([]);
 
   useEffect(() => {
-    moveIndicator();
-  }, [activeTabIndex]);
+    if (tabTitleWidths.length > 0) 
+      moveIndicator();
+  }, [tabTitleWidths, activeTabIndex]);
 
   useEffect(() => {
     setActiveTabIndex(activeIndex);
@@ -92,7 +93,7 @@ const Tabs = (props: TabProps): ReactElement => {
   const getIndicatorPosition = () => {
     let position = 0;
 
-    for (let i = 0; i < activeTabIndex; i++) position += tabTitleWidths[i] + 10;
+    for (let i = 0; i < activeTabIndex; i++) position += tabTitleWidths[i];
     position += (tabTitleWidths[activeTabIndex] || 0) / 2;
 
     return position;
@@ -109,7 +110,7 @@ const Tabs = (props: TabProps): ReactElement => {
         useNativeDriver: true
       }),
       Animated.timing(scaleWidth, {
-        toValue: width,
+        toValue: width * 0.85,
         duration: 200,
         useNativeDriver: true
       })
@@ -123,11 +124,6 @@ const Tabs = (props: TabProps): ReactElement => {
 
     updatedWidths[index] = width;
     setTabTitleWidths(updatedWidths);
-
-    if (activeIndex === index) {
-      scaleWidth.setValue(width * 2);
-      translateX.setValue(getIndicatorPosition());
-    }
   };
 
   const renderTabHeader = () => {
