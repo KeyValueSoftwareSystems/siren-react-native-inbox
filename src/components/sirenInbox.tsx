@@ -1,19 +1,20 @@
 import React, { type ReactElement, useEffect, useMemo, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-
-import PubSub from 'pubsub-js';
 import type { Siren } from '@sirenapp/js-sdk';
 import type { NotificationDataType, SirenErrorType } from '@sirenapp/js-sdk/dist/esm/types';
+import PubSub from 'pubsub-js';
 
+import { useSirenContext } from './sirenProvider';
+import type { SirenInboxProps } from '../types';
+import { CommonUtils, Constants, useSiren } from '../utils';
+import { FilterTypes } from '../utils/constants';
 import Card from './card';
 import EmptyWindow from './emptyWindow';
 import ErrorWindow from './errorWindow';
 import Header from './header';
 import LoadingWindow from './loadingWindow';
 import Spinner from './spinner';
-import { useSirenContext } from './sirenProvider';
-import type { SirenInboxProps } from '../types';
-import { CommonUtils, Constants, useSiren } from '../utils';
+import Tabs from './tab';
 
 const {
   DEFAULT_WINDOW_TITLE,
@@ -31,6 +32,7 @@ type fetchProps = {
   size: number;
   end?: string;
   start?: string;
+  isRead?: boolean;
 };
 
 type NotificationFetchParams = {
@@ -38,6 +40,7 @@ type NotificationFetchParams = {
   end?: string;
   start?: string;
   sort?: 'createdAt' | 'updatedAt';
+  isRead?: boolean;
 };
 
 /**
@@ -78,7 +81,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       hideAvatar: false,
       disableAutoMarkAsRead: false,
       hideDelete: false,
-      hideMediaThumbnail: false,
+      hideMediaThumbnail: false
     },
     listEmptyComponent = null,
     headerProps = {},
@@ -88,7 +91,15 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     customCard = null,
     onCardClick = () => null,
     onError = () => {},
-    itemsPerFetch = 20
+    itemsPerFetch = 20,
+    hideTab = false,
+    tabProps = {
+      tabs: [
+        { key: FilterTypes.ALL, title: FilterTypes.ALL },
+        { key: FilterTypes.UNREAD, title: FilterTypes.UNREAD }
+      ],
+      activeTab: 0
+    }
   } = props;
 
   const {
@@ -113,6 +124,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [filterType, setFilterType] = useState<string>(tabProps.tabs[tabProps.activeTab].key);
+  const [activeTab, setActiveTab] = useState<number>(tabProps.activeTab);
   const [eventListenerData, setEventListenerData] = useState<{
     id?: string;
     action: string;
@@ -129,16 +142,22 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   }, []);
 
   useEffect(() => {
+    const updatedActiveIndex = tabProps.tabs.findIndex((tab) => tab.key === filterType);
+
+    setActiveTab(updatedActiveIndex);
+  }, [filterType]);
+
+  useEffect(() => {
     // Initialize Siren SDK and start polling notifications
     if (verificationStatus === VerificationStatus.SUCCESS && siren) {
       initialize();
-    } else if(verificationStatus === VerificationStatus.FAILED) {
+    } else if (verificationStatus === VerificationStatus.FAILED) {
       setIsError(true);
       setIsLoading(false);
       setNotifications([]);
       if (onError) onError(errorMap.INVALID_CREDENTIALS);
     }
-  }, [siren, verificationStatus]);
+  }, [siren, verificationStatus, filterType]);
 
   useEffect(() => {
     if (eventListenerData) {
@@ -186,6 +205,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   // Initialize Siren SDK and fetch notifications
   const initialize = async (): Promise<void> => {
     if (siren) {
+      setNotifications([]);
+      setEndReached(false);
       siren?.stopRealTimeFetch(EventType.NOTIFICATION);
       const allNotifications = await fetchNotifications(siren, true);
       const notificationParams: fetchProps = { size: notificationsPerPage };
@@ -193,8 +214,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       if (isNonEmptyArray(allNotifications))
         notificationParams.start = allNotifications[0].createdAt;
 
+      if (filterType === FilterTypes.UNREAD) notificationParams.isRead = false;
+
       if (verificationStatus === VerificationStatus.SUCCESS)
-        siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params: notificationParams});
+        siren?.startRealTimeFetch({
+          eventType: EventType.NOTIFICATION,
+          params: notificationParams
+        });
     }
   };
 
@@ -203,6 +229,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       size: notificationsPerPage,
       sort: 'createdAt'
     };
+
+    if (filterType === FilterTypes.UNREAD) notificationParams.isRead = false;
 
     if (attachEndDate) notificationParams.end = notifications[notifications.length - 1].createdAt;
 
@@ -267,6 +295,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     [theme, darkMode, customStyles]
   );
 
+  const onChangeTab = (key: string) => {
+    setIsLoading(true);
+    setFilterType(key);
+    setNotifications([]);
+    setEndReached(false);
+  };
+
   // Refresh notifications
   const onRefresh = async (): Promise<void> => {
     if (siren)
@@ -283,8 +318,13 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         if (isNonEmptyArray(allNotifications))
           notificationParams.start = allNotifications[0].createdAt;
 
+        if (filterType === FilterTypes.UNREAD) notificationParams.isRead = false;
+
         if (verificationStatus === VerificationStatus.SUCCESS)
-          siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params:notificationParams});
+          siren?.startRealTimeFetch({
+            eventType: EventType.NOTIFICATION,
+            params: notificationParams
+          });
       } catch (err) {
         setIsLoading(false);
         setIsError(true);
@@ -298,31 +338,6 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     if (fetchMore) fetchNotifications(siren, false);
   };
 
-  // Render empty window, error window, or custom empty component
-  const renderListEmpty = (): JSX.Element | null => {
-    if (!isLoading) {
-      if (isError)
-        return (
-          <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
-        );
-
-      return (
-        <View style={style.container} accessibilityLabel='siren-empty-state'>
-          {listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />}
-        </View>
-      );
-    }
-
-    return (
-      <LoadingWindow
-        styles={styles}
-        customLoader={customLoader}
-        hideAvatar={cardProps?.hideAvatar}
-        hideDelete={cardProps?.hideDelete}
-      />
-    );
-  };
-
   const onDelete = async (id: string, shouldUpdateList: boolean): Promise<boolean> => {
     let isSuccess = false;
 
@@ -330,7 +345,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       disableCardDelete.current = true;
 
       const response = await deleteById(id, shouldUpdateList);
-      
+
       if (response?.data) isSuccess = true;
       processError(response?.error);
       disableCardDelete.current = false;
@@ -404,12 +419,60 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     );
   };
 
+  const getScreens = (): JSX.Element[] => {
+    return tabProps.tabs.map((tab, index) => {
+      return renderList(activeTab === index, tab.key);
+    });
+  };
+
+  const renderTabs = (): JSX.Element | null => {
+    return (
+      <Tabs
+        tabs={tabProps.tabs}
+        screens={getScreens()}
+        activeIndex={activeTab}
+        styles={styles}
+        onChangeTabItem={onChangeTab}
+      />
+    );
+  };
+
   const keyExtractor = (item: NotificationDataType) => item.id;
 
-  const renderList = (): JSX.Element => {
+  const renderEmptyState = (isActiveTab: boolean): JSX.Element => {
+    if (isLoading || !isActiveTab)
+      return (
+        <View style={style.tabContainer}>
+          <LoadingWindow
+            styles={styles}
+            customLoader={customLoader}
+            hideAvatar={cardProps?.hideAvatar}
+            hideDelete={cardProps?.hideDelete}
+          />
+        </View>
+      );
+
+    if (isError)
+      return (
+        <ErrorWindow styles={styles} darkMode={darkMode} customErrorWindow={customErrorWindow} />
+      );
+
+    return (
+      <View style={style.tabContainer}>
+        <View style={style.container} accessibilityLabel='siren-empty-state'>
+          {listEmptyComponent || <EmptyWindow styles={styles} darkMode={darkMode} />}
+        </View>
+      </View>
+    );
+  };
+
+  const renderList = (isActiveTab: boolean, key: string): JSX.Element => {
+    if (!isNonEmptyArray(notifications) || !isActiveTab) return renderEmptyState(isActiveTab);
+    
     return (
       <FlatList
-        data={notifications}
+        key={key}
+        data={isActiveTab ? notifications : []}
         renderItem={renderCard}
         keyExtractor={keyExtractor}
         onRefresh={onRefresh}
@@ -420,6 +483,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         removeClippedSubviews
         maxToRenderPerBatch={20}
         windowSize={3}
+        showsVerticalScrollIndicator={false}
         accessibilityLabel='siren-notification-list'
       />
     );
@@ -428,7 +492,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
   return (
     <View style={[style.container, styles.container]}>
       {renderHeader()}
-      {isNonEmptyArray(notifications) ? renderList() : renderListEmpty()}
+      {!hideTab && renderTabs()}
       {customFooter || null}
     </View>
   );
@@ -438,6 +502,13 @@ const style = StyleSheet.create({
   container: {
     minWidth: 300,
     flex: 1
+  },
+  swipeContainer: {
+    flex: 1
+  },
+  tabContainer: {
+    width: '100%',
+    height: '100%'
   }
 });
 

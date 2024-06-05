@@ -82,6 +82,11 @@ export enum events {
   NOTIFICATION_COUNT_EVENT = 'NOTIFICATION_COUNT_EVENT'
 }
 
+export enum FilterTypes {
+  ALL = 'All',
+  UNREAD = 'Unread',
+}
+
 export const LIST_EMPTY_TEXT = 'No new notifications';
 export const LIST_EMPTY_DESCRIPTION = 'Check back later for updates and alerts';
 export const ERROR_TEXT = 'Oops! Something went wrong.';
@@ -154,5 +159,14 @@ export const defaultStyles = {
   },
   clearAllIcon: {
     size: 16
-  }
+  },
+  tabs: {
+    containerHeight: 46,
+    activeTabTextSize: 14,
+    inactiveTabTextSize: 14,
+    activeTabTextWeight: '500',
+    inactiveTabTextWeight: '500',
+    indicatorHeight: 3,
+    tabPadding: 5,
+  },
 };
