@@ -38,7 +38,7 @@ type TabProps = {
   activeIndex?: number;
   tabs: Array<{ key: string; title: string }>;
   styles: Partial<StyleProps>;
-  onChangeTabItem?: (index: number, key: string) => void;
+  onChangeTabItem?: (key: string) => void;
   screens?: ReactElement[];
 };
 
@@ -87,7 +87,7 @@ const Tabs = (props: TabProps): ReactElement => {
 
   const onChangeTab = (index: number) => {
     setActiveTabIndex(index);
-    onChangeTabItem(index, tabs[index].key);
+    onChangeTabItem(tabs[index].key);
   };
 
   const getIndicatorPosition = () => {

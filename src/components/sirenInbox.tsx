@@ -96,7 +96,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     tabProps = {
       tabs: [
         { key: FilterTypes.ALL, title: FilterTypes.ALL },
-        { key: FilterTypes.ALL, title: FilterTypes.UNREAD }
+        { key: FilterTypes.UNREAD, title: FilterTypes.UNREAD }
       ],
       activeTab: 0
     }
@@ -295,10 +295,9 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     [theme, darkMode, customStyles]
   );
 
-  const onChangeTab = (index: number, key: string) => {
+  const onChangeTab = (key: string) => {
     setIsLoading(true);
     setFilterType(key);
-    setActiveTab(index);
     setNotifications([]);
     setEndReached(false);
   };
