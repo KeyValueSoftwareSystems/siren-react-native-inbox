@@ -24,6 +24,9 @@ type LoadingWindowProps = {
  * @param {Object} props.hideAvatar - Flag for hide avatar placeholder circle from loading window card.
  * @param {Object} props.hideDelete - Flag for hide delete icon placeholder square from loading window card.
  */
+
+const loadingArray = Array(10).fill(0).map((_, i) => i + 1);
+
 const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
   const { styles, customLoader, hideAvatar, hideDelete } = props;
 
@@ -105,7 +108,7 @@ const LoadingWindow = (props: LoadingWindowProps): ReactElement => {
       {customLoader || (
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+          data={loadingArray}
           renderItem={renderSkeltonCard}
         />
       )}

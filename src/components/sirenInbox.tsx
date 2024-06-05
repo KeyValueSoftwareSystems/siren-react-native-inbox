@@ -7,6 +7,7 @@ import PubSub from 'pubsub-js';
 import { useSirenContext } from './sirenProvider';
 import type { SirenInboxProps } from '../types';
 import { CommonUtils, Constants, useSiren } from '../utils';
+import { FilterTypes } from '../utils/constants';
 import Card from './card';
 import EmptyWindow from './emptyWindow';
 import ErrorWindow from './errorWindow';
@@ -94,8 +95,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     hideTab = false,
     tabProps = {
       tabs: [
-        { key: 'All', title: 'All' },
-        { key: 'Unread', title: 'Unread' }
+        { key: FilterTypes.ALL, title: FilterTypes.ALL },
+        { key: FilterTypes.ALL, title: FilterTypes.UNREAD }
       ],
       activeTab: 0
     }
@@ -213,7 +214,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       if (isNonEmptyArray(allNotifications))
         notificationParams.start = allNotifications[0].createdAt;
 
-      if (filterType === 'Unread') notificationParams.isRead = false;
+      if (filterType === FilterTypes.UNREAD) notificationParams.isRead = false;
 
       if (verificationStatus === VerificationStatus.SUCCESS)
         siren?.startRealTimeFetch({
@@ -229,7 +230,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       sort: 'createdAt'
     };
 
-    if (filterType === 'Unread') notificationParams.isRead = false;
+    if (filterType === FilterTypes.UNREAD) notificationParams.isRead = false;
 
     if (attachEndDate) notificationParams.end = notifications[notifications.length - 1].createdAt;
 
@@ -318,7 +319,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         if (isNonEmptyArray(allNotifications))
           notificationParams.start = allNotifications[0].createdAt;
 
-        if (filterType === 'Unread') notificationParams.isRead = false;
+        if (filterType === FilterTypes.UNREAD) notificationParams.isRead = false;
 
         if (verificationStatus === VerificationStatus.SUCCESS)
           siren?.startRealTimeFetch({
