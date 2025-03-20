@@ -23,13 +23,11 @@ describe('SirenProvider', () => {
         <Text>Child</Text>
       </SirenProvider>
     );
-    const mocErrorFn = jest.fn();
     const mockEventHandler = jest.fn();
 
     const sirenObject = new Siren({
       token: 'user-token',
       recipientId: 'recipient-id',
-      onError: mocErrorFn,
       actionCallbacks: {
         onEventReceive: mockEventHandler,
       }

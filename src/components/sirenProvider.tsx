@@ -6,7 +6,6 @@ import type {
   InitConfigType,
   NotificationDataType,
   NotificationsApiResponse,
-  SirenErrorType,
   UnviewedCountApiResponse
 } from '@sirenapp/js-sdk/dist/esm/types';
 
@@ -15,8 +14,6 @@ import { generateUniqueId, isNonEmptyArray, logger } from '../utils/commonUtils'
 import {
   events,
   eventTypes,
-  IN_APP_RECIPIENT_UNAUTHENTICATED,
-  MAXIMUM_RETRY_COUNT,
   EventType
 } from '../utils/constants';
 import { useSiren } from '../utils';
@@ -70,7 +67,6 @@ export const useSirenContext = (): SirenContextProp => useContext(SirenContext);
  * @param {React.ReactNode} props.children - Child components that will have access to the Siren context.
  */
 const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
-  let retryCount = 0;
 
   const { markAllAsViewed } = useSiren();
 
@@ -155,19 +151,8 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     return {
       token: config.userToken,
       recipientId: config.recipientId,
-      onError: retryVerification,
       actionCallbacks: actionCallbacks
     };
-  };
-
-  const retryVerification = (error: SirenErrorType) => {
-    if (error.Code === IN_APP_RECIPIENT_UNAUTHENTICATED && retryCount < MAXIMUM_RETRY_COUNT)
-      setTimeout(() => {
-        initialize();
-        retryCount++;
-      }, 5000);
-
-    if (retryCount === MAXIMUM_RETRY_COUNT) stopRealTimeFetch();
   };
 
   // Function to initialize the Siren SDK and fetch notifications
