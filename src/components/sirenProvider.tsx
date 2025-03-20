@@ -17,14 +17,12 @@ import {
   eventTypes,
   IN_APP_RECIPIENT_UNAUTHENTICATED,
   MAXIMUM_RETRY_COUNT,
-  VerificationStatus,
   EventType
 } from '../utils/constants';
 import { useSiren } from '../utils';
 
 type SirenContextProp = {
   siren: Siren | null;
-  verificationStatus: VerificationStatus;
   id: string;
 };
 
@@ -35,7 +33,6 @@ interface SirenProvider {
 
 export const SirenContext = createContext<SirenContextProp>({
   siren: null,
-  verificationStatus: VerificationStatus.PENDING,
   id: ''
 });
 
@@ -45,7 +42,6 @@ export const SirenContext = createContext<SirenContextProp>({
  * @example
  * const {
  *   siren,
- *   verificationStatus
  * } = useSirenContext();
  *
  * @returns {SirenContextProp} The Siren notifications context.
@@ -56,7 +52,7 @@ export const useSirenContext = (): SirenContextProp => useContext(SirenContext);
  * Provides a React context for Siren notifications, making Siren SDK functionality
  * available throughout your React application.
  *
- * `SirenProvider` initializes the Siren SDK with given configuration and manages the state for siren and verificationStatus.
+ * `SirenProvider` initializes the Siren SDK with given configuration and manages the state for siren.
  *
  * @component
  * @example
@@ -80,17 +76,12 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
   const [id] = useState(generateUniqueId());
   const [siren, setSiren] = useState<Siren | null>(null);
-  const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>(
-    VerificationStatus.PENDING
-  );
 
   useEffect(() => {
     if (config?.recipientId && config?.userToken) {
       stopRealTimeFetch();
       sendResetDataEvents();
       initialize();
-    } else {
-      setVerificationStatus(VerificationStatus.FAILED);
     }
   }, [config]);
 
@@ -108,7 +99,10 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     };
 
     PubSub.publish(`${events.NOTIFICATION_COUNT_EVENT}${id}`, JSON.stringify(updateCountPayload));
-    PubSub.publish(`${events.NOTIFICATION_LIST_EVENT}${id}`, JSON.stringify(updateNotificationPayload));
+    PubSub.publish(
+      `${events.NOTIFICATION_LIST_EVENT}${id}`,
+      JSON.stringify(updateNotificationPayload)
+    );
   };
 
   const onNewNotificationEvent = (responseData: NotificationDataType[]) => {
@@ -135,14 +129,11 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
     if (Array.isArray(responseData) && isNonEmptyArray(responseData))
       onNewNotificationEvent(responseData);
-
   };
   const handleUnviewedCountEvent = (response: UnviewedCountApiResponse) => {
     const responseData = response?.data;
 
-    if (responseData && 'totalUnviewed' in responseData)
-      onTotalUnviewedCountEvent(response);
-    
+    if (responseData && 'totalUnviewed' in responseData) onTotalUnviewedCountEvent(response);
   };
   const onEventReceive = (
     response: NotificationsApiResponse | UnviewedCountApiResponse = {},
@@ -157,11 +148,8 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
         break;
     }
   };
-  const onStatusChange = (status: VerificationStatus) => {
-    setVerificationStatus(status);
-  };
 
-  const actionCallbacks = { onEventReceive, onStatusChange };
+  const actionCallbacks = { onEventReceive };
 
   const getDataParams = () => {
     return {
@@ -173,11 +161,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
   };
 
   const retryVerification = (error: SirenErrorType) => {
-    if (
-      error.Code === IN_APP_RECIPIENT_UNAUTHENTICATED &&
-      retryCount < MAXIMUM_RETRY_COUNT &&
-      verificationStatus === VerificationStatus.FAILED
-    )
+    if (error.Code === IN_APP_RECIPIENT_UNAUTHENTICATED && retryCount < MAXIMUM_RETRY_COUNT)
       setTimeout(() => {
         initialize();
         retryCount++;
@@ -188,7 +172,6 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
 
   // Function to initialize the Siren SDK and fetch notifications
   const initialize = (): void => {
-    setVerificationStatus(VerificationStatus.PENDING);
     const dataParams: InitConfigType = getDataParams();
     const siren = new Siren(dataParams);
 
@@ -199,8 +182,7 @@ const SirenProvider: React.FC<SirenProvider> = ({ config, children }) => {
     <SirenContext.Provider
       value={{
         id,
-        siren,
-        verificationStatus
+        siren
       }}
     >
       {children}

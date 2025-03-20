@@ -8,16 +8,7 @@ import { useSirenContext } from './sirenProvider';
 import type { SirenInboxIconProps } from '../types';
 import { CommonUtils, Constants } from '../utils';
 
-const {
-  ThemeMode,
-  defaultBadgeStyle,
-  eventTypes,
-  events,
-  defaultStyles,
-  EventType,
-  VerificationStatus,
-  errorMap
-} = Constants;
+const { ThemeMode, defaultBadgeStyle, eventTypes, events, defaultStyles, EventType } = Constants;
 const { logger } = CommonUtils;
 
 /**
@@ -51,7 +42,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
     onError = () => null
   } = props;
 
-  const { siren, verificationStatus, id } = useSirenContext();
+  const { siren, id } = useSirenContext();
 
   const [unviewedCount, seUnviewedCount] = useState<number>(0);
 
@@ -88,10 +79,8 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
   }, []);
 
   useEffect(() => {
-    if (verificationStatus !== VerificationStatus.PENDING && siren) initialize();
-    else if (verificationStatus === VerificationStatus.FAILED && onError)
-      onError(errorMap.MISSING_PARAMETER);
-  }, [siren, verificationStatus]);
+    if (siren) initialize();
+  }, [siren]);
 
   useEffect(() => {
     if (unviewedCount > 0) logger.info(`unviewed notification count : ${unviewedCount}`);
@@ -103,7 +92,7 @@ const SirenInboxIcon = (props: SirenInboxIconProps) => {
       const unViewed: UnviewedCountReturnResponse | null =
         await siren.fetchUnviewedNotificationsCount();
 
-      siren.startRealTimeFetch({eventType: EventType.UNVIEWED_COUNT});
+      siren.startRealTimeFetch({ eventType: EventType.UNVIEWED_COUNT });
       if (unViewed?.data) seUnviewedCount(unViewed.data?.unviewedCount || 0);
       if (unViewed?.error) onError(unViewed?.error);
     }

@@ -2,7 +2,6 @@ import type { Siren } from '@sirenapp/js-sdk';
 
 import { useSiren } from '../../src';
 import * as sirenProvider from '../../src/components/sirenProvider';
-import {VerificationStatus} from '../../src/utils/constants'
 
 const Response = {
   data: {
@@ -78,7 +77,6 @@ describe('useSiren hook', () => {
     deleteById: jest.fn(async () => ActionResponse),
     deleteByDate: jest.fn(async () => ActionResponse),
     markAllAsViewed: jest.fn(async () => MarkAsViewedResponse),
-    verifyToken: jest.fn(),
     fetchUnviewedNotificationsCount: jest.fn(),
     fetchAllNotifications: jest.fn(),
     startRealTimeFetch: jest.fn(),
@@ -90,7 +88,7 @@ describe('useSiren hook', () => {
     // Mock useSirenContext
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      verificationStatus: VerificationStatus.SUCCESS
+      id: ''
     });
 
     const { markAsReadById } = useSiren();
@@ -103,7 +101,7 @@ describe('useSiren hook', () => {
   it('should call siren.markAsReadByDate and update notifications list when siren exists and untilDate is provided', async () => {
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      verificationStatus: VerificationStatus.SUCCESS
+      id: ''
     });
 
     const { markAsReadByDate } = useSiren();
@@ -118,7 +116,7 @@ describe('useSiren hook', () => {
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      verificationStatus: VerificationStatus.SUCCESS
+      id: ''
     });
 
     const { deleteById } = useSiren();
@@ -132,7 +130,7 @@ describe('useSiren hook', () => {
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      verificationStatus: VerificationStatus.SUCCESS
+      id: ''
     });
 
     const { deleteByDate } = useSiren();
@@ -147,7 +145,7 @@ describe('useSiren hook', () => {
 
     jest.spyOn(sirenProvider, 'useSirenContext').mockReturnValue({
       siren: mockSiren as Siren,
-      verificationStatus: VerificationStatus.SUCCESS
+      id: ''
     });
 
     const { markAllAsViewed } = useSiren();

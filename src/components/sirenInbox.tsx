@@ -21,9 +21,7 @@ const {
   events,
   TOKEN_VERIFICATION_PENDING,
   MAXIMUM_ITEMS_PER_FETCH,
-  VerificationStatus,
-  EventType,
-  errorMap
+  EventType
 } = Constants;
 const { applyTheme, isNonEmptyArray, updateNotifications } = CommonUtils;
 
@@ -105,7 +103,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
     itemsPerFetch > MAXIMUM_ITEMS_PER_FETCH ? MAXIMUM_ITEMS_PER_FETCH : itemsPerFetch
   );
 
-  const { siren, verificationStatus, id } = useSirenContext();
+  const { siren, id } = useSirenContext();
 
   const { deleteById, deleteByDate, markAllAsViewed } = useSiren();
 
@@ -130,15 +128,10 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
 
   useEffect(() => {
     // Initialize Siren SDK and start polling notifications
-    if (verificationStatus === VerificationStatus.SUCCESS && siren) {
+    if (siren) 
       initialize();
-    } else if(verificationStatus === VerificationStatus.FAILED) {
-      setIsError(true);
-      setIsLoading(false);
-      setNotifications([]);
-      if (onError) onError(errorMap.INVALID_CREDENTIALS);
-    }
-  }, [siren, verificationStatus]);
+    
+  }, [siren]);
 
   useEffect(() => {
     if (eventListenerData) {
@@ -193,8 +186,7 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
       if (isNonEmptyArray(allNotifications))
         notificationParams.start = allNotifications[0].createdAt;
 
-      if (verificationStatus === VerificationStatus.SUCCESS)
-        siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params: notificationParams});
+      siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params: notificationParams});
     }
   };
 
@@ -283,8 +275,8 @@ const SirenInbox = (props: SirenInboxProps): ReactElement => {
         if (isNonEmptyArray(allNotifications))
           notificationParams.start = allNotifications[0].createdAt;
 
-        if (verificationStatus === VerificationStatus.SUCCESS)
-          siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params:notificationParams});
+
+        siren?.startRealTimeFetch({eventType: EventType.NOTIFICATION, params:notificationParams});
       } catch (err) {
         setIsLoading(false);
         setIsError(true);

@@ -27,7 +27,7 @@ const useSiren = () => {
 
   const markAsReadByDate = async (untilDate: string) => {
     if (siren && untilDate) {
-      const response = await siren?.markAsReadByDate(untilDate);
+      const response = await siren?.markAsReadByDate({startDate: untilDate});
 
       if (response?.data) {
         const payload = { action: eventTypes.MARK_ALL_AS_READ };
@@ -62,7 +62,7 @@ const useSiren = () => {
 
   const deleteByDate = async (untilDate: string) => {
     if (siren && untilDate) {
-      const response = await siren.deleteByDate(untilDate);
+      const response = await siren.deleteByDate({startDate: untilDate});
 
       if (response?.data) {
         const payload = { action: eventTypes.DELETE_ALL_ITEM };
