@@ -83,6 +83,6 @@
   ],
   "dependencies": {
     "pubsub-js": "^1.9.4",
-    "@sirenapp/js-sdk": "^1.1.0"
+    "@sirenapp/js-sdk": "^1.2.3"
   }
 }
